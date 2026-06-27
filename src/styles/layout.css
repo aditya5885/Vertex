@@ -302,9 +302,20 @@
 }
 
 @keyframes pulseRing {
-    0% { transform: scale(0.95); opacity: 0.8; }
-    50% { transform: scale(1.25); opacity: 0; }
-    100% { transform: scale(0.95); opacity: 0; }
+    0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.25);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
 }
 
 /* Footer */
@@ -312,7 +323,7 @@
     background: var(--dark-light);
     border-top: 1px solid rgba(0, 229, 255, 0.1);
     padding: 4rem 0 0;
-    margin-top: 4rem;
+    margin-top: 0;
 }
 
 .footer-grid {
@@ -457,12 +468,15 @@
     .nav-actions {
         display: none;
     }
+
     .desktop-nav {
         display: none;
     }
+
     .mobile-menu-btn {
         display: block;
     }
+
     .footer-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -472,6 +486,7 @@
     .footer-grid {
         grid-template-columns: 1fr;
     }
+
     .footer-bottom {
         flex-direction: column;
         gap: 1rem;
