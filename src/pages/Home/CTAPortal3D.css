@@ -1,0 +1,13 @@
+.cta-portal-3d-wrapper {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.cta-portal-3d-canvas {
+    width: 100%;
+    height: 100%;
+    outline: none;
+}

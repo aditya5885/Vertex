@@ -1,0 +1,26 @@
+:root {
+    /* Tech Navy / Deep Obsidian Theme */
+    --primary: #00e5ff; /* Luminous Cyan */
+    --primary-glow: rgba(0, 229, 255, 0.4);
+    --primary-dark: #00b3cc;
+    --accent-emerald: #00ffb3;
+    
+    --dark: #050c1a; /* Deep Obsidian Midnight */
+    --dark-surface: #0a1728;
+    --dark-light: #102340;
+    --glass-bg: rgba(16, 35, 64, 0.55);
+    --glass-border: rgba(0, 229, 255, 0.15);
+    --glass-border-hover: rgba(0, 229, 255, 0.4);
+    
+    --light: #d0dcff;
+    --white: #ffffff;
+    --gray: #8ca0c8;
+    
+    --nav-height: 80px;
+    --container: 1320px;
+    --transition: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 9999px;
+}

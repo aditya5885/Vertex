@@ -1,0 +1,112 @@
+.hero-3d-wrapper {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-3d-canvas {
+    width: 100%;
+    height: 100%;
+    outline: none;
+}
+
+.holo-glow-ring {
+    position: absolute;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+    animation: pulseGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(0.9); opacity: 0.5; }
+    100% { transform: scale(1.15); opacity: 0.9; }
+}
+
+.holo-badge {
+    position: absolute;
+    z-index: 10;
+    background: rgba(10, 23, 40, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 229, 255, 0.12);
+    transition: var(--transition);
+}
+
+.holo-badge:hover {
+    border-color: rgba(0, 229, 255, 0.5);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 229, 255, 0.3);
+    transform: translateY(-4px) scale(1.03);
+}
+
+.hb-icon {
+    font-size: 1.3rem;
+    color: var(--primary);
+    filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.5));
+}
+
+.holo-badge div {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.holo-badge strong {
+    color: var(--white);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.holo-badge span {
+    color: var(--gray);
+    font-size: 0.76rem;
+}
+
+.hb-top-left {
+    top: 5%;
+    left: 2%;
+}
+
+.hb-top-right {
+    top: 8%;
+    right: 2%;
+}
+
+.hb-bottom-left {
+    bottom: 8%;
+    left: 2%;
+}
+
+.hb-bottom-right {
+    bottom: 5%;
+    right: 2%;
+}
+
+@media (max-width: 1024px) {
+    .hero-3d-wrapper {
+        height: 400px;
+    }
+    .holo-badge {
+        padding: 0.6rem 0.9rem;
+    }
+    .holo-badge strong { font-size: 0.8rem; }
+    .holo-badge span { font-size: 0.7rem; }
+}
+
+@media (max-width: 768px) {
+    .holo-badge {
+        display: none;
+    }
+}
