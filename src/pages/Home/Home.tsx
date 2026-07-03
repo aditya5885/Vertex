@@ -56,7 +56,7 @@ const HeroSection = () => {
                     </motion.p>
 
                     <motion.div variants={fadeInUp} className="hero-buttons">
-                        <Link to="/contact" className="btn btn-primary btn-hero">
+                        <Link to="/quote" className="btn btn-primary btn-hero">
                             Request a Quote <FaArrowRight size={14} />
                         </Link>
                         <Link to="/services" className="btn btn-secondary btn-hero">
@@ -171,7 +171,7 @@ const WhoWeAreSection = () => {
                     transition={{ duration: 0.8 }}
                 >
                     <div className="who-image-frame">
-                        <img src="/Images/booth exib.png" alt="Vertex Controls Exhibition Booth" className="who-we-are-img" />
+                        <img src="/Images/booth_exib.webp" alt="Vertex Controls Exhibition Booth" className="who-we-are-img" />
 
                         {/* Floating Overlay Glass Badges */}
                         <div className="who-glass-badge wgb-top">
@@ -294,12 +294,12 @@ const WhyChooseUsSection = () => {
 
 const FeaturedSolutionsSection = () => {
     const solutions = [
-        { title: "MCC Panels", cat: "Power Distribution", spec: "IEC 61439 Certified", image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.png" },
-        { title: "PLC Control Panels", cat: "Automation", spec: "Real-time Logic", image: "/Images/Products/0a2f66b6-afd9-48b8-a972-f34cfae38112.png" },
-        { title: "SCADA Systems", cat: "Telemetry & Software", spec: "HMI Dashboards", image: "/Images/Products/3b41b48b-793d-4b06-b872-8a701ecd05d0.png" },
-        { title: "Energy Monitoring", cat: "Smart Grid", spec: "AI Power Analytics", image: "/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.png" },
-        { title: "Smart Lighting", cat: "ELV Integration", spec: "DALI Protocols", image: "/Images/Products/61b16c79-0f71-4ee6-87c5-396b8123796c.png" },
-        { title: "Industrial IoT", cat: "Cloud Gateways", spec: "Telemetry Sensors", image: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.png" }
+        { title: "MCC Panels", cat: "Power Distribution", spec: "IEC 61439 Certified", image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp" },
+        { title: "PLC Control Panels", cat: "Automation", spec: "Real-time Logic", image: "/Images/Products/0a2f66b6-afd9-48b8-a972-f34cfae38112.webp" },
+        { title: "SCADA Systems", cat: "Telemetry & Software", spec: "HMI Dashboards", image: "/Images/Products/3b41b48b-793d-4b06-b872-8a701ecd05d0.webp" },
+        { title: "Energy Monitoring", cat: "Smart Grid", spec: "AI Power Analytics", image: "/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.webp" },
+        { title: "Smart Lighting", cat: "ELV Integration", spec: "DALI Protocols", image: "/Images/Products/61b16c79-0f71-4ee6-87c5-396b8123796c.webp" },
+        { title: "Industrial IoT", cat: "Cloud Gateways", spec: "Telemetry Sensors", image: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp" }
     ];
 
     return (
@@ -351,28 +351,28 @@ const ProjectHighlightsSection = () => {
             cat: "Infrastructure",
             location: "Dubai Water Authority",
             desc: "Mission-critical SCADA telemetry & automated pump sequencing for municipal water management.",
-            image: "/Images/Project/08d07495-ea3a-4a50-8291-b81c2c99f4a9.png"
+            image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp"
         },
         {
             title: "Electrical Power Distribution",
             cat: "Power Systems",
             location: "Industrial City, Sharjah",
             desc: "Turnkey MV/LV switchgear assembly, power factor correction, and smart distribution panels.",
-            image: "/Images/Project/0a2f66b6-afd9-48b8-a972-f34cfae38112.png"
+            image: "/Images/Products/0a2f66b6-afd9-48b8-a972-f34cfae38112.webp"
         },
         {
             title: "Smart Lighting Automation",
             cat: "ELV Systems",
             location: "Commercial Complex, Abu Dhabi",
             desc: "DALI intelligent lighting integration with daylight harvesting and centralized scheduling.",
-            image: "/Images/Project/57045811-01db-4a79-8406-f8398676e32e.png"
+            image: "/Images/Project/57045811-01db-4a79-8406-f8398676e32e.webp"
         },
         {
             title: "Industrial Energy Telemetry",
             cat: "IoT Solutions",
             location: "Logistics Hub, Dubai",
             desc: "Cloud IoT sensors and AI predictive analytics dashboard for automated power optimization.",
-            image: "/Images/Project/639f0a0f-0c98-486e-9e26-484e33c05784.png"
+            image: "/Images/Project/639f0a0f-0c98-486e-9e26-484e33c05784.webp"
         }
     ];
 
@@ -493,7 +493,7 @@ const CTAContactSection = () => {
                         <Link to="/contact" className="btn btn-primary btn-cta-primary">
                             Contact Engineering Team <FaArrowRight size={14} />
                         </Link>
-                        <Link to="/contact" className="btn btn-secondary btn-cta-secondary">
+                        <Link to="/quote" className="btn btn-secondary btn-cta-secondary">
                             Request Instant Quote
                         </Link>
                     </div>

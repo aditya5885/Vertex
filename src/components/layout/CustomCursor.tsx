@@ -2,8 +2,7 @@ import React, { useEffect, useRef } from "react";
 import "./CustomCursor.css";
 
 export const CustomCursor: React.FC = () => {
-    const dotRef = useRef<HTMLDivElement>(null);
-    const auraRef = useRef<HTMLDivElement>(null);
+    const cursorRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -11,62 +10,41 @@ export const CustomCursor: React.FC = () => {
 
         document.body.classList.add("custom-cursor-active");
 
-        let clientX = -100;
-        let clientY = -100;
-        let auraX = -100;
-        let auraY = -100;
-        let isHovered = false;
-        let isClicked = false;
-        let animId: number;
+        const cursorEl = cursorRef.current;
+        if (!cursorEl) return;
 
+        // Only update coordinate translations on mouse move (ZERO TRAILING DELAY & NO DOM QUERY)
         const onMouseMove = (e: MouseEvent) => {
-            clientX = e.clientX;
-            clientY = e.clientY;
+            cursorEl.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+        };
 
+        // Leverage event delegation on window to check hovered items (runs only on element transition, not movement pixels)
+        const onMouseOver = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
             if (target) {
                 const isInteractive = target.closest("a, button, input, textarea, .btn, .service-card, .solution-card, .proj-card-modern, .float-card, .metric-box");
-                isHovered = !!isInteractive;
+                if (isInteractive) {
+                    cursorEl.classList.add("hovered");
+                } else {
+                    cursorEl.classList.remove("hovered");
+                }
             }
         };
 
-        const onMouseDown = () => { isClicked = true; };
-        const onMouseUp = () => { isClicked = false; };
+        const onMouseDown = () => cursorEl.classList.add("clicked");
+        const onMouseUp = () => cursorEl.classList.remove("clicked");
 
         window.addEventListener("mousemove", onMouseMove, { passive: true });
+        window.addEventListener("mouseover", onMouseOver, { passive: true });
         window.addEventListener("mousedown", onMouseDown, { passive: true });
         window.addEventListener("mouseup", onMouseUp, { passive: true });
-
-        // Zero-latency hardware accelerated animation loop
-        const loop = () => {
-            // Direct DOM transformation for 60fps smoothness
-            if (dotRef.current) {
-                dotRef.current.style.transform = `translate3d(${clientX - 5}px, ${clientY - 5}px, 0) scale(${isClicked ? 0.6 : isHovered ? 1.4 : 1})`;
-                if (isHovered) dotRef.current.classList.add("hovered");
-                else dotRef.current.classList.remove("hovered");
-            }
-
-            // Smooth trailing aura with lerp
-            auraX += (clientX - auraX) * 0.25;
-            auraY += (clientY - auraY) * 0.25;
-
-            if (auraRef.current) {
-                auraRef.current.style.transform = `translate3d(${auraX - 22}px, ${auraY - 22}px, 0) scale(${isClicked ? 0.7 : isHovered ? 1.5 : 1})`;
-                if (isHovered) auraRef.current.classList.add("hovered");
-                else auraRef.current.classList.remove("hovered");
-            }
-
-            animId = requestAnimationFrame(loop);
-        };
-
-        loop();
 
         return () => {
             document.body.classList.remove("custom-cursor-active");
             window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("mouseover", onMouseOver);
             window.removeEventListener("mousedown", onMouseDown);
             window.removeEventListener("mouseup", onMouseUp);
-            cancelAnimationFrame(animId);
         };
     }, []);
 
@@ -75,11 +53,9 @@ export const CustomCursor: React.FC = () => {
     }
 
     return (
-        <div className="custom-cursor-container">
-            <div className="laser-core" ref={dotRef} />
-            <div className="laser-aura" ref={auraRef}>
-                <div className="aura-pulse-ring" />
-            </div>
+        <div className="instant-cursor-wrapper" ref={cursorRef}>
+            <div className="instant-dot" />
+            <div className="instant-ring" />
         </div>
     );
 };

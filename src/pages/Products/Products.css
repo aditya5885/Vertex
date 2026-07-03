@@ -1,0 +1,1012 @@
+/* Premium B2B Products Catalog Stylesheet — Vertex Controls Electromechanical LLC */
+
+:root {
+    --prod-dark-blue: #0E2A47;
+    --prod-accent-blue: #0F6FFF;
+    --prod-highlight-green: #18B979;
+    --prod-bg-gray: #f8fafc;
+    --prod-border: #e2e8f0;
+    --prod-border-active: #cbd5e1;
+    --prod-text-navy: #0f172a;
+    --prod-text-slate: #475569;
+    --prod-text-muted: #64748b;
+    --prod-shadow: 0 4px 6px -1px rgba(14, 42, 71, 0.03), 0 2px 4px -1px rgba(14, 42, 71, 0.015);
+    --prod-shadow-hover: 0 12px 25px -8px rgba(14, 42, 71, 0.06), 0 8px 10px -6px rgba(14, 42, 71, 0.03);
+    --prod-radius: 12px;
+    --prod-transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.products-page-wrapper {
+    background-color: #ffffff;
+    color: var(--prod-text-slate);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+}
+
+/* ==========================================
+   HERO SECTION (Engineering panels background)
+   ========================================== */
+.products-hero {
+    background: linear-gradient(rgba(14, 42, 71, 0.9), rgba(14, 42, 71, 0.93)), url('/products_hero_bg.png') no-repeat center center/cover;
+    border-bottom: 1px solid var(--prod-border);
+    padding: 7rem 0 6rem;
+    position: relative;
+}
+
+/* Blueprint drawing overlays */
+.products-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(15, 111, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 111, 255, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: center;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.products-hero-inner {
+    max-width: 800px;
+    position: relative;
+    z-index: 2;
+}
+
+.products-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #cbd5e1;
+    margin-bottom: 1.5rem;
+}
+
+.products-breadcrumb a {
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: var(--prod-transition);
+}
+
+.products-breadcrumb a:hover {
+    color: var(--prod-accent-blue);
+}
+
+.products-breadcrumb .separator {
+    color: var(--prod-text-muted);
+}
+
+.products-hero-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2.6rem, 5vw, 3.8rem);
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    line-height: 1.15;
+}
+
+.products-hero-subtitle {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: #cbd5e1;
+    max-width: 720px;
+}
+
+/* ==========================================
+   CATEGORY NAVIGATION TABS
+   ========================================== */
+.products-nav-section {
+    padding: 3rem 0 0;
+    background-color: #ffffff;
+}
+
+.products-tab-container {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--prod-border);
+}
+
+.products-tab-container::-webkit-scrollbar {
+    display: none;
+}
+
+.products-tab-btn {
+    white-space: nowrap;
+    background-color: var(--prod-bg-gray);
+    border: 1px solid var(--prod-border);
+    color: var(--prod-text-slate);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.6rem 1.25rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: var(--prod-transition);
+    font-family: 'Outfit', sans-serif;
+}
+
+.products-tab-btn:hover {
+    border-color: var(--prod-border-active);
+    color: var(--prod-text-navy);
+}
+
+.products-tab-btn.active {
+    background-color: var(--prod-dark-blue);
+    border-color: var(--prod-dark-blue);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(14, 42, 71, 0.12);
+}
+
+/* ==========================================
+   PRODUCTS GRID (3 COLUMNS)
+   ========================================== */
+.products-grid-section {
+    padding: 4rem 0 6rem;
+    background-color: #ffffff;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.product-card {
+    background-color: #ffffff;
+    border: 1px solid var(--prod-border);
+    border-radius: var(--prod-radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: var(--prod-shadow);
+    transition: var(--prod-transition);
+}
+
+.product-card:hover {
+    border-color: var(--prod-accent-blue);
+    box-shadow: var(--prod-shadow-hover);
+}
+
+.product-card-image-box {
+    width: 100%;
+    height: 220px;
+    background-color: var(--prod-bg-gray);
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid var(--prod-border);
+}
+
+.product-card-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-card-image-box img {
+    transform: scale(1.03);
+}
+
+.product-card-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.product-card-category {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--prod-accent-blue);
+    margin-bottom: 0.5rem;
+}
+
+.product-card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--prod-dark-blue);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+}
+
+.product-card-desc {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--prod-text-slate);
+    margin-bottom: 1.5rem;
+    height: 3.2rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* Key Features styling */
+.product-card-features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+
+.product-card-features-list li {
+    font-size: 0.85rem;
+    color: var(--prod-text-slate);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+}
+
+.feature-bullet-icon {
+    color: var(--prod-highlight-green);
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+    font-size: 0.78rem;
+}
+
+/* Card CTA Buttons */
+.product-card-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: auto;
+    border-top: 1px solid var(--prod-border);
+    padding-top: 1.5rem;
+}
+
+.btn-card-datasheet {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid var(--prod-border);
+    background-color: var(--prod-bg-gray);
+    color: var(--prod-text-slate);
+    padding: 0.65rem 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: var(--prod-transition);
+}
+
+.btn-card-datasheet:hover {
+    background-color: #ffffff;
+    border-color: var(--prod-border-active);
+    color: var(--prod-text-navy);
+}
+
+.btn-card-quote {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border: 1px solid var(--prod-dark-blue);
+    background-color: var(--prod-dark-blue);
+    color: #ffffff;
+    padding: 0.65rem 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: var(--prod-transition);
+}
+
+.btn-card-quote:hover {
+    background-color: var(--prod-accent-blue);
+    border-color: var(--prod-accent-blue);
+}
+
+/* ==========================================
+   FEATURED PRODUCT SECTION (WIDESCREEN CARD)
+   ========================================== */
+.featured-product-section {
+    padding: 6rem 0;
+    background-color: var(--prod-bg-gray);
+    border-top: 1px solid var(--prod-border);
+    border-bottom: 1px solid var(--prod-border);
+}
+
+.featured-product-card {
+    background-color: #ffffff;
+    border: 1px solid var(--prod-border);
+    border-radius: var(--prod-radius);
+    overflow: hidden;
+    box-shadow: var(--prod-shadow);
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+}
+
+.featured-product-image-box {
+    width: 100%;
+    min-height: 100%;
+    background-color: #eaeff5;
+    position: relative;
+}
+
+.featured-product-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Featured details styling */
+.featured-product-details {
+    padding: 4rem;
+}
+
+.featured-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--prod-accent-blue);
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.featured-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--prod-dark-blue);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+.featured-overview {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--prod-text-slate);
+    margin-bottom: 2rem;
+}
+
+.featured-sub-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--prod-dark-blue);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Two-column features block */
+.featured-specs-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.featured-specs-list li {
+    font-size: 0.9rem;
+    color: var(--prod-text-slate);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+/* Specs Table styling */
+.featured-specs-table-container {
+    margin-bottom: 2.5rem;
+    border-top: 1px solid var(--prod-border);
+    padding-top: 1.5rem;
+}
+
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+.specs-table td {
+    padding: 0.65rem 0;
+    font-size: 0.88rem;
+    color: var(--prod-text-slate);
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.specs-table td.spec-name {
+    font-weight: 600;
+    color: var(--prod-dark-blue);
+    width: 35%;
+}
+
+/* Featured CTAs */
+.featured-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-featured-download {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--prod-border);
+    background-color: var(--prod-bg-gray);
+    color: var(--prod-text-slate);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: var(--prod-transition);
+}
+
+.btn-featured-download:hover {
+    background-color: #ffffff;
+    border-color: var(--prod-border-active);
+    color: var(--prod-text-navy);
+}
+
+.btn-featured-quote {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 0.8rem 1.75rem;
+    border-radius: 6px;
+    border: 1px solid var(--prod-dark-blue);
+    background-color: var(--prod-dark-blue);
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: var(--prod-transition);
+}
+
+.btn-featured-quote:hover {
+    background-color: var(--prod-accent-blue);
+    border-color: var(--prod-accent-blue);
+}
+
+/* ==========================================
+   WHY CHOOSE OUR PRODUCTS (INTERACTIVE OPERATIONS DESK)
+   ========================================== */
+.why-choose-section {
+    padding: 7rem 0;
+    background-color: #ffffff;
+}
+
+.why-interactive-deck {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 3.5rem;
+    align-items: start;
+}
+
+.why-interactive-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.why-menu-btn {
+    background: var(--prod-bg-gray);
+    border: 1px solid var(--prod-border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+    transition: var(--prod-transition);
+}
+
+.why-menu-btn:hover {
+    border-color: var(--prod-border-active);
+    background: #ffffff;
+}
+
+.why-menu-btn.active {
+    background-color: var(--prod-dark-blue);
+    border-color: var(--prod-dark-blue);
+    color: #ffffff;
+    box-shadow: 0 10px 25px -10px rgba(14, 42, 71, 0.25);
+}
+
+.why-menu-num {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--prod-text-muted);
+}
+
+.why-menu-btn.active .why-menu-num {
+    color: var(--prod-highlight-green);
+}
+
+.why-menu-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--prod-text-navy);
+}
+
+.why-menu-btn.active .why-menu-title {
+    color: #ffffff;
+}
+
+.why-interactive-pane {
+    background: #ffffff;
+    border: 1px solid var(--prod-border);
+    border-radius: 16px;
+    padding: 3rem;
+    box-shadow: var(--prod-shadow);
+}
+
+.pane-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.pane-compliance-tag {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--prod-accent-blue);
+    background: rgba(15, 111, 255, 0.05);
+    padding: 0.45rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(15, 111, 255, 0.12);
+}
+
+.pane-icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(24, 185, 121, 0.05);
+    color: var(--prod-highlight-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    border: 1px solid rgba(24, 185, 121, 0.12);
+}
+
+.pane-heading {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--prod-dark-blue);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.pane-paragraph {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--prod-text-slate);
+    margin-bottom: 2rem;
+}
+
+.pane-testing-bar {
+    margin-bottom: 2.5rem;
+    background: var(--prod-bg-gray);
+    padding: 1.25rem;
+    border-radius: 10px;
+    border: 1px solid var(--prod-border);
+}
+
+.testing-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--prod-text-muted);
+    margin-bottom: 0.6rem;
+}
+
+.testing-bar-track {
+    height: 6px;
+    background-color: #cbd5e1;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.testing-bar-fill {
+    height: 100%;
+    background-color: var(--prod-highlight-green);
+    border-radius: 3px;
+}
+
+.pane-spec-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.pane-spec-bullets li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.92rem;
+    color: var(--prod-text-slate);
+}
+
+.pane-bullet-check {
+    color: var(--prod-highlight-green);
+    flex-shrink: 0;
+}
+
+/* ==========================================
+   INDUSTRIES SERVED (INTERACTIVE TELEMETRY DIAL)
+   ========================================== */
+.industries-served-section {
+    padding: 7rem 0;
+    background-color: var(--prod-bg-gray);
+    border-top: 1px solid var(--prod-border);
+    border-bottom: 1px solid var(--prod-border);
+}
+
+.industries-interactive-deck {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.industries-grid-selector {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+.industry-node-btn {
+    background: #ffffff;
+    border: 1px solid var(--prod-border);
+    border-radius: 16px;
+    padding: 1.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--prod-transition);
+}
+
+.industry-node-btn:hover {
+    border-color: var(--prod-accent-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--prod-shadow);
+}
+
+.industry-node-btn.active {
+    background: var(--prod-dark-blue);
+    border-color: var(--prod-dark-blue);
+    box-shadow: 0 10px 25px -10px rgba(14, 42, 71, 0.3);
+}
+
+.industry-node-icon {
+    font-size: 1.4rem;
+    color: var(--prod-highlight-green);
+    margin-bottom: 0.75rem;
+    transition: color 0.3s ease;
+}
+
+.industry-node-btn.active .industry-node-icon {
+    color: #ffffff;
+}
+
+.industry-node-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--prod-dark-blue);
+    transition: color 0.3s ease;
+    text-align: center;
+}
+
+.industry-node-btn.active .industry-node-name {
+    color: #ffffff;
+}
+
+.industries-telemetry-pane {
+    background-color: #0b1329;
+    border: 1px solid #1e293b;
+    border-radius: 16px;
+    padding: 2.5rem;
+    color: #e2e8f0;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.telemetry-screen-hdr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.telemetry-screen-code {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: #38bdf8;
+    letter-spacing: 0.05em;
+}
+
+.telemetry-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10b981;
+    box-shadow: 0 0 10px #10b981;
+}
+
+.telemetry-screen-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.telemetry-sub {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+}
+
+.telemetry-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+}
+
+.telemetry-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: #94a3b8;
+    margin-bottom: 2rem;
+}
+
+.telemetry-systems-block {
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 3px solid var(--prod-highlight-green);
+    padding: 1.25rem;
+    border-radius: 0 8px 8px 0;
+}
+
+.telemetry-block-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.telemetry-systems-tag {
+    font-size: 0.95rem;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* ==========================================
+   NEED A CUSTOM SOLUTION CTA
+   ========================================== */
+.custom-solution-cta {
+    padding: 6rem 0;
+    background-color: #ffffff;
+}
+
+.custom-cta-card {
+    background-color: var(--prod-dark-blue);
+    background-image: 
+        radial-gradient(circle at 100% 0%, rgba(15, 111, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(24, 185, 121, 0.1) 0%, transparent 50%);
+    border-radius: 16px;
+    padding: 4rem;
+    color: #ffffff;
+    text-align: center;
+    box-shadow: 0 15px 30px rgba(14, 42, 71, 0.15);
+}
+
+.custom-cta-card h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.custom-cta-card p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #cbd5e1;
+    max-width: 650px;
+    margin: 0 auto 2.5rem;
+}
+
+.custom-cta-buttons {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+}
+
+/* ==========================================
+   FOOTER CTA
+   ========================================== */
+.products-footer-cta {
+    background-color: var(--prod-bg-gray);
+    border-top: 1px solid var(--prod-border);
+    padding: 4rem 0;
+}
+
+.footer-cta-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-cta-text h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--prod-dark-blue);
+    margin-bottom: 0.35rem;
+}
+
+.footer-cta-text p {
+    font-size: 0.92rem;
+    color: var(--prod-text-muted);
+}
+
+.footer-cta-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-footer-outline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--prod-border);
+    background-color: #ffffff;
+    color: var(--prod-text-slate);
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--prod-transition);
+}
+
+.btn-footer-outline:hover {
+    border-color: var(--prod-border-active);
+    color: var(--prod-text-navy);
+}
+
+/* ==========================================
+   MOBILE & RESPONSIVE LAYOUTS
+   ========================================== */
+@media (max-width: 1200px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .featured-product-card {
+        grid-template-columns: 1fr;
+    }
+    
+    .featured-product-image-box {
+        height: 380px;
+    }
+    
+    .featured-product-details {
+        padding: 3rem;
+    }
+    
+    .why-interactive-deck {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+    
+    .industries-interactive-deck {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .products-hero {
+        padding: 5.5rem 0 3.5rem;
+        text-align: center;
+    }
+    
+    .products-hero-subtitle {
+        margin: 0 auto;
+    }
+    
+    .products-breadcrumb {
+        justify-content: center;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+    
+    .featured-product-details {
+        padding: 2rem 1.25rem;
+    }
+    
+    .featured-title {
+        font-size: 1.8rem;
+    }
+    
+    .why-interactive-pane {
+        padding: 2rem;
+    }
+    
+    .industries-grid-selector {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .industries-telemetry-pane {
+        padding: 1.75rem;
+    }
+    
+    .custom-cta-card {
+        padding: 3rem 1.5rem;
+    }
+    
+    .custom-cta-buttons {
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .footer-cta-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .footer-cta-buttons {
+        width: 100%;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 320px;
+    }
+}
+
+@media (max-width: 480px) {
+    .industries-grid-selector {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}

@@ -67,7 +67,7 @@ const Footer = () => {
                             <li><FaEnvelope /> <a href="mailto:Sales@vertex-controls.com">Sales@vertex-controls.com</a></li>
                         </ul>
                         <Link 
-                            to="/contact"
+                            to="/quote"
                             className="footer-cta-btn"
                         >
                             Request a Quote <FaArrowRight size={12} />

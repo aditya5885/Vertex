@@ -16,15 +16,15 @@ export const CTAPortal3D: React.FC = () => {
         let angle = 0;
         let animId: number;
         let isVisible = true;
-
-        const observer = new IntersectionObserver(([entry]) => {
-            isVisible = entry.isIntersecting;
-        }, { threshold: 0.05 });
-        if (canvas.parentElement) observer.observe(canvas.parentElement);
+        let isLooping = false;
 
         const render = () => {
+            if (!isVisible) {
+                isLooping = false;
+                return;
+            }
+            isLooping = true;
             animId = requestAnimationFrame(render);
-            if (!isVisible) return;
 
             ctx.clearRect(0, 0, width, height);
             const centerX = width / 2;
@@ -42,6 +42,14 @@ export const CTAPortal3D: React.FC = () => {
                 ctx.stroke();
             }
         };
+
+        const observer = new IntersectionObserver(([entry]) => {
+            isVisible = entry.isIntersecting;
+            if (isVisible && !isLooping) {
+                render();
+            }
+        }, { threshold: 0.05 });
+        if (canvas.parentElement) observer.observe(canvas.parentElement);
 
         render();
 

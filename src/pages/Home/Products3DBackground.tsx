@@ -27,15 +27,15 @@ export const Products3DBackground: React.FC = () => {
 
         let animId: number;
         let isVisible = true;
-
-        const observer = new IntersectionObserver(([entry]) => {
-            isVisible = entry.isIntersecting;
-        }, { threshold: 0.05 });
-        if (canvas.parentElement) observer.observe(canvas.parentElement);
+        let isLooping = false;
 
         const render = () => {
+            if (!isVisible) {
+                isLooping = false;
+                return;
+            }
+            isLooping = true;
             animId = requestAnimationFrame(render);
-            if (!isVisible) return;
 
             ctx.clearRect(0, 0, width, height);
 
@@ -67,6 +67,14 @@ export const Products3DBackground: React.FC = () => {
                 }
             }
         };
+
+        const observer = new IntersectionObserver(([entry]) => {
+            isVisible = entry.isIntersecting;
+            if (isVisible && !isLooping) {
+                render();
+            }
+        }, { threshold: 0.05 });
+        if (canvas.parentElement) observer.observe(canvas.parentElement);
 
         render();
 

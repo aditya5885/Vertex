@@ -70,11 +70,11 @@ const AnimatedCounter: React.FC<{ value: number; suffix?: string; label: string 
 // 1. Hero Banner Component
 const AboutHero = () => {
     return (
-        <section className="about-hero-section">
-            <div className="about-hero-bg-grid"></div>
-            <div className="container about-hero-content">
+        <section className="page-header-section">
+            <div className="page-header-bg-grid"></div>
+            <div className="container page-header-content">
                 <motion.div
-                    className="about-hero-inner"
+                    className="page-header-inner"
                     initial="hidden"
                     animate="visible"
                     variants={staggerContainer}
@@ -94,15 +94,15 @@ const AboutHero = () => {
                         </div>
                     </motion.div>
 
-                    <motion.h1 variants={fadeInUp} className="about-hero-title">
+                    <motion.h1 variants={fadeInUp} className="page-header-title">
                         Engineering Intelligence. <span className="text-gradient">Automated Excellence.</span>
                     </motion.h1>
 
-                    <motion.p variants={fadeInUp} className="about-hero-lead">
+                    <motion.p variants={fadeInUp} className="page-header-lead">
                         Vertex Controls is a leading Dubai-based electromechanical and automation systems integrator. We engineer mission-critical power, control, and building management solutions across the UAE & GCC region.
                     </motion.p>
 
-                    <motion.div variants={fadeInUp} className="about-hero-buttons">
+                    <motion.div variants={fadeInUp} className="page-header-buttons">
                         <Link to="/services" className="btn btn-primary">
                             Explore Our Capabilities <FaArrowRight size={14} />
                         </Link>
@@ -167,7 +167,7 @@ const CompanyOverview = () => {
                     variants={slideInRight}
                 >
                     <div className="who-image-frame">
-                        <img src="/Images/booth exib.png" alt="Vertex Controls Engineering Showcase" className="who-we-are-img" />
+                        <img src="/Images/booth_exib.webp" alt="Vertex Controls Engineering Showcase" className="who-we-are-img" />
                         
                         <div className="who-glass-badge wgb-top">
                             <span className="wgb-pulse"></span>
@@ -381,7 +381,7 @@ const AboutCTA = () => {
                         <Link to="/contact" className="btn btn-primary btn-cta-primary">
                             Contact Us Today <FaArrowRight size={14} />
                         </Link>
-                        <Link to="/contact" className="btn btn-secondary btn-cta-secondary">
+                        <Link to="/quote" className="btn btn-secondary btn-cta-secondary">
                             Request a Quote
                         </Link>
                     </div>

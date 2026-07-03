@@ -1,14 +1,17 @@
+import { lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
 
-import Home from "../pages/Home/Home";
-import About from "../pages/About/About";
-import Services from "../pages/Services/Services";
-import Products from "../pages/Products/Products";
-import Downloads from "../pages/Downloads/Downloads";
-import Projects from "../pages/Projects/Projects";
-import Contact from "../pages/Contact/Contact";
+// Route-level Code Splitting (Lazy Loading Pages)
+const Home = lazy(() => import("../pages/Home/Home"));
+const About = lazy(() => import("../pages/About/About"));
+const Services = lazy(() => import("../pages/Services/Services"));
+const Products = lazy(() => import("../pages/Products/Products"));
+const Downloads = lazy(() => import("../pages/Downloads/Downloads"));
+const Projects = lazy(() => import("../pages/Projects/Projects"));
+const Contact = lazy(() => import("../pages/Contact/Contact"));
+const Quote = lazy(() => import("../pages/Quote/Quote"));
 
 const AppRoutes = () => {
     return (
@@ -22,6 +25,7 @@ const AppRoutes = () => {
                     <Route path="/downloads" element={<Downloads />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/quote" element={<Quote />} />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -1,0 +1,640 @@
+/* ==========================================
+   VERTEX MINIMALIST PORTFOLIO STYLING
+   ========================================== */
+
+.projects-page-wrapper {
+    background-color: #030a16;
+    color: #cbd5e1;
+    min-height: 100vh;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Minimalist Section Header Style */
+.minimal-section-header {
+    margin-bottom: 4rem;
+}
+
+.corp-section-subtitle {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #10b981; /* Emerald Green */
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+}
+
+.corp-section-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+}
+
+/* ==========================================
+   SECTION 1 - HERO BANNER (MINIMAL GRADIENT)
+   ========================================== */
+.corporate-hero-section {
+    position: relative;
+    padding: 9rem 0 7rem;
+    background: linear-gradient(135deg, #02060f 0%, #05132d 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.corporate-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.005) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.005) 1px, transparent 1px);
+    background-size: 32px 32px;
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.corporate-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-text-align {
+    max-width: 750px;
+}
+
+.corp-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 1.75rem;
+}
+
+.corp-breadcrumb a {
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.corp-breadcrumb a:hover {
+    color: #10b981;
+}
+
+.breadcrumb-separator-icon {
+    color: rgba(255, 255, 255, 0.1);
+}
+
+.corp-hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+    line-height: 1.15;
+}
+
+.corp-hero-sub {
+    font-size: 1.2rem;
+    color: #94a3b8;
+    line-height: 1.55;
+    margin-bottom: 3rem;
+}
+
+.corp-hero-ctas {
+    display: flex;
+    gap: 1rem;
+}
+
+.corp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.95rem 2rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.corp-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.95rem 2rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: transparent;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+}
+
+.corp-btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-color: #ffffff;
+}
+
+/* ==========================================
+   SECTION 2 - CAPABILITIES DASHBOARD
+   ========================================== */
+.capabilities-dashboard-section {
+    padding: 8rem 0;
+    background-color: #030a16;
+}
+
+.dashboard-console-deck {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 4rem;
+    background: rgba(255, 255, 255, 0.012);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-tab-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.dashboard-tab-btn {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.02rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.dashboard-tab-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.dashboard-tab-btn.active {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.dashboard-tab-btn .tab-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-tab-btn.active .tab-bullet {
+    background-color: #10b981;
+}
+
+.dashboard-content-pane {
+    display: flex;
+    flex-direction: column;
+}
+
+.pane-title {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.85rem;
+}
+
+.pane-desc {
+    color: #94a3b8;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    margin-bottom: 2.25rem;
+}
+
+.pane-split-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    padding-top: 2.25rem;
+}
+
+.pane-list-title {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.25rem;
+}
+
+.pane-list-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.pane-list-block li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.92rem;
+    color: #cbd5e1;
+}
+
+.pane-li-icon {
+    color: #38bdf8;
+    flex-shrink: 0;
+}
+
+.pane-li-icon.green-icon {
+    color: #10b981;
+}
+
+/* ==========================================
+   SECTION 3 - FEATURED PROJECTS GRID (2X2)
+   ========================================== */
+.featured-portfolio-section {
+    padding: 8rem 0;
+    background-color: #02060f;
+}
+
+.minimal-projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+}
+
+.minimal-project-card {
+    background: rgba(255, 255, 255, 0.012);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.minimal-project-card:hover {
+    border-color: rgba(16, 185, 129, 0.2);
+    transform: translateY(-6px);
+    box-shadow: 0 25px 50px -25px rgba(0, 0, 0, 0.6);
+}
+
+.min-proj-img-wrap {
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+    background-color: #030a16;
+}
+
+.min-proj-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.minimal-project-card:hover .min-proj-img-wrap img {
+    transform: scale(1.03);
+}
+
+.min-proj-badge {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #34d399;
+    background: rgba(3, 10, 22, 0.85);
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(52, 211, 153, 0.25);
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(8px);
+}
+
+.min-proj-body {
+    padding: 2.25rem;
+}
+
+.min-proj-location {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.min-proj-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.85rem;
+    letter-spacing: -0.01em;
+}
+
+.min-proj-desc {
+    color: #94a3b8;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin-bottom: 1.75rem;
+}
+
+.min-proj-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    padding-top: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+.min-proj-footer strong {
+    color: #cbd5e1;
+}
+
+.min-footer-icon {
+    color: #10b981;
+    flex-shrink: 0;
+}
+
+/* ==========================================
+   SECTION 4 - SPLIT PROCESS & WHY CHOOSE US
+   ========================================== */
+.process-split-section {
+    padding: 8rem 0;
+    background-color: #030a16;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.split-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+}
+
+.split-col-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.split-panel-title {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 3.5rem;
+    letter-spacing: -0.02em;
+}
+
+/* Vertical Timeline */
+.vertical-timeline-minimal {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+}
+
+.timeline-minimal-item {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.timeline-minimal-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timeline-minimal-bullet {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #10b981;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #030a16;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+}
+
+.timeline-minimal-line {
+    width: 1px;
+    flex-grow: 1;
+    background-color: rgba(16, 185, 129, 0.15);
+    margin-top: 0.5rem;
+}
+
+.timeline-item-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+}
+
+.timeline-item-desc {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    line-height: 1.5;
+}
+
+/* Why choose list */
+.why-choose-list-minimal {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+}
+
+.why-choose-item-minimal {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.why-choose-icon-minimal {
+    color: #10b981;
+    font-size: 1.1rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+.why-choose-body-minimal h4 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+}
+
+.why-choose-body-minimal p {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   SECTION 5 - MINIMAL CTA
+   ========================================== */
+.cta-minimal-bottom-section {
+    padding: 4rem 0 8rem;
+    background-color: #030a16;
+}
+
+.cta-minimal-card {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.4), rgba(7, 12, 22, 0.75));
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 24px;
+    padding: 4rem;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.cta-minimal-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+}
+
+.cta-minimal-desc {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+}
+
+.cta-minimal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+}
+
+.corp-btn-cta {
+    padding: 0.95rem 2.25rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.corp-btn-cta-outline {
+    padding: 0.95rem 2.25rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: transparent;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+}
+
+.corp-btn-cta-outline:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-color: #ffffff;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   ========================================== */
+
+@media (max-width: 1024px) {
+    .dashboard-console-deck {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        padding: 2.25rem;
+    }
+    
+    .dashboard-tab-selector {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    
+    .dashboard-tab-btn {
+        white-space: nowrap;
+    }
+    
+    .split-grid-layout {
+        gap: 4rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .corp-hero-title {
+        font-size: 3rem;
+    }
+    
+    .minimal-projects-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .split-grid-layout {
+        grid-template-columns: 1fr;
+        gap: 4.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .corporate-hero-section {
+        padding: 7rem 0 5rem;
+    }
+
+    .corp-hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .corp-hero-sub {
+        font-size: 1.1rem;
+    }
+    
+    .corp-hero-ctas {
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+    
+    .corp-btn, .corp-btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .pane-split-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .cta-minimal-card {
+        padding: 2.5rem 1.75rem;
+    }
+    
+    .cta-minimal-title {
+        font-size: 1.85rem;
+    }
+    
+    .cta-minimal-buttons {
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+    
+    .corp-btn-cta, .corp-btn-cta-outline {
+        width: 100%;
+    }
+}

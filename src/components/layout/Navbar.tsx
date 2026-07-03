@@ -147,7 +147,7 @@ const Navbar = () => {
                             <Link to="/contact" className="btn btn-secondary">Contact Us</Link>
                         </motion.div>
                         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <Link to="/contact" className="btn btn-primary">Request a Quote</Link>
+                            <Link to="/quote" className="btn btn-primary">Request a Quote</Link>
                         </motion.div>
                     </motion.div>
 
@@ -201,7 +201,7 @@ const Navbar = () => {
                             transition={{ delay: 0.5 }}
                         >
                             <Link to="/contact" className="btn btn-secondary">Contact Us</Link>
-                            <Link to="/contact" className="btn btn-primary">Request a Quote</Link>
+                            <Link to="/quote" className="btn btn-primary">Request a Quote</Link>
                         </motion.div>
                     </motion.div>
                 )}

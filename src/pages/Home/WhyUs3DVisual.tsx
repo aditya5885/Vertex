@@ -103,10 +103,14 @@ export const WhyUs3DVisual: React.FC = () => {
         let targetX = 0;
         let targetY = 0;
         let isVisible = true;
+        let isLooping = false;
 
         const observer = new IntersectionObserver(
             ([entry]) => {
                 isVisible = entry.isIntersecting;
+                if (isVisible && !isLooping) {
+                    animate();
+                }
             },
             { threshold: 0.1 }
         );
@@ -123,9 +127,13 @@ export const WhyUs3DVisual: React.FC = () => {
         const clock = new THREE.Clock();
         let animId: number;
 
-        const animate = () => {
+        function animate() {
+            if (!isVisible) {
+                isLooping = false;
+                return;
+            }
+            isLooping = true;
             animId = requestAnimationFrame(animate);
-            if (!isVisible) return; // Pause GPU rendering when scrolled out of view!
 
             const elapsed = clock.getElapsedTime();
 
@@ -145,7 +153,7 @@ export const WhyUs3DVisual: React.FC = () => {
             group.rotation.x = -targetY * 0.7;
 
             renderer.render(scene, camera);
-        };
+        }
 
         animate();
 

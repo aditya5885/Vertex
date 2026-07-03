@@ -120,10 +120,14 @@ export const Hero3DVisual: React.FC = () => {
         let targetX = 0;
         let targetY = 0;
         let isVisible = true;
+        let isLooping = false;
 
         const observer = new IntersectionObserver(
             ([entry]) => {
                 isVisible = entry.isIntersecting;
+                if (isVisible && !isLooping) {
+                    animate();
+                }
             },
             { threshold: 0.1 }
         );
@@ -140,9 +144,13 @@ export const Hero3DVisual: React.FC = () => {
         let animationFrameId: number;
         const clock = new THREE.Clock();
 
-        const animate = () => {
+        function animate() {
+            if (!isVisible) {
+                isLooping = false;
+                return;
+            }
+            isLooping = true;
             animationFrameId = requestAnimationFrame(animate);
-            if (!isVisible) return; // Pause GPU rendering when scrolled out of view!
 
             const elapsedTime = clock.getElapsedTime();
 
@@ -165,7 +173,7 @@ export const Hero3DVisual: React.FC = () => {
             techGroup.rotation.x = -targetY * 0.8;
 
             renderer.render(scene, camera);
-        };
+        }
 
         animate();
 

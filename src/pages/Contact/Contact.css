@@ -1,0 +1,851 @@
+/* Awwwards-Grade Contact Us Styles - Vertex Controls Electromechanical LLC */
+
+.contact-page-wrapper {
+    background-color: #04070d;
+    background-image: 
+        radial-gradient(circle at 0% 0%, rgba(0, 194, 255, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(0, 224, 138, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(7, 19, 32, 0.5) 0%, transparent 100%);
+    color: #cbd5e1;
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 4rem;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Background tech grid */
+.contact-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-size: 50px 50px;
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.005) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.005) 1px, transparent 1px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Volumetric background lights */
+.contact-glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
+}
+
+.orb-top-left {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 194, 255, 0.06) 0%, transparent 70%);
+    top: -150px;
+    left: -150px;
+    animation: driftSlowly 20s infinite alternate ease-in-out;
+}
+
+.orb-mid-right {
+    width: 550px;
+    height: 550px;
+    background: radial-gradient(circle, rgba(0, 224, 138, 0.04) 0%, transparent 70%);
+    top: 35%;
+    right: -100px;
+    animation: driftSlowly 25s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes driftSlowly {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, 30px) scale(1.08); }
+    100% { transform: translate(-30px, 60px) scale(0.95); }
+}
+
+.let-connect {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--accent-emerald);
+    margin-bottom: 1.5rem;
+}
+
+
+
+/* ==========================================
+   SECTION 2 - SPOTLIGHT INTERACTIVE CARDS
+   ========================================== */
+.contact-cards-section {
+    padding: 3.5rem 0;
+    position: relative;
+    z-index: 10;
+}
+
+.contact-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    perspective: 1000px;
+}
+
+/* 3D Tilt Card wrapper */
+.spotlight-card-wrapper {
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out;
+}
+
+.spotlight-card {
+    position: relative;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2.75rem 2.25rem;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    display: flex;
+    flex-direction: column;
+    min-height: 380px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.spotlight-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 194, 255, 0.25);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(0, 194, 255, 0.05);
+}
+
+/* Spotlight cursor glow border calculations */
+.spotlight-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(
+        350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+        rgba(0, 194, 255, 0.3) 0%,
+        transparent 65%
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.spotlight-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        300px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+        rgba(0, 194, 255, 0.015) 0%,
+        transparent 80%
+    );
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.spotlight-card:hover::before,
+.spotlight-card:hover::after {
+    opacity: 1;
+}
+
+/* Card Content Lift in 3D Space */
+.spotlight-card-content {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex-grow: 1;
+    transform: translateZ(25px);
+}
+
+/* Running Neon Border Lines (Awwwards effect) */
+.neon-trace-line {
+    position: absolute;
+    border-radius: inherit;
+    pointer-events: none;
+    display: block;
+    z-index: 2;
+    opacity: 0.25;
+    transition: opacity 0.3s ease;
+}
+
+.spotlight-card:hover .neon-trace-line {
+    opacity: 0.75;
+}
+
+.neon-trace-line span {
+    position: absolute;
+    display: block;
+}
+
+.neon-trace-line span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--primary));
+    animation: traceTop 2.5s linear infinite;
+}
+
+.neon-trace-line span:nth-child(2) {
+    right: 0;
+    top: -100%;
+    width: 1.5px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, var(--accent-emerald));
+    animation: traceRight 2.5s linear infinite;
+    animation-delay: 0.625s;
+}
+
+.neon-trace-line span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 1.5px;
+    background: linear-gradient(270deg, transparent, var(--primary));
+    animation: traceBottom 2.5s linear infinite;
+    animation-delay: 1.25s;
+}
+
+.neon-trace-line span:nth-child(4) {
+    left: 0;
+    bottom: -100%;
+    width: 1.5px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, var(--accent-emerald));
+    animation: traceLeft 2.5s linear infinite;
+    animation-delay: 1.875s;
+}
+
+@keyframes traceTop {
+    0% { left: -100%; }
+    50%, 100% { left: 100%; }
+}
+@keyframes traceRight {
+    0% { top: -100%; }
+    50%, 100% { top: 100%; }
+}
+@keyframes traceBottom {
+    0% { right: -100%; }
+    50%, 100% { right: 100%; }
+}
+@keyframes traceLeft {
+    0% { bottom: -100%; }
+    50%, 100% { bottom: 100%; }
+}
+
+.card-icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: rgba(0, 194, 255, 0.12);
+    border: 1px solid rgba(0, 194, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    font-size: 1.25rem;
+    transition: var(--transition);
+}
+
+.spotlight-card:hover .card-icon-box {
+    background: var(--primary);
+    color: var(--dark);
+    box-shadow: 0 0 15px var(--primary);
+}
+
+.card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+}
+
+.card-content-block {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.card-content-block h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.card-content-block p {
+    color: var(--gray);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.card-text-link {
+    color: var(--gray);
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.card-text-link:hover {
+    color: var(--primary);
+}
+
+/* Contact Page Map Wrapper */
+.spotlight-card .map-wrapper {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+/* ==========================================
+   SECTION 3 - REQUEST A QUOTE (FORM)
+   ========================================== */
+.quote-section {
+    padding: 3.5rem 0;
+    position: relative;
+    z-index: 10;
+}
+
+.quote-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 5rem;
+    align-items: flex-start;
+}
+
+.quote-info-col h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+}
+
+.quote-info-text {
+    font-size: 1.1rem;
+    color: var(--gray);
+    margin-bottom: 2.5rem;
+    line-height: 1.65;
+}
+
+.quote-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    list-style: none;
+    padding: 0;
+}
+
+.quote-list-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--light);
+    font-weight: 500;
+    font-size: 0.98rem;
+}
+
+.quote-list-icon {
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+}
+
+/* Vercel-Style Floating Glass Form Container */
+.form-card-container {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 3rem;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+    position: relative;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-card-container:hover {
+    border-color: rgba(0, 194, 255, 0.25);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(0, 194, 255, 0.05);
+}
+
+.form-header-title {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 2.25rem;
+    letter-spacing: -0.01em;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.85rem;
+}
+
+/* Floating Label Inputs */
+.form-input-group {
+    position: relative;
+    width: 100%;
+}
+
+.form-input-group input,
+.form-input-group textarea,
+.form-input-group select {
+    width: 100%;
+    background: var(--dark-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    color: var(--white);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    outline: none;
+}
+
+.form-input-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+/* Custom Dropdown Indicator */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper::after {
+    content: '↓';
+    font-size: 0.85rem;
+    color: var(--gray);
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.form-input-group input:focus,
+.form-input-group textarea:focus,
+.form-input-group select:focus {
+    border-color: var(--primary);
+    background: rgba(7, 19, 32, 0.85);
+    box-shadow: 0 0 12px rgba(0, 194, 255, 0.25);
+}
+
+/* Float logic */
+.form-input-group label {
+    position: absolute;
+    left: 1.25rem;
+    top: 1rem;
+    color: var(--gray);
+    pointer-events: none;
+    transition: var(--transition);
+    transform-origin: 0 0;
+    font-size: 0.95rem;
+}
+
+.form-input-group.has-value label,
+.form-input-group input:focus ~ label,
+.form-input-group textarea:focus ~ label,
+.form-input-group select:focus ~ label {
+    transform: translateY(-1.9rem) scale(0.85);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.form-input-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Clean Validations error */
+.form-error-msg {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-top: 0.35rem;
+    position: absolute;
+    bottom: -1.25rem;
+    left: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.btn-form-submit {
+    width: 100%;
+    margin-top: 0.75rem;
+}
+
+.form-success-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--dark-surface);
+    border-radius: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 3rem;
+    text-align: center;
+}
+
+.success-icon-container {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(0, 224, 138, 0.1);
+    border: 1px solid rgba(0, 224, 138, 0.3);
+    color: var(--accent-emerald);
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 15px rgba(0, 224, 138, 0.2);
+}
+
+/* ==========================================
+   SECTION 4 - WHY CONTACT US (BENTO GRID)
+   ========================================== */
+.bento-section {
+    padding: 3.5rem 0;
+    position: relative;
+    z-index: 10;
+}
+
+.bento-section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.bento-section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.bento-section-header p {
+    font-size: 1.1rem;
+    color: var(--gray);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+    perspective: 1000px;
+}
+
+/* Bento Card Style with Tilt */
+.bento-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 250px;
+    transform-style: preserve-3d;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.15s ease-out;
+}
+
+.bento-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 194, 255, 0.25);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+/* Bento cursor tracking spotlight */
+.bento-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(
+        300px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+        rgba(0, 194, 255, 0.25) 0%,
+        transparent 65%
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.bento-card:hover::before {
+    opacity: 1;
+}
+
+.bento-card-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transform: translateZ(20px);
+}
+
+.bento-cols-4 { grid-column: span 4; }
+.bento-cols-8 { grid-column: span 8; }
+.bento-cols-6 { grid-column: span 6; }
+
+.bento-icon-box {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    background: rgba(0, 194, 255, 0.12);
+    border: 1px solid rgba(0, 194, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    font-size: 1.15rem;
+}
+
+.bento-card h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.85rem;
+    letter-spacing: -0.01em;
+}
+
+.bento-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--gray);
+}
+
+/* ==========================================
+   SECTION 5 - FINAL CTA
+   ========================================== */
+.final-cta-section {
+    padding: 4rem 0;
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+.cta-energy-ring-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 700px;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.12;
+}
+
+.energy-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px dashed rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    animation: rotateRings 45s linear infinite;
+}
+
+.ring-1 { width: 250px; height: 250px; }
+.ring-2 { 
+    width: 450px; 
+    height: 450px; 
+    animation-duration: 65s; 
+    animation-direction: reverse;
+}
+.ring-3 { width: 650px; height: 650px; }
+
+@keyframes rotateRings {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.final-cta-content {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.final-cta-section h2 {
+    font-size: clamp(2.4rem, 4vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+}
+
+.final-cta-text {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--gray);
+    margin-bottom: 1.75rem;
+}
+
+.final-cta-tagline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.final-cta-buttons {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   ========================================== */
+@media (max-width: 1200px) {
+    .contact-hero-content h1 {
+        font-size: 3.25rem;
+    }
+    
+    .contact-hero-grid {
+        gap: 3rem;
+    }
+    
+    .quote-grid {
+        gap: 3.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .contact-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+    
+    .contact-hero-visual {
+        height: 400px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .contact-cards-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .spotlight-card {
+        min-height: auto;
+        padding: 2.25rem;
+    }
+    
+    .quote-grid {
+        grid-template-columns: 1fr;
+        gap: 4.5rem;
+    }
+    
+    .quote-info-col {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .quote-list {
+        align-items: center;
+    }
+    
+    .form-card-container {
+        padding: 2.5rem;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .bento-grid {
+        gap: 1.25rem;
+    }
+    
+    .bento-cols-4, .bento-cols-8, .bento-cols-6 {
+        grid-column: span 6;
+    }
+    
+    .bento-card {
+        min-height: 230px;
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .contact-hero-content h1 {
+        font-size: 2.75rem;
+    }
+    
+    .contact-hero-content .let-connect {
+        font-size: 1.85rem;
+    }
+    
+    .contact-hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .contact-hero-buttons .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .form-card-container {
+        padding: 1.75rem;
+    }
+    
+    .bento-cols-4, .bento-cols-8, .bento-cols-6 {
+        grid-column: span 12;
+    }
+    
+    .final-cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .final-cta-buttons .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
