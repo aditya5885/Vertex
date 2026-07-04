@@ -11,11 +11,13 @@ const navLinks = [
         name: "Services", 
         path: "/services",
         submenus: [
-            { name: "Industrial Automation", path: "/services" },
-            { name: "Building Management Systems", path: "/services" },
-            { name: "Electrical Engineering", path: "/services" },
-            { name: "Mechanical Solutions", path: "/services" },
-            { name: "Control Panel Assembly", path: "/services" }
+            { name: "Automation & Control Systems", path: "/services/control-panels" },
+            { name: "Industrial Automation & SCADA", path: "/services/industrial-automation" },
+            { name: "Electrical Engineering", path: "/services/electrical-engineering" },
+            { name: "Mechanical & MEP Services", path: "/services/mechanical-engineering" },
+            { name: "Smart Infrastructure & BMS", path: "/services/smart-infrastructure" },
+            { name: "AI & Industrial IoT", path: "/services/ai-iot" },
+            { name: "Energy Management", path: "/services/energy-management" }
         ]
     },
     { name: "Products", path: "/products" },
@@ -23,10 +25,17 @@ const navLinks = [
         name: "Projects", 
         path: "/projects",
         submenus: [
-            { name: "Infrastructure & Water", path: "/projects" },
-            { name: "Power Systems & Switchgear", path: "/projects" },
-            { name: "Smart Lighting & ELV", path: "/projects" },
-            { name: "Industrial IoT Telemetry", path: "/projects" }
+            { name: "Control Panels & Automation", path: "/projects/control-panels-automation" },
+            { name: "Pump Station Automation", path: "/projects/pump-station-automation" },
+            { name: "Electrical Infrastructure", path: "/projects/electrical-infrastructure" },
+            { name: "Power Cable Installation", path: "/projects/power-cable-installation" },
+            { name: "LED Display Power Supply", path: "/projects/led-display-power" },
+            { name: "Smart Lighting Systems", path: "/projects/smart-lighting" },
+            { name: "Energy Monitoring & Metering", path: "/projects/energy-monitoring" },
+            { name: "Industrial IoT Solutions", path: "/projects/industrial-iot" },
+            { name: "Water Treatment & Control", path: "/projects/water-treatment" },
+            { name: "Mechanical Installation", path: "/projects/mechanical-installation" },
+            { name: "Predictive Maintenance", path: "/projects/predictive-maintenance" }
         ]
     },
     { name: "Downloads", path: "/downloads" },

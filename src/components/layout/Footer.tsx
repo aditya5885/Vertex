@@ -50,12 +50,18 @@ const Footer = () => {
 
                     <motion.div className="footer-col" variants={itemVariants}>
                         <h3>Top Services</h3>
+                        <ul style={{ marginBottom: "1.25rem" }}>
+                            <li><Link to="/services/control-panels">Control Panels & Automation</Link></li>
+                            <li><Link to="/services/industrial-automation">Industrial Automation & SCADA</Link></li>
+                            <li><Link to="/services/electrical-engineering">Electrical Engineering</Link></li>
+                            <li><Link to="/services/mechanical-engineering">Mechanical & MEP Services</Link></li>
+                        </ul>
+                        <h3>Featured Projects</h3>
                         <ul>
-                            <li><Link to="/services">Industrial Automation</Link></li>
-                            <li><Link to="/services">Building Management Systems</Link></li>
-                            <li><Link to="/services">Electrical Engineering</Link></li>
-                            <li><Link to="/services">Mechanical Solutions</Link></li>
-                            <li><Link to="/services">Control Panel Assembly</Link></li>
+                            <li><Link to="/projects/control-panels-automation">Control Panels & Automation</Link></li>
+                            <li><Link to="/projects/pump-station-automation">Pump Station Automation</Link></li>
+                            <li><Link to="/projects/electrical-infrastructure">Electrical Infrastructure</Link></li>
+                            <li><Link to="/projects/smart-lighting">Smart Lighting Controllers</Link></li>
                         </ul>
                     </motion.div>
 

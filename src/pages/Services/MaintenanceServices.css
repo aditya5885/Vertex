@@ -1,0 +1,595 @@
+/* ==========================================================================
+   MAINTENANCE SERVICES SUBPAGE STYLES - VERTEX CONTROLS
+   ========================================================================== */
+
+.subpage-wrapper {
+    position: relative;
+    background: var(--dark);
+}
+
+.section-padding {
+    padding: 110px 0;
+    position: relative;
+}
+
+.section-title {
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
+
+.split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4.5rem;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.sub-tag {
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 4.5rem;
+}
+
+.section-header p {
+    color: var(--gray);
+    font-size: 1.15rem;
+    max-width: 700px;
+    margin-inline: auto;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--white) 30%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   1. HERO SECTION
+   ========================================================================== */
+.subpage-hero-section {
+    position: relative;
+    padding: 11.5rem 0 9.5rem;
+    background: linear-gradient(180deg, rgba(5, 12, 26, 0.45) 0%, rgba(5, 12, 26, 0.98) 100%),
+                url('/Images/Project/57045811-01db-4a79-8406-f8398676e32e.webp') no-repeat center center / cover;
+    overflow: hidden;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.subpage-hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(0, 229, 255, 0.15), transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ==========================================================================
+   2. OVERVIEW SECTION
+   ========================================================================== */
+.overview-section {
+    background: var(--dark);
+    position: relative;
+    border-bottom: 1px solid var(--glass-border);
+    padding: 60px 0; /* Compact vertical padding */
+}
+
+.overview-section .split-layout {
+    gap: 3.5rem;
+}
+
+.overview-lead {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+}
+
+.overview-text p {
+    font-size: 1.02rem;
+    color: var(--gray);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   3. OUR SOLUTIONS GRID SECTION (Redesigned: Alternating Split Blocks)
+   ========================================================================== */
+.solutions-section {
+    background: rgba(10, 23, 40, 0.3);
+    position: relative;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.solutions-blocks-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4.5rem;
+}
+
+.solution-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    padding: 6.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    align-items: center;
+    transition: var(--transition);
+}
+
+.solution-block:last-child {
+    border-bottom: none;
+}
+
+.solution-title-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.solution-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+
+.solution-title {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+.solution-icon-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.8rem;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+    transition: var(--transition);
+}
+
+.solution-block:hover .solution-icon-box {
+    background: var(--primary);
+    color: var(--dark);
+    box-shadow: 0 0 25px var(--primary);
+    transform: scale(1.05);
+}
+
+.solution-desc-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.solution-desc {
+    font-size: 1.05rem;
+    color: var(--gray);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+}
+
+.solution-features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.1rem;
+}
+
+.solution-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--white);
+    font-size: 0.96rem;
+    font-weight: 600;
+}
+
+.solution-feature-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--primary);
+    flex-shrink: 0;
+}
+
+/* Desktop Alternating Column Layout */
+@media (min-width: 1025px) {
+    .solution-block.reversed .solution-title-col {
+        order: 2;
+        padding-left: 4rem;
+    }
+    .solution-block.reversed .solution-desc-col {
+        order: 1;
+        padding-right: 4rem;
+    }
+}
+
+/* ==========================================================================
+   4. WHY CHOOSE VERTEX SECTION (Redesigned: Typographic Left Accent Border)
+   ========================================================================== */
+.subpage-why-section {
+    background: var(--dark);
+    position: relative;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3.5rem 2.5rem;
+    margin-top: 4rem;
+}
+
+.why-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0 0.5rem 1.8rem;
+    border-left: 2px solid rgba(0, 229, 255, 0.15);
+    transition: var(--transition);
+    position: relative;
+}
+
+.why-item:hover {
+    border-left-color: var(--primary);
+    transform: translateX(6px);
+}
+
+.why-icon-box {
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.why-item:hover .why-icon-box {
+    color: var(--accent-emerald);
+    transform: scale(1.05);
+}
+
+.why-item h3 {
+    font-size: 1.28rem;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.why-item p {
+    color: var(--gray);
+    font-size: 0.95rem;
+    line-height: 1.62;
+}
+
+/* ==========================================================================
+   5. INDUSTRIES WE SERVE SECTION
+   ========================================================================== */
+.subpage-industries-section {
+    background: rgba(10, 23, 40, 0.4);
+    position: relative;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.subpage-industries-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+}
+
+.industry-card {
+    background: rgba(16, 35, 64, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 2.5rem 1rem;
+    text-align: center;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.industry-card:hover {
+    border-color: rgba(0, 229, 255, 0.35);
+    background: rgba(16, 35, 64, 0.7);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 229, 255, 0.15);
+}
+
+.industry-icon-box {
+    font-size: 2.4rem;
+    color: var(--primary);
+    margin-bottom: 1.25rem;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.industry-card:hover .industry-icon-box {
+    color: var(--accent-emerald);
+    transform: scale(1.08);
+}
+
+.industry-card h3 {
+    color: var(--white);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   6. CTA SECTION
+   ========================================================================== */
+.subpage-cta-section {
+    padding: 120px 0;
+    position: relative;
+    background: var(--dark);
+    overflow: hidden;
+}
+
+.cta-glass-card {
+    background: rgba(16, 35, 64, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 5rem 4rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.cta-glass-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.cta-glass-card h2 {
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+}
+
+.cta-glass-card p {
+    font-size: 1.15rem;
+    color: var(--gray);
+    max-width: 700px;
+    margin-inline: auto;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+}
+
+.cta-contacts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3.5rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    flex-wrap: wrap;
+}
+
+.cta-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.05rem;
+    color: var(--white);
+    font-weight: 600;
+}
+
+.cta-contact-item a {
+    color: var(--gray);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.cta-contact-item a:hover {
+    color: var(--primary);
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+}
+
+.cta-contact-icon {
+    color: var(--primary);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 1200px) {
+    .subpage-industries-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.8rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .split-layout {
+        grid-template-columns: 1fr;
+        gap: 3.5rem;
+    }
+    
+    .solution-block {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding: 4.5rem 0;
+    }
+    
+    .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.8rem;
+    }
+    
+    .cta-glass-card {
+        padding: 4rem 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-padding {
+        padding: 80px 0;
+    }
+    
+    .solution-block {
+        gap: 2rem;
+        padding: 3.5rem 0;
+    }
+    
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .subpage-industries-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        max-width: 320px;
+        margin-inline: auto;
+    }
+    
+    .cta-buttons .btn {
+        width: 100%;
+    }
+    
+    .cta-contacts {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: flex-start;
+        max-width: 320px;
+        margin-inline: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .subpage-industries-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   STICKY SCROLL ANIMATIONS STYLING (Desktop Showcase)
+   ========================================================================== */
+.solutions-sticky-container {
+    position: relative;
+    height: 480vh; /* Scroll height for 6 slides */
+    background: rgba(10, 23, 40, 0.3);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.solutions-sticky-inner {
+    position: sticky;
+    top: var(--nav-height);
+    height: calc(100vh - var(--nav-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    padding: 1.5rem 0;
+}
+
+.sticky-active-wrapper {
+    min-height: 350px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-top: 1.5rem;
+}
+
+.sticky-active-wrapper .solution-block {
+    border-bottom: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sticky-nav-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.9rem;
+    margin-top: 2rem;
+}
+
+.sticky-nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.sticky-nav-dot.active {
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+    width: 28px;
+    border-radius: var(--radius-full);
+}
+
+.solutions-mobile-container {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .solutions-sticky-container {
+        display: none;
+    }
+    
+    .solutions-mobile-container {
+        display: block;
+    }
+}

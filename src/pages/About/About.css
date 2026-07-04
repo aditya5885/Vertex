@@ -278,7 +278,7 @@
     border-bottom: 1px solid var(--glass-border);
 }
 
-/* 6. COMPANY STATISTICS */
+/* 6. COMPANY STATISTICS - Clean cardless telemetry row */
 .about-stats-section {
     background: var(--dark);
     padding: 6rem 0;
@@ -288,51 +288,110 @@
 .stats-counter-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 1.5rem;
+    position: relative;
+    z-index: 2;
+    background: rgba(6, 17, 34, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 3.5rem 1.5rem;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+}
+
+/* Cardless counter column item */
+.counter-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 1rem;
+    transition: var(--transition);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
 }
 
-.counter-card {
-    background: rgba(16, 35, 64, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-md);
-    padding: 2.5rem 1rem;
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-}
-
-.counter-card::before {
+/* Clean vertical separators */
+.counter-card:not(:last-child)::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 20%;
-    right: 20%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    right: 0;
+    top: 15%;
+    bottom: 15%;
+    width: 1px;
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        transparent 100%);
+    transition: var(--transition);
 }
 
 .counter-card:hover {
-    border-color: var(--glass-border-hover);
-    transform: translateY(-6px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 229, 255, 0.2);
+    transform: translateY(-4px);
+}
+
+.counter-card:hover::after,
+.counter-card:hover + .counter-card::after {
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        var(--primary) 50%, 
+        transparent 100%);
+}
+
+/* Soft, colorful circular bubble for friendly icons */
+.counter-icon-wrap {
+    width: 54px;
+    height: 54px;
+    background: rgba(0, 229, 255, 0.06);
+    border: 1px solid rgba(0, 229, 255, 0.18);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.35rem;
+    margin-bottom: 1.25rem;
+    transition: var(--transition);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.05);
+}
+
+.counter-card:hover .counter-icon-wrap {
+    background: linear-gradient(135deg, var(--primary), var(--accent-emerald));
+    color: var(--dark);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.45);
+    border-color: transparent;
+    transform: scale(1.08) rotate(5deg);
 }
 
 .counter-number {
-    font-size: clamp(2.5rem, 3.5vw, 3.5rem);
+    font-size: clamp(2.4rem, 3.5vw, 3.4rem);
     font-weight: 800;
-    color: var(--primary);
+    color: var(--white);
     font-family: 'Outfit', sans-serif;
     margin-bottom: 0.5rem;
-    text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    transition: var(--transition);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.counter-card:hover .counter-number {
+    color: var(--primary);
+    text-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
 }
 
 .counter-label {
-    color: var(--light);
-    font-size: 0.9rem;
+    color: var(--gray);
+    font-size: 0.88rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    transition: var(--transition);
+}
+
+.counter-card:hover .counter-label {
+    color: var(--white);
 }
 
 /* RESPONSIVE BREAKPOINTS FOR ABOUT PAGE */

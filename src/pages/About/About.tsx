@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {
     FaShieldAlt, FaMedal, FaCheckCircle,
     FaArrowRight, FaBuilding, FaBolt, FaMicrochip, FaLightbulb,
-    FaUsers, FaCertificate, FaGlobe, FaHandshake
+    FaUsers, FaCertificate, FaGlobe, FaHandshake, FaAward, FaClock
 } from "react-icons/fa";
 import "./About.css";
 import { WhyUs3DVisual } from "../Home/WhyUs3DVisual";
@@ -35,7 +35,7 @@ const staggerContainer: any = {
 };
 
 // Animated Counter Component
-const AnimatedCounter: React.FC<{ value: number; suffix?: string; label: string }> = ({ value, suffix = "", label }) => {
+const AnimatedCounter: React.FC<{ value: number; suffix?: string; label: string; icon: React.ReactNode }> = ({ value, suffix = "", label, icon }) => {
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, amount: 0.5 });
     const [count, setCount] = useState(0);
@@ -61,6 +61,7 @@ const AnimatedCounter: React.FC<{ value: number; suffix?: string; label: string 
 
     return (
         <div className="counter-card" ref={ref}>
+            <div className="counter-icon-wrap">{icon}</div>
             <div className="counter-number">{count}{suffix}</div>
             <div className="counter-label">{label}</div>
         </div>
@@ -132,11 +133,7 @@ const CompanyOverview = () => {
                     <motion.h2 variants={fadeInUp} className="section-title">Driving Industrial Evolution In Dubai</motion.h2>
                     
                     <motion.p variants={fadeInUp} className="overview-lead">
-                        Founded in Dubai, Vertex Controls Electromechanical LLC has established itself as a trusted partner for turnkey industrial automation, electrical distribution, and smart infrastructure engineering.
-                    </motion.p>
-
-                    <motion.p variants={fadeInUp}>
-                        Our multidisciplinary team of senior engineers, SCADA programmers, and MEP specialists combine deep technical domain knowledge with state-of-the-art technologies. From manufacturing facilities and municipal water authorities to commercial towers, we ensure maximum operational uptime, energy efficiency, and safety.
+                        Founded in Dubai, Vertex Controls Electromechanical LLC has established itself as a trusted partner for turnkey industrial automation, electrical distribution, and smart infrastructure engineering. Our multidisciplinary team of senior engineers, SCADA programmers, and MEP specialists combine deep technical domain knowledge with state-of-the-art technologies to ensure maximum operational uptime, energy efficiency, and safety across manufacturing facilities, municipal water authorities, and commercial projects.
                     </motion.p>
 
                     <motion.div variants={fadeInUp} className="overview-highlights-list">
@@ -350,11 +347,11 @@ const CompanyStatistics = () => {
         <section className="about-stats-section">
             <div className="container">
                 <div className="stats-counter-grid">
-                    <AnimatedCounter value={250} suffix="+" label="Projects Delivered" />
-                    <AnimatedCounter value={120} suffix="+" label="Enterprise Clients" />
-                    <AnimatedCounter value={15} suffix="+" label="Years Experience" />
-                    <AnimatedCounter value={24} suffix="/7" label="Technical Support" />
-                    <AnimatedCounter value={10} suffix="+" label="Industries Served" />
+                    <AnimatedCounter value={250} suffix="+" label="Projects Delivered" icon={<FaCheckCircle />} />
+                    <AnimatedCounter value={120} suffix="+" label="Enterprise Clients" icon={<FaUsers />} />
+                    <AnimatedCounter value={15} suffix="+" label="Years Experience" icon={<FaAward />} />
+                    <AnimatedCounter value={24} suffix="/7" label="Technical Support" icon={<FaClock />} />
+                    <AnimatedCounter value={10} suffix="+" label="Industries Served" icon={<FaBuilding />} />
                 </div>
             </div>
         </section>

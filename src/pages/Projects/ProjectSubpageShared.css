@@ -1,0 +1,671 @@
+/* ==========================================================================
+   SHARED PROJECT SHOWCASE SUBPAGE STYLES - VERTEX CONTROLS
+   ========================================================================== */
+
+.subpage-wrapper {
+    position: relative;
+    background: var(--dark);
+    overflow-x: hidden;
+    color: var(--white);
+    font-family: 'Outfit', sans-serif;
+}
+
+.section-padding {
+    padding: 110px 0;
+    position: relative;
+}
+
+.section-title {
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
+
+.split-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4.5rem;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.sub-tag {
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 4.5rem;
+}
+
+.section-header p {
+    color: var(--gray);
+    font-size: 1.15rem;
+    max-width: 700px;
+    margin-inline: auto;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--white) 30%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   1. HERO SECTION
+   ========================================================================== */
+.subpage-hero-section {
+    position: relative;
+    padding: 11.5rem 0 9.5rem;
+    background: linear-gradient(180deg, rgba(5, 12, 26, 0.45) 0%, rgba(5, 12, 26, 0.98) 100%),
+                url('/Images/Project/scada_showcase.webp') no-repeat center center / cover;
+    overflow: hidden;
+}
+
+.subpage-hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(0, 229, 255, 0.15), transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ==========================================================================
+   2. PROJECT OVERVIEW
+   ========================================================================== */
+.project-overview-section {
+    background: var(--dark);
+    position: relative;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.align-left {
+    text-align: left !important;
+}
+
+.overview-summary {
+    color: var(--gray);
+    font-size: 1.2rem;
+    line-height: 1.7;
+    max-width: 850px;
+    margin-top: 1rem;
+}
+
+.overview-split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 4.5rem;
+    align-items: stretch;
+    margin-top: 2rem;
+}
+
+/* Left Media Terminal */
+.overview-media-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.overview-terminal-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    box-shadow: 0 30px 65px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 229, 255, 0.05);
+}
+
+.overview-terminal-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.5s ease;
+}
+
+.overview-terminal-frame:hover img {
+    transform: scale(1.04);
+}
+
+.terminal-screen-filter {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(5, 12, 26, 0.2) 0%, rgba(5, 12, 26, 0.8) 100%);
+    pointer-events: none;
+}
+
+/* Status Badges */
+.telemetry-badge {
+    position: absolute;
+    background: rgba(5, 12, 26, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: var(--white);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 5;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.badge-top-left {
+    top: 1.25rem;
+    left: 1.25rem;
+    border-left: 3px solid var(--accent-emerald);
+}
+
+.badge-bottom-right {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    border-right: 3px solid var(--primary);
+}
+
+.pulse-green-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-emerald);
+    box-shadow: 0 0 8px var(--accent-emerald);
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Right Details Panel */
+.overview-details-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.details-card-block h3,
+.scope-tags-block h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-left: 3px solid var(--primary);
+    padding-left: 0.75rem;
+}
+
+.objectives-list-modern {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.objectives-list-modern li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.1rem;
+    align-items: flex-start;
+}
+
+.objective-icon-wrap {
+    color: var(--accent-emerald);
+    font-size: 1.25rem;
+    margin-top: 0.15rem;
+    filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.3));
+}
+
+.objectives-list-modern strong {
+    display: block;
+    color: var(--white);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.objectives-list-modern p {
+    color: var(--gray);
+    font-size: 0.94rem;
+    line-height: 1.5;
+}
+
+/* Deliverable Scope Tags */
+.scope-tags-deck {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.scope-tag-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.45rem 1rem;
+    border-radius: 30px;
+    font-size: 0.86rem;
+    color: var(--gray);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.scope-tag-item:hover {
+    background: rgba(0, 229, 255, 0.06);
+    border-color: rgba(0, 229, 255, 0.25);
+    color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 229, 255, 0.08);
+}
+
+/* ==========================================================================
+   3. SERVICES DELIVERED
+   ========================================================================== */
+.project-services-section {
+    background: rgba(10, 23, 40, 0.35);
+    position: relative;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.project-services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.2rem;
+    margin-top: 3.5rem;
+}
+
+.project-service-card {
+    background: rgba(16, 35, 64, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 2.5rem 2rem;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+.project-service-card:hover {
+    border-color: rgba(0, 229, 255, 0.3);
+    background: rgba(16, 35, 64, 0.45);
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 229, 255, 0.08);
+}
+
+.project-service-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    transition: var(--transition);
+}
+
+.project-service-card:hover .project-service-icon {
+    background: var(--primary);
+    color: var(--dark);
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.project-service-card h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.9rem;
+    letter-spacing: -0.010em;
+}
+
+.project-service-card p {
+    color: var(--gray);
+    font-size: 0.96rem;
+    line-height: 1.62;
+}
+
+/* ==========================================================================
+   4. PROJECT HIGHLIGHTS
+   ========================================================================== */
+.project-highlights-section {
+    background: var(--dark);
+    position: relative;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.project-highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+}
+
+.highlight-card {
+    background: rgba(255, 255, 255, 0.012);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-md);
+    padding: 2.2rem 1.6rem;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.highlight-card:hover {
+    border-color: rgba(0, 229, 255, 0.2);
+    background: rgba(16, 35, 64, 0.15);
+    transform: translateY(-5px);
+}
+
+.highlight-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0, 229, 255, 0.06);
+    border: 1px solid rgba(0, 229, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.25rem;
+    margin-bottom: 1.2rem;
+    transition: var(--transition);
+}
+
+.highlight-card:hover .highlight-card-icon {
+    background: var(--primary);
+    color: var(--dark);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.highlight-card h3 {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    color: var(--primary);
+    letter-spacing: 1px;
+    margin-bottom: 0.65rem;
+    font-weight: 700;
+}
+
+.highlight-card p {
+    color: var(--white);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   5. GALLERY
+   ========================================================================== */
+.project-gallery-section {
+    background: rgba(10, 23, 40, 0.35);
+    position: relative;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.project-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.8rem;
+    margin-top: 3.5rem;
+}
+
+.gallery-card {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    transition: var(--transition);
+}
+
+.gallery-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0, 229, 255, 0.2);
+    box-shadow: 0 25px 40px rgba(0, 0, 0, 0.6);
+}
+
+.gallery-image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+}
+
+.gallery-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+}
+
+.gallery-card:hover .gallery-image-wrap img {
+    transform: scale(1.05);
+}
+
+.gallery-card-glow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(5, 12, 26, 0.75) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.gallery-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    z-index: 5;
+}
+
+.gallery-caption span {
+    font-size: 0.92rem;
+    color: var(--white);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   6. CTA SECTION
+   ========================================================================== */
+.project-cta-section {
+    padding: 120px 0;
+    position: relative;
+    background: var(--dark);
+    overflow: hidden;
+}
+
+.cta-glass-card {
+    background: rgba(16, 35, 64, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 5rem 4rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.cta-glass-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.cta-glass-card h2 {
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+}
+
+.cta-glass-card p {
+    font-size: 1.15rem;
+    color: var(--gray);
+    max-width: 700px;
+    margin-inline: auto;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+}
+
+.cta-contacts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3.5rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    flex-wrap: wrap;
+}
+
+.cta-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.05rem;
+    color: var(--white);
+    font-weight: 600;
+}
+
+.cta-contact-item a {
+    color: var(--gray);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.cta-contact-item a:hover {
+    color: var(--primary);
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+}
+
+.cta-contact-icon {
+    color: var(--primary);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1200px) {
+    .project-highlights-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.2rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .split-layout {
+        grid-template-columns: 1fr;
+        gap: 3.5rem;
+    }
+    
+    .overview-split-layout {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .overview-terminal-frame {
+        height: auto;
+        min-height: auto;
+        aspect-ratio: 4 / 3;
+    }
+    
+    .project-services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.8rem;
+    }
+    
+    .project-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .cta-glass-card {
+        padding: 4rem 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-padding {
+        padding: 80px 0;
+    }
+    
+    .project-services-grid {
+        grid-template-columns: 1fr;
+        gap: 1.6rem;
+    }
+    
+    .project-highlights-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        max-width: 320px;
+        margin-inline: auto;
+    }
+    
+    .cta-buttons .btn {
+        width: 100%;
+    }
+    
+    .cta-contacts {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: flex-start;
+        max-width: 320px;
+        margin-inline: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .project-highlights-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .project-gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
