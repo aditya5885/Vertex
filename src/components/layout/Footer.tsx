@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaLinkedinIn, FaFacebookF, FaInstagram, FaYoutube, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaTwitter, FaArrowRight } from "react-icons/fa";
+import { useContent } from "../../context/ContentContext";
 
 const Footer = () => {
+    const { content } = useContent();
     const containerVariants = {
         hidden: { opacity: 0, y: 50 },
         visible: {
@@ -55,6 +57,7 @@ const Footer = () => {
                             <li><Link to="/services/industrial-automation">Industrial Automation & SCADA</Link></li>
                             <li><Link to="/services/electrical-engineering">Electrical Engineering</Link></li>
                             <li><Link to="/services/mechanical-engineering">Mechanical & MEP Services</Link></li>
+                            <li><Link to="/services/maintenance-operation">Maintenance & Operation</Link></li>
                         </ul>
                         <h3>Featured Projects</h3>
                         <ul>
@@ -68,9 +71,9 @@ const Footer = () => {
                     <motion.div className="footer-col" variants={itemVariants}>
                         <h3>Contact Us</h3>
                         <ul className="contact-info">
-                            <li><FaMapMarkerAlt /> <span>Office No-5, L1/6A, 1st Floor<br/>Reef Mall, Al Murqabat, Deira<br/>Dubai, UAE</span></li>
-                            <li><FaPhoneAlt /> <a href="tel:+971554962866">+971 55 496 2866</a></li>
-                            <li><FaEnvelope /> <a href="mailto:Sales@vertex-controls.com">Sales@vertex-controls.com</a></li>
+                            <li><FaMapMarkerAlt /> <span>{content.footer.address}</span></li>
+                            <li><FaPhoneAlt /> <a href={`tel:${content.footer.phone.replace(/\s+/g, '')}`}>{content.footer.phone}</a></li>
+                            <li><FaEnvelope /> <a href={`mailto:${content.footer.email}`}>{content.footer.email}</a></li>
                         </ul>
                         <Link 
                             to="/quote"
@@ -88,7 +91,7 @@ const Footer = () => {
                     transition={{ delay: 0.5, duration: 0.5 }}
                     viewport={{ once: true }}
                 >
-                    <p>&copy; 2026 Vertex Controls Electromechanical LLC. All rights reserved.</p>
+                    <p>{content.footer.copyright}</p>
                     <div className="social-links">
                         {[
                             { icon: FaFacebookF, url: "https://facebook.com/VertexControls" },

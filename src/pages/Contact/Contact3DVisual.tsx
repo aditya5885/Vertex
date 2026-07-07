@@ -187,6 +187,7 @@ const Contact3DVisual: React.FC = () => {
             onMouseLeave={handleMouseLeave}
         >
             <Canvas
+                dpr={1}
                 gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
                 camera={{ position: [0, 1.2, 6.2], fov: 45 }}
                 style={{ background: "transparent" }}

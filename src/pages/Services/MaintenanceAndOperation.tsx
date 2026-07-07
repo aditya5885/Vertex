@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import * as Icons from "react-icons/fa";
 import { useContent } from "../../context/ContentContext";
 import { defaultServicesSubpages } from "../../data/subpageDefaults";
-import "./MechanicalEngineering.css";
+import "./MaintenanceAndOperation.css";
 
 // Dynamic Icon Loader
 const getIcon = (iconName: string) => {
@@ -26,9 +26,9 @@ const staggerContainer: any = {
     }
 };
 
-const MechanicalEngineering: React.FC = () => {
+const MaintenanceAndOperation: React.FC = () => {
     const { content } = useContent();
-    const pageData = content.servicesSubpages?.["mechanical-engineering"] || defaultServicesSubpages["mechanical-engineering"];
+    const pageData = content.servicesSubpages?.["maintenance-operation"] || defaultServicesSubpages["maintenance-operation"];
 
     // SEO Requirements: Dynamic Title & Meta Description update
     useEffect(() => {
@@ -46,7 +46,19 @@ const MechanicalEngineering: React.FC = () => {
 
     const solutionsData = pageData.solutions || [];
     const whyChooseData = pageData.whyChoose || [];
-    
+    // Infrastructure We Support
+    const infrastructureData = [
+        { icon: "FaWater", name: "Pumping Stations" },
+        { icon: "FaWater", name: "Water Treatment Plants" },
+        { icon: "FaRoad", name: "Road Tunnels" },
+        { icon: "FaRoad", name: "Underpasses" },
+        { icon: "FaRoad", name: "Bridges" },
+        { icon: "FaBuilding", name: "Commercial Buildings" },
+        { icon: "FaIndustry", name: "Industrial Facilities" },
+        { icon: "FaBuilding", name: "District Cooling Plants" },
+        { icon: "FaSolarPanel", name: "Solar Power Plants" }
+    ];
+
     return (
         <div className="subpage-wrapper">
             {/* 1. HERO SECTION */}
@@ -64,7 +76,7 @@ const MechanicalEngineering: React.FC = () => {
                                 <span className="breadcrumb-separator">/</span>
                                 <Link to="/services">Services</Link>
                                 <span className="breadcrumb-separator">/</span>
-                                <span>Mechanical & MEP Services</span>
+                                <span>Maintenance & Operation</span>
                             </div>
                         </motion.div>
 
@@ -123,6 +135,13 @@ const MechanicalEngineering: React.FC = () => {
                         <p style={{ color: "var(--gray)", fontSize: "1.05rem", lineHeight: "1.75" }}>
                             {pageData.overview?.body}
                         </p>
+
+                        <div className="capabilities-grid" style={{ marginTop: "1.8rem" }}>
+                            <span className="capability-chip">Electrical Systems</span>
+                            <span className="capability-chip">Electronics</span>
+                            <span className="capability-chip">Automation</span>
+                            <span className="capability-chip">Mechanical Systems</span>
+                        </div>
                     </motion.div>
 
                     <motion.div
@@ -152,7 +171,6 @@ const MechanicalEngineering: React.FC = () => {
                     >
                         <span className="sub-tag">Functional Capabilities</span>
                         <h2 className="section-title">Our Solutions</h2>
-                        <p>Tailored mechanical services designed to regulate HVAC, piping loops, and firefighting networks.</p>
                     </motion.div>
 
                     <motion.div
@@ -173,7 +191,6 @@ const MechanicalEngineering: React.FC = () => {
                                         {getIcon(sol.icon)}
                                     </div>
                                     <h3>{sol.title}</h3>
-                                    <p>{sol.desc}</p>
                                     <ul className="solution-card-features">
                                         {sol.features.map((feat, idx) => (
                                             <li key={idx} className="solution-card-feature-item">
@@ -189,7 +206,48 @@ const MechanicalEngineering: React.FC = () => {
                 </div>
             </section>
 
-            {/* 4. WHY CHOOSE VERTEX CONTROLS */}
+            {/* 4. INFRASTRUCTURE WE SUPPORT SECTION */}
+            <section className="subpage-solutions-section section-padding" style={{ background: "var(--dark)" }}>
+                <div className="container">
+                    <motion.div
+                        className="section-header"
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.2 }}
+                        variants={fadeInUp}
+                    >
+                        <span className="sub-tag">Application Sectors</span>
+                        <h2 className="section-title">Infrastructure We Support</h2>
+                    </motion.div>
+
+                    <motion.div
+                        className="subpage-solutions-grid"
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.15 }}
+                        variants={staggerContainer}
+                        style={{ gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))" }}
+                    >
+                        {infrastructureData.map((infra, index) => {
+                            return (
+                                <motion.div
+                                    key={index}
+                                    className="solution-card"
+                                    variants={fadeInUp}
+                                    style={{ padding: "2rem", alignItems: "center", textAlign: "center" }}
+                                >
+                                    <div className="solution-card-icon" style={{ margin: "0 auto 1rem" }}>
+                                        {getIcon(infra.icon)}
+                                    </div>
+                                    <h3 style={{ margin: 0, fontSize: "1.2rem" }}>{infra.name}</h3>
+                                </motion.div>
+                            );
+                        })}
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* 5. WHY CHOOSE VERTEX CONTROLS */}
             <section className="subpage-why-section section-padding">
                 <div className="container">
                     <motion.div
@@ -200,8 +258,7 @@ const MechanicalEngineering: React.FC = () => {
                         variants={fadeInUp}
                     >
                         <span className="sub-tag">Why Choose Vertex</span>
-                        <h2 className="section-title">The Mechanical Advantage</h2>
-                        <p>Why plant managers and consultants select Vertex Controls as their electromechanical MEP partner.</p>
+                        <h2 className="section-title">Why Choose Vertex Controls</h2>
                     </motion.div>
 
                     <motion.div
@@ -222,7 +279,6 @@ const MechanicalEngineering: React.FC = () => {
                                         {getIcon(why.icon)}
                                     </div>
                                     <h3>{why.title}</h3>
-                                    <p>{why.desc}</p>
                                 </motion.div>
                             );
                         })}
@@ -230,7 +286,7 @@ const MechanicalEngineering: React.FC = () => {
                 </div>
             </section>
 
-            {/* 5. CALL TO ACTION SECTION */}
+            {/* 6. CALL TO ACTION SECTION */}
             <section className="subpage-cta-section">
                 <div className="container">
                     <motion.div
@@ -244,9 +300,7 @@ const MechanicalEngineering: React.FC = () => {
                             Get In Touch
                         </span>
                         <h2>{pageData.cta?.title}</h2>
-                        <p>
-                            Whether you require industrial HVAC setups, specialized chemical piping designs, plumbing networks, or Civil Defense-compliant firefighting pumps, Vertex Controls delivers expert systems engineered for uptime.
-                        </p>
+                        <p>{pageData.cta?.desc}</p>
                         
                         <div className="cta-buttons">
                             <Link to="/quote" className="btn btn-primary">
@@ -278,4 +332,4 @@ const MechanicalEngineering: React.FC = () => {
     );
 };
 
-export default MechanicalEngineering;
+export default MaintenanceAndOperation;

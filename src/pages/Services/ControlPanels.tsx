@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import {
-    FaArrowRight, FaTools, FaCheckCircle, FaPhoneAlt,
-    FaEnvelope, FaMicrochip, FaSlidersH, FaServer, FaTv,
-    FaCloud, FaShieldAlt, FaCogs, FaClock, FaMapMarkerAlt, FaIndustry
-} from "react-icons/fa";
+import * as Icons from "react-icons/fa";
+import { useContent } from "../../context/ContentContext";
+import { defaultServicesSubpages } from "../../data/subpageDefaults";
 import "./ControlPanels.css";
+
+// Dynamic Icon Loader
+const getIcon = (iconName: string) => {
+    const IconComponent = (Icons as any)[iconName];
+    return IconComponent ? React.createElement(IconComponent) : <Icons.FaQuestionCircle />;
+};
 
 // Animation Variants
 const fadeInUp: any = {
@@ -23,91 +27,26 @@ const staggerContainer: any = {
 };
 
 const ControlPanels: React.FC = () => {
+    const { content } = useContent();
+    const pageData = content.servicesSubpages?.["control-panels"] || defaultServicesSubpages["control-panels"];
+
     // SEO Requirements: Dynamic Title & Meta Description update
     useEffect(() => {
-        document.title = "Automation & Control Systems | Vertex Controls Electromechanical LLC";
-        
-        let metaDescription = document.querySelector('meta[name="description"]');
-        if (!metaDescription) {
-            metaDescription = document.createElement('meta');
-            metaDescription.setAttribute('name', 'description');
-            document.head.appendChild(metaDescription);
+        if (pageData.seo) {
+            document.title = pageData.seo.title;
+            let metaDescription = document.querySelector('meta[name="description"]');
+            if (!metaDescription) {
+                metaDescription = document.createElement('meta');
+                metaDescription.setAttribute('name', 'description');
+                document.head.appendChild(metaDescription);
+            }
+            metaDescription.setAttribute('content', pageData.seo.description);
         }
-        metaDescription.setAttribute(
-            'content',
-            'Vertex Controls designs, programs, and integrates custom PLC, SCADA, and HMI control systems in the UAE. ISO-compliant industrial automation services.'
-        );
-    }, []);
+    }, [pageData.seo]);
 
-    // 3. Our Solutions Data (6 solutions)
-    const solutionsData = [
-        {
-            icon: FaMicrochip,
-            title: "PLC Programming",
-            desc: "Robust logic control configuration for Siemens, Rockwell, Schneider, and ABB systems to automate sequential and continuous industrial processes.",
-            features: ["Custom Logic Design", "Safety PLC Integration", "PID Loop Tuning", "Multi-platform Conversion"]
-        },
-        {
-            icon: FaServer,
-            title: "SCADA Systems",
-            desc: "Comprehensive plant-wide monitoring platforms providing real-time data visualization, telemetry analysis, and historical reporting.",
-            features: ["Interactive Dashboards", "Alarms & Notifications", "SQL Database Logging", "Custom Reporting Modules"]
-        },
-        {
-            icon: FaTv,
-            title: "HMI Development",
-            desc: "Intuitive touch-screen interfaces designed with ergonomic workflows, clear alarm management, and real-time process graphics.",
-            features: ["Ergonomic UI/UX Layouts", "Local Diagnostics Screens", "Multi-language Support", "Trend & Graph Displays"]
-        },
-        {
-            icon: FaIndustry,
-            title: "Industrial Automation",
-            desc: "Complete process optimization, sensor-to-cloud integration, and automated loop controls for manufacturing, utilities, and plants.",
-            features: ["Sensor Array Calibrations", "Telemetry & Networking", "Pneumatic Control Loops", "Energy Saving Protocols"]
-        },
-        {
-            icon: FaCloud,
-            title: "Remote Monitoring",
-            desc: "Cloud-connected telemetry systems allowing secure remote diagnostics, real-time mobile alerts, and off-site machinery status tracking.",
-            features: ["IIoT Gateway Setup", "Email & SMS Alerting", "Secure VPN Access", "Web-based Dashboards"]
-        },
-        {
-            icon: FaCogs,
-            title: "Control Panel Integration",
-            desc: "Custom assembly, wiring, and rigorous type-testing of certified enclosures containing PLCs, VFDs, and power distribution components.",
-            features: ["CAD Wiring Diagrams", "Component Selection", "Factory Acceptance Tests", "IP65 Rated Enclosures"]
-        }
-    ];
-
-    // 4. Why Choose Vertex Controls Data (5 feature cards)
-    const whyChooseData = [
-        {
-            icon: FaTools,
-            title: "Experience",
-            desc: "Decades of combined engineering execution delivering complex automated systems across critical UAE infrastructure sectors."
-        },
-        {
-            icon: FaCheckCircle,
-            title: "Quality",
-            desc: "100% factory acceptance testing (FAT) using premium, certified components from elite global automation brands."
-        },
-        {
-            icon: FaShieldAlt,
-            title: "Safety",
-            desc: "Full compliance with local Civil Defense rules, utility guidelines (DEWA/ADDC), and IEC international safety standards."
-        },
-        {
-            icon: FaClock,
-            title: "Technical Support",
-            desc: "SLA response coverage, emergency on-site diagnostics, logic debugging, and prompt component replacement."
-        },
-        {
-            icon: FaSlidersH,
-            title: "Customized Solutions",
-            desc: "Tailored automation logic and panel dimensions built specifically around your facility's requirements."
-        }
-    ];
-
+    const solutionsData = pageData.solutions || [];
+    const whyChooseData = pageData.whyChoose || [];
+    
     return (
         <div className="subpage-wrapper">
             {/* 1. HERO SECTION */}
@@ -132,21 +71,31 @@ const ControlPanels: React.FC = () => {
                         <motion.div variants={fadeInUp} className="hero-badge-wrapper">
                             <div className="hero-badge">
                                 <span className="badge-pulse"></span>
-                                <span className="badge-text">Core Service Prototype</span>
+                                <span className="badge-text">{pageData.hero?.badgeText}</span>
                             </div>
                         </motion.div>
 
                         <motion.h1 variants={fadeInUp} className="page-header-title">
-                            Automation & <span className="text-gradient">Control Systems</span>
+                            {(() => {
+                                const parts = (pageData.hero?.title || "").split(" ");
+                                if (parts.length > 1) {
+                                    const lastWords = parts.slice(-2).join(" ");
+                                    const firstPart = parts.slice(0, -2).join(" ");
+                                    return (
+                                        <>{firstPart} <span className="text-gradient">{lastWords}</span></>
+                                    );
+                                }
+                                return pageData.hero?.title;
+                            })()}
                         </motion.h1>
 
                         <motion.p variants={fadeInUp} className="page-header-lead">
-                            Empowering industrial operations with cutting-edge PLC programming, SCADA telemetry, and custom control panel integration built for maximum uptime and efficiency.
+                            {pageData.hero?.lead}
                         </motion.p>
 
                         <motion.div variants={fadeInUp} className="page-header-buttons">
                             <Link to="/quote" className="btn btn-primary">
-                                Request a Quote <FaArrowRight size={14} />
+                                Request a Quote <Icons.FaArrowRight size={14} />
                             </Link>
                             <Link to="/contact" className="btn btn-secondary">
                                 Contact Us
@@ -166,13 +115,13 @@ const ControlPanels: React.FC = () => {
                         viewport={{ once: true, amount: 0.3 }}
                         variants={staggerContainer}
                     >
-                        <motion.span variants={fadeInUp} className="sub-tag">End-to-End Automation</motion.span>
-                        <motion.h2 variants={fadeInUp} className="section-title">Optimized Industrial Operations</motion.h2>
+                        <motion.span variants={fadeInUp} className="sub-tag">{pageData.overview?.subTag}</motion.span>
+                        <motion.h2 variants={fadeInUp} className="section-title">{pageData.overview?.title}</motion.h2>
                         <p className="overview-lead">
-                            At Vertex Controls, we specialize in transforming raw industrial processes into highly efficient, automated workflows that keep operations running 24/7.
+                            {pageData.overview?.lead}
                         </p>
                         <p style={{ color: "var(--gray)", fontSize: "1.05rem", lineHeight: "1.75" }}>
-                            Our engineering team designs and deploys comprehensive systems utilizing elite hardware components and custom logic configurations. From legacy console upgrades to greenfield facility launches, we deliver robust, ISO-compliant architectures tailored to your plant's demands.
+                            {pageData.overview?.body}
                         </p>
                     </motion.div>
 
@@ -184,7 +133,7 @@ const ControlPanels: React.FC = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <div className="overview-image-frame">
-                            <img src="/Images/Project/scada_showcase.webp" alt="Automation & Control Systems SCADA Dashboard" />
+                            <img src={pageData.overview?.imageSrc} alt={pageData.overview?.title} />
                             <div className="image-frame-overlay"></div>
                         </div>
                     </motion.div>
@@ -214,7 +163,6 @@ const ControlPanels: React.FC = () => {
                         variants={staggerContainer}
                     >
                         {solutionsData.map((sol, index) => {
-                            const SolIcon = sol.icon;
                             return (
                                 <motion.div
                                     key={index}
@@ -222,7 +170,7 @@ const ControlPanels: React.FC = () => {
                                     variants={fadeInUp}
                                 >
                                     <div className="solution-card-icon">
-                                        <SolIcon />
+                                        {getIcon(sol.icon)}
                                     </div>
                                     <h3>{sol.title}</h3>
                                     <p>{sol.desc}</p>
@@ -264,7 +212,6 @@ const ControlPanels: React.FC = () => {
                         variants={staggerContainer}
                     >
                         {whyChooseData.map((why, index) => {
-                            const WhyIcon = why.icon;
                             return (
                                 <motion.div
                                     key={index}
@@ -272,7 +219,7 @@ const ControlPanels: React.FC = () => {
                                     variants={fadeInUp}
                                 >
                                     <div className="why-icon-box">
-                                        <WhyIcon />
+                                        {getIcon(why.icon)}
                                     </div>
                                     <h3>{why.title}</h3>
                                     <p>{why.desc}</p>
@@ -296,14 +243,12 @@ const ControlPanels: React.FC = () => {
                         <span className="sub-tag" style={{ color: "var(--primary)", display: "inline-block", marginBottom: "1rem" }}>
                             Get In Touch
                         </span>
-                        <h2>Ready to Discuss Your Project?</h2>
-                        <p>
-                            Whether you need PLC programming configurations, SCADA visualization panels, custom HMI designs, or remote data setups, Vertex Controls delivers expert systems engineered for uptime.
-                        </p>
+                        <h2>{pageData.cta?.title}</h2>
+                        <p>{pageData.cta?.desc}</p>
                         
                         <div className="cta-buttons">
                             <Link to="/quote" className="btn btn-primary">
-                                Request a Quote <FaArrowRight size={14} />
+                                Request a Quote <Icons.FaArrowRight size={14} />
                             </Link>
                             <Link to="/contact" className="btn btn-secondary">
                                 Contact Us
@@ -312,16 +257,16 @@ const ControlPanels: React.FC = () => {
 
                         <div className="cta-contacts">
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaMapMarkerAlt /></span>
-                                <span>Dubai, UAE</span>
+                                <span className="cta-contact-icon"><Icons.FaMapMarkerAlt /></span>
+                                <span>{pageData.cta?.location}</span>
                             </div>
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaPhoneAlt /></span>
-                                <a href="tel:+971554962866">+971 55 496 2866</a>
+                                <span className="cta-contact-icon"><Icons.FaPhoneAlt /></span>
+                                <a href={`tel:${(pageData.cta?.phone || "").replace(/\s+/g, "")}`}>{pageData.cta?.phone}</a>
                             </div>
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaEnvelope /></span>
-                                <a href="mailto:Sales@vertex-controls.com">Sales@vertex-controls.com</a>
+                                <span className="cta-contact-icon"><Icons.FaEnvelope /></span>
+                                <a href={`mailto:${pageData.cta?.email}`}>{pageData.cta?.email}</a>
                             </div>
                         </div>
                     </motion.div>

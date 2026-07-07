@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import {
-    FaArrowRight, FaTools, FaCheckCircle, FaPhoneAlt,
-    FaEnvelope, FaSlidersH, FaShieldAlt, FaClock, FaMapMarkerAlt,
-    FaCloud, FaMicrochip, FaServer, FaChartArea, FaWifi, FaSatelliteDish
-} from "react-icons/fa";
+import * as Icons from "react-icons/fa";
+import { useContent } from "../../context/ContentContext";
+import { defaultServicesSubpages } from "../../data/subpageDefaults";
 import "./AIIndustrialIoT.css";
+
+// Dynamic Icon Loader
+const getIcon = (iconName: string) => {
+    const IconComponent = (Icons as any)[iconName];
+    return IconComponent ? React.createElement(IconComponent) : <Icons.FaQuestionCircle />;
+};
 
 // Animation Variants
 const fadeInUp: any = {
@@ -23,91 +27,26 @@ const staggerContainer: any = {
 };
 
 const AIIndustrialIoT: React.FC = () => {
+    const { content } = useContent();
+    const pageData = content.servicesSubpages?.["ai-iot"] || defaultServicesSubpages["ai-iot"];
+
     // SEO Requirements: Dynamic Title & Meta Description update
     useEffect(() => {
-        document.title = "AI & Industrial IoT Solutions | Vertex Controls Electromechanical LLC";
-        
-        let metaDescription = document.querySelector('meta[name="description"]');
-        if (!metaDescription) {
-            metaDescription = document.createElement('meta');
-            metaDescription.setAttribute('name', 'description');
-            document.head.appendChild(metaDescription);
+        if (pageData.seo) {
+            document.title = pageData.seo.title;
+            let metaDescription = document.querySelector('meta[name="description"]');
+            if (!metaDescription) {
+                metaDescription = document.createElement('meta');
+                metaDescription.setAttribute('name', 'description');
+                document.head.appendChild(metaDescription);
+            }
+            metaDescription.setAttribute('content', pageData.seo.description);
         }
-        metaDescription.setAttribute(
-            'content',
-            'Vertex Controls integrates AI monitoring, Edge Industrial IoT gateways, wireless sensors, cloud database logging, and predictive maintenance in UAE.'
-        );
-    }, []);
+    }, [pageData.seo]);
 
-    // 3. Our Solutions Data (6 solutions)
-    const solutionsData = [
-        {
-            icon: FaSatelliteDish,
-            title: "Edge Telemetry Gateways",
-            desc: "Heavy-duty communication nodes capturing Modbus, Profibus, and MQTT data streams from field automation devices.",
-            features: ["Multi-protocol Support", "Secure Edge Computing", "Data Buffering Store", "Isolated RS485 Ports"]
-        },
-        {
-            icon: FaServer,
-            title: "Cloud Data Lakes",
-            desc: "Secure cloud database systems storing millions of telemetry logs for historical trend analysis and deep diagnostics.",
-            features: ["InfluxDB/SQL Databases", "Secure TLS Encryption", "REST API Connectivity", "Backup Mirror Grids"]
-        },
-        {
-            icon: FaMicrochip,
-            title: "Predictive Diagnostics",
-            desc: "Machine learning algorithms profiling motor vibration anomalies to forecast mechanical failures.",
-            features: ["Vibration Frequency FFT", "Temperature Trend Maps", "Failure Probability Logs", "Early warning Alerting"]
-        },
-        {
-            icon: FaWifi,
-            title: "Remote Asset Tracking",
-            desc: "Live GPS coordinates and operational performance metrics of mobile field machinery displayed on active maps.",
-            features: ["Cellular GPS Nodes", "Geofencing Alert Scripts", "Battery Voltage Logs", "Engine Hour Registers"]
-        },
-        {
-            icon: FaCloud,
-            title: "Smart Sensor Clusters",
-            desc: "Wireless industrial sensors logging environmental metrics in remote plant structures without structural cables.",
-            features: ["LoRaWAN Signal Paths", "Battery Lifespan 5+ Yrs", "IP67 Ingress Ratings", "Ambient Humidity Sensors"]
-        },
-        {
-            icon: FaChartArea,
-            title: "Analytical Dashboards",
-            desc: "Interactive web-based and mobile screens showing real-time Overall Equipment Effectiveness (OEE) and efficiency targets.",
-            features: ["Grafana Graphic Visuals", "Custom Downtime Codes", "KPI Calculation Engines", "Shift Report Generators"]
-        }
-    ];
-
-    // 4. Why Choose Vertex Controls Data (5 feature cards)
-    const whyChooseData = [
-        {
-            icon: FaTools,
-            title: "Experience",
-            desc: "Qualified smart telemetry integrators and database architects executing complex industrial networks."
-        },
-        {
-            icon: FaCheckCircle,
-            title: "Quality",
-            desc: "100% factory acceptance testing (FAT) using premium, certified components from elite global automation brands."
-        },
-        {
-            icon: FaShieldAlt,
-            title: "Safety",
-            desc: "Full compliance with local Civil Defense rules, utility guidelines (DEWA/ADDC), and IEC international safety standards."
-        },
-        {
-            icon: FaClock,
-            title: "Technical Support",
-            desc: "SLA response coverage, emergency on-site diagnostics, logic debugging, and prompt component replacement."
-        },
-        {
-            icon: FaSlidersH,
-            title: "Customized Solutions",
-            desc: "Tailored automation logic and panel dimensions built specifically around your facility's requirements."
-        }
-    ];
-
+    const solutionsData = pageData.solutions || [];
+    const whyChooseData = pageData.whyChoose || [];
+    
     return (
         <div className="subpage-wrapper">
             {/* 1. HERO SECTION */}
@@ -132,21 +71,31 @@ const AIIndustrialIoT: React.FC = () => {
                         <motion.div variants={fadeInUp} className="hero-badge-wrapper">
                             <div className="hero-badge">
                                 <span className="badge-pulse"></span>
-                                <span className="badge-text">IIoT Telemetry</span>
+                                <span className="badge-text">{pageData.hero?.badgeText}</span>
                             </div>
                         </motion.div>
 
                         <motion.h1 variants={fadeInUp} className="page-header-title">
-                            AI & <span className="text-gradient">Industrial IoT</span>
+                            {(() => {
+                                const parts = (pageData.hero?.title || "").split(" ");
+                                if (parts.length > 1) {
+                                    const lastWords = parts.slice(-2).join(" ");
+                                    const firstPart = parts.slice(0, -2).join(" ");
+                                    return (
+                                        <>{firstPart} <span className="text-gradient">{lastWords}</span></>
+                                    );
+                                }
+                                return pageData.hero?.title;
+                            })()}
                         </motion.h1>
 
                         <motion.p variants={fadeInUp} className="page-header-lead">
-                            Integrating edge telemetry devices, cloud data gateways, predictive asset diagnostics, and AI monitoring for proactive operations.
+                            {pageData.hero?.lead}
                         </motion.p>
 
                         <motion.div variants={fadeInUp} className="page-header-buttons">
                             <Link to="/quote" className="btn btn-primary">
-                                Request a Quote <FaArrowRight size={14} />
+                                Request a Quote <Icons.FaArrowRight size={14} />
                             </Link>
                             <Link to="/contact" className="btn btn-secondary">
                                 Contact Us
@@ -166,13 +115,13 @@ const AIIndustrialIoT: React.FC = () => {
                         viewport={{ once: true, amount: 0.3 }}
                         variants={staggerContainer}
                     >
-                        <motion.span variants={fadeInUp} className="sub-tag">Asset Diagnostics</motion.span>
-                        <motion.h2 variants={fadeInUp} className="section-title">Data-Driven Industrial Intelligence</motion.h2>
+                        <motion.span variants={fadeInUp} className="sub-tag">{pageData.overview?.subTag}</motion.span>
+                        <motion.h2 variants={fadeInUp} className="section-title">{pageData.overview?.title}</motion.h2>
                         <p className="overview-lead">
-                            At Vertex Controls, we deploy advanced AI-driven Industrial IoT (IIoT) platforms that unlock real-time insight from your machinery.
+                            {pageData.overview?.lead}
                         </p>
                         <p style={{ color: "var(--gray)", fontSize: "1.05rem", lineHeight: "1.75" }}>
-                            Our engineers install edge telemetry gateways and cloud databases that track vibration, temperature, and current loads. We apply intelligent diagnostic algorithms to predict mechanical failures, minimize downtime, and extend equipment lifespans.
+                            {pageData.overview?.body}
                         </p>
                     </motion.div>
 
@@ -184,7 +133,7 @@ const AIIndustrialIoT: React.FC = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <div className="overview-image-frame">
-                            <img src="/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp" alt="AI & IoT Industrial Telemetry Servers and Dashboards" />
+                            <img src={pageData.overview?.imageSrc} alt={pageData.overview?.title} />
                             <div className="image-frame-overlay"></div>
                         </div>
                     </motion.div>
@@ -214,7 +163,6 @@ const AIIndustrialIoT: React.FC = () => {
                         variants={staggerContainer}
                     >
                         {solutionsData.map((sol, index) => {
-                            const SolIcon = sol.icon;
                             return (
                                 <motion.div
                                     key={index}
@@ -222,7 +170,7 @@ const AIIndustrialIoT: React.FC = () => {
                                     variants={fadeInUp}
                                 >
                                     <div className="solution-card-icon">
-                                        <SolIcon />
+                                        {getIcon(sol.icon)}
                                     </div>
                                     <h3>{sol.title}</h3>
                                     <p>{sol.desc}</p>
@@ -264,7 +212,6 @@ const AIIndustrialIoT: React.FC = () => {
                         variants={staggerContainer}
                     >
                         {whyChooseData.map((why, index) => {
-                            const WhyIcon = why.icon;
                             return (
                                 <motion.div
                                     key={index}
@@ -272,7 +219,7 @@ const AIIndustrialIoT: React.FC = () => {
                                     variants={fadeInUp}
                                 >
                                     <div className="why-icon-box">
-                                        <WhyIcon />
+                                        {getIcon(why.icon)}
                                     </div>
                                     <h3>{why.title}</h3>
                                     <p>{why.desc}</p>
@@ -296,14 +243,12 @@ const AIIndustrialIoT: React.FC = () => {
                         <span className="sub-tag" style={{ color: "var(--primary)", display: "inline-block", marginBottom: "1rem" }}>
                             Get In Touch
                         </span>
-                        <h2>Ready to Discuss Your Project?</h2>
-                        <p>
-                            Whether you need industrial IoT edge gateways, secure cloud databases, vibration diagnostic modeling, or custom analytical dashboards, Vertex Controls delivers expert systems engineered for uptime.
-                        </p>
+                        <h2>{pageData.cta?.title}</h2>
+                        <p>{pageData.cta?.desc}</p>
                         
                         <div className="cta-buttons">
                             <Link to="/quote" className="btn btn-primary">
-                                Request a Quote <FaArrowRight size={14} />
+                                Request a Quote <Icons.FaArrowRight size={14} />
                             </Link>
                             <Link to="/contact" className="btn btn-secondary">
                                 Contact Us
@@ -312,16 +257,16 @@ const AIIndustrialIoT: React.FC = () => {
 
                         <div className="cta-contacts">
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaMapMarkerAlt /></span>
-                                <span>Dubai, UAE</span>
+                                <span className="cta-contact-icon"><Icons.FaMapMarkerAlt /></span>
+                                <span>{pageData.cta?.location}</span>
                             </div>
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaPhoneAlt /></span>
-                                <a href="tel:+971554962866">+971 55 496 2866</a>
+                                <span className="cta-contact-icon"><Icons.FaPhoneAlt /></span>
+                                <a href={`tel:${(pageData.cta?.phone || "").replace(/\s+/g, "")}`}>{pageData.cta?.phone}</a>
                             </div>
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaEnvelope /></span>
-                                <a href="mailto:Sales@vertex-controls.com">Sales@vertex-controls.com</a>
+                                <span className="cta-contact-icon"><Icons.FaEnvelope /></span>
+                                <a href={`mailto:${pageData.cta?.email}`}>{pageData.cta?.email}</a>
                             </div>
                         </div>
                     </motion.div>

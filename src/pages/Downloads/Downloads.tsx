@@ -1,11 +1,8 @@
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import {
-    FaArrowRight, FaFilePdf, FaDownload, FaSearch, FaBuilding,
-    FaBookOpen, FaFileAlt, FaListAlt, FaWrench, FaCertificate,
-    FaCheckCircle, FaSyncAlt, FaLock, FaQuestionCircle
-} from "react-icons/fa";
+import * as Icons from "react-icons/fa";
+import { useContent } from "../../context/ContentContext";
 import "./Downloads.css";
 
 // Document model definition
@@ -15,7 +12,14 @@ interface DocumentResource {
     desc: string;
     size: string;
     updatedDate: string;
+    downloadUrl: string;
 }
+
+// Helper to resolve font-awesome icon dynamically by string name
+const getIcon = (iconName: string) => {
+    const IconComponent = (Icons as any)[iconName];
+    return IconComponent ? React.createElement(IconComponent) : <Icons.FaQuestionCircle />;
+};
 
 // Interactive 3D tilt card component
 interface TiltCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -84,185 +88,30 @@ const TiltCard: React.FC<TiltCardProps> = ({ children, className, onClick, ...pr
 };
 
 const Downloads: React.FC = () => {
+    const { content } = useContent();
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
     const filterSectionRef = useRef<HTMLDivElement>(null);
 
-    // List of Technical resources (12 standard B2B documents)
-    const documents: DocumentResource[] = [
-        {
-            title: "Vertex Controls Corporate Profile",
-            category: "Company Documents",
-            desc: "Learn more about Vertex Controls, our expertise, industries served, capabilities and engineering solutions.",
-            size: "4.8 MB",
-            updatedDate: "May 2026"
+    // Dynamic CMS content configuration
+    const downloadsData = content.downloads || {
+        hero: {
+            title: "Technical Downloads",
+            lead: "Access our company profile, product brochures, technical datasheets, manuals, certifications, and engineering resources."
         },
-        {
-            title: "Industrial Automation Brochure",
-            category: "Brochures",
-            desc: "Detailed overview of automation solutions, PLC logic programming, and custom SCADA interfaces.",
-            size: "3.2 MB",
-            updatedDate: "Jun 2026"
-        },
-        {
-            title: "Type-Tested Control Panel Catalogue",
-            category: "Catalogues",
-            desc: "Technical specification sheets and dimensions for MDB, SMDB, capacitor bank, and control panels.",
-            size: "12.5 MB",
-            updatedDate: "Apr 2026"
-        },
-        {
-            title: "PLC & SCADA Systems Solutions Guide",
-            category: "Brochures",
-            desc: "Detailed systems engineering guide explaining telemetry integrations, network protocols, and SCADA control layouts.",
-            size: "6.7 MB",
-            updatedDate: "Jun 2026"
-        },
-        {
-            title: "Electrical & MEP Services Brochure",
-            category: "Brochures",
-            desc: "Our engineering capabilities for electrical installations, switchgear modifications, testing, and commissioning.",
-            size: "2.9 MB",
-            updatedDate: "May 2026"
-        },
-        {
-            title: "AI-Driven Predictive Maintenance Overview",
-            category: "Brochures",
-            desc: "Introduction to smart industrial IoT telemetry sensors and cloud diagnostics to prevent machine downtime.",
-            size: "1.8 MB",
-            updatedDate: "Jun 2026"
-        },
-        {
-            title: "Energy Management Solutions Datasheet",
-            category: "Datasheets",
-            desc: "Detailed specifications and data sheets for automatic capacitor banks, power factor controllers, and active filters.",
-            size: "2.4 MB",
-            updatedDate: "Mar 2026"
-        },
-        {
-            title: "Industrial IoT Telemetry Solutions Datasheet",
-            category: "Datasheets",
-            desc: "Product specs for telemetry gateway units, wireless RTU nodes, cloud databases, and industrial sensors.",
-            size: "3.5 MB",
-            updatedDate: "Feb 2026"
-        },
-        {
-            title: "Annual Maintenance Contracts (AMC) Services Catalogue",
-            category: "Catalogues",
-            desc: "Comprehensive catalogue of preventative service plans, SLA frameworks, and 24/7 technical on-call services.",
-            size: "4.1 MB",
-            updatedDate: "May 2026"
-        },
-        {
-            title: "Smart Infrastructure & BMS Solutions Guide",
-            category: "Brochures",
-            desc: "Technical implementation guide for central SCADA, DALI lighting controllers, and integrated building automation systems.",
-            size: "5.3 MB",
-            updatedDate: "Apr 2026"
-        },
-        {
-            title: "Vertex Controls Official Trade License",
-            category: "Certificates",
-            desc: "Official business license copy certified by the Dubai Department of Economy and Tourism (DET).",
-            size: "1.2 MB",
-            updatedDate: "Jan 2026"
-        },
-        {
-            title: "VAT Registration Certificate",
-            category: "Certificates",
-            desc: "Official VAT tax registration certificate issued by the Federal Tax Authority (FTA) of the United Arab Emirates.",
-            size: "0.85 MB",
-            updatedDate: "Jan 2026"
-        }
-    ];
+        categories: [],
+        documents: [],
+        whyFeatures: []
+    };
 
-    // Resource categories cards definition
-    const resourceCategories = [
-        {
-            index: "01",
-            icon: FaBuilding,
-            title: "Company Profile",
-            desc: "Learn more about Vertex Controls, our expertise, industries served, capabilities and engineering solutions.",
-            count: 1,
-            targetFilter: "Company Documents"
-        },
-        {
-            index: "02",
-            icon: FaBookOpen,
-            title: "Product Brochures",
-            desc: "Overview brochures covering automation systems, electrical engineering, MEP services, smart infrastructure and industrial technologies.",
-            count: 5,
-            targetFilter: "Brochures"
-        },
-        {
-            index: "03",
-            icon: FaFileAlt,
-            title: "Technical Datasheets",
-            desc: "Detailed specifications, performance data and product information for control panels, PLC systems, MCC panels, energy monitoring systems and industrial equipment.",
-            count: 2,
-            targetFilter: "Datasheets"
-        },
-        {
-            index: "04",
-            icon: FaListAlt,
-            title: "Catalogues",
-            desc: "Comprehensive product catalogues with available engineering solutions, components and system configurations.",
-            count: 2,
-            targetFilter: "Catalogues"
-        },
-        {
-            index: "05",
-            icon: FaWrench,
-            title: "Operation & Maintenance Manuals",
-            desc: "Installation guides, user manuals, maintenance instructions and operational documentation.",
-            count: 0,
-            targetFilter: "Manuals"
-        },
-        {
-            index: "06",
-            icon: FaCertificate,
-            title: "Certifications & Company Documents",
-            desc: "Trade License, VAT Registration, Quality Certificates, Compliance Documents and other official company documentation.",
-            count: 2,
-            targetFilter: "Certificates"
-        }
-    ];
+    const hero = downloadsData.hero || { title: "Technical Downloads", lead: "" };
+    const categories = downloadsData.categories || [];
+    const documents = downloadsData.documents || [];
+    const whyFeatures = downloadsData.whyFeatures || [];
 
-    // Why download features definition
-    const whyFeatures = [
-        {
-            icon: FaCheckCircle,
-            title: "Latest Technical Information",
-            desc: "Get access to up-to-date specifications, drawing details and catalogs approved by our engineering leads."
-        },
-        {
-            icon: FaCertificate,
-            title: "Engineering Approved Documentation",
-            desc: "All drawings, datasheets and guides conform to international electromechanical safety codes and UAE standards."
-        },
-        {
-            icon: FaLock,
-            title: "Easy PDF Downloads",
-            desc: "One-click downloads. No subscription, no login gateways, just raw technical resources for engineering professionals."
-        },
-        {
-            icon: FaSyncAlt,
-            title: "Regularly Updated Resources",
-            desc: "Our design team updates documentation frequently to align with component modifications, certification additions and software iterations."
-        }
-    ];
-
-    // Filters categories mapping
-    const filterCategories = [
-        "All",
-        "Brochures",
-        "Datasheets",
-        "Manuals",
-        "Catalogues",
-        "Certificates",
-        "Company Documents"
-    ];
+    // Dynamic filter tabs extracted from loaded categories
+    const filterCategories = ["All", ...categories.map(cat => cat.targetFilter)];
 
     // Filter trigger when clicking category cards
     const handleCategoryCardClick = (targetFilter: string) => {
@@ -282,9 +131,20 @@ const Downloads: React.FC = () => {
         return matchesCategory && matchesQuery;
     });
 
-    const handleDownload = (docTitle: string) => {
-        // Simulating PDF file download trigger
-        alert(`Downloading Technical Document: ${docTitle}`);
+    const handleDownload = (doc: DocumentResource) => {
+        if (doc.downloadUrl) {
+            // Trigger actual file download
+            const link = window.document.createElement("a");
+            link.href = doc.downloadUrl;
+            link.download = doc.title;
+            link.target = "_blank";
+            window.document.body.appendChild(link);
+            link.click();
+            window.document.body.removeChild(link);
+        } else {
+            // Fallback for simulation
+            alert(`Downloading Technical Document: ${doc.title}`);
+        }
     };
 
     return (
@@ -300,11 +160,20 @@ const Downloads: React.FC = () => {
                         </div>
 
                         <h1 className="downloads-hero-title">
-                            Technical <span>Downloads</span>
+                            {(() => {
+                                const parts = (hero.title || "Technical Downloads").split(" ");
+                                if (parts.length > 1) {
+                                    const lastWord = parts.pop();
+                                    return (
+                                        <>{parts.join(" ")} <span>{lastWord}</span></>
+                                    );
+                                }
+                                return hero.title || "Technical Downloads";
+                            })()}
                         </h1>
 
                         <p className="downloads-hero-subtitle">
-                            Access our company profile, product brochures, technical datasheets, manuals, certifications, and engineering resources. Browse and download the latest documentation to support your projects.
+                            {hero.lead}
                         </p>
                     </div>
                 </div>
@@ -317,40 +186,43 @@ const Downloads: React.FC = () => {
                     <h2 className="section-title-main">Browse Categories</h2>
 
                     <div className="categories-grid">
-                        {resourceCategories.map((cat, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.1 }}
-                                transition={{ duration: 0.5, delay: idx * 0.05 }}
-                                style={{ height: "100%" }}
-                            >
-                                <TiltCard
-                                    className="category-card"
-                                    onClick={() => handleCategoryCardClick(cat.targetFilter)}
+                        {categories.map((cat, idx) => {
+                            const docCount = documents.filter((d) => d.category === cat.targetFilter).length;
+                            return (
+                                <motion.div
+                                    key={idx}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, amount: 0.1 }}
+                                    transition={{ duration: 0.5, delay: idx * 0.05 }}
+                                    style={{ height: "100%" }}
                                 >
-                                    <span className="category-card-number">{cat.index}</span>
-                                    <div className="category-icon-box">
-                                        <cat.icon />
-                                    </div>
-                                    <h3>{cat.title}</h3>
-                                    <p>{cat.desc}</p>
-                                    <div className="category-card-footer">
-                                        <span className="doc-count">{cat.count} {cat.count === 1 ? "document" : "documents"}</span>
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleCategoryCardClick(cat.targetFilter);
-                                            }}
-                                            className="btn-view-downloads"
-                                        >
-                                            View Downloads <FaArrowRight size={11} />
-                                        </button>
-                                    </div>
-                                </TiltCard>
-                            </motion.div>
-                        ))}
+                                    <TiltCard
+                                        className="category-card"
+                                        onClick={() => handleCategoryCardClick(cat.targetFilter)}
+                                    >
+                                        <span className="category-card-number">{cat.index}</span>
+                                        <div className="category-icon-box">
+                                            {getIcon(cat.icon)}
+                                        </div>
+                                        <h3>{cat.title}</h3>
+                                        <p>{cat.desc}</p>
+                                        <div className="category-card-footer">
+                                            <span className="doc-count">{docCount} {docCount === 1 ? "document" : "documents"}</span>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleCategoryCardClick(cat.targetFilter);
+                                                }}
+                                                className="btn-view-downloads"
+                                            >
+                                                View Downloads <Icons.FaArrowRight size={11} />
+                                            </button>
+                                        </div>
+                                    </TiltCard>
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -360,7 +232,7 @@ const Downloads: React.FC = () => {
                 <div className="container">
                     <div className="sticky-bar-container">
                         <div className="search-input-box">
-                            <FaSearch className="search-icon-svg" size={16} />
+                            <Icons.FaSearch className="search-icon-svg" size={16} />
                             <input
                                 type="text"
                                 placeholder="Search Technical Documents (e.g. PLC, SCADA, Switchgear, VAT...)"
@@ -408,7 +280,7 @@ const Downloads: React.FC = () => {
                                     style={{ transformOrigin: "top center" }}
                                 >
                                     <div className="doc-pdf-icon-box">
-                                        <FaFilePdf />
+                                        <Icons.FaFilePdf />
                                     </div>
                                     <div className="doc-info-block">
                                         <div className="doc-info-header">
@@ -423,10 +295,10 @@ const Downloads: React.FC = () => {
                                             </div>
                                             <button
                                                 className="btn-doc-download"
-                                                onClick={() => handleDownload(doc.title)}
+                                                onClick={() => handleDownload(doc)}
                                                 title="Download PDF"
                                             >
-                                                <FaDownload size={13} />
+                                                <Icons.FaDownload size={13} />
                                             </button>
                                         </div>
                                     </div>
@@ -435,7 +307,7 @@ const Downloads: React.FC = () => {
                         </div>
                     ) : (
                         <div className="downloads-empty-state">
-                            <FaQuestionCircle className="empty-icon" />
+                            <Icons.FaQuestionCircle className="empty-icon" />
                             <h4>No Documents Found</h4>
                             <p>We couldn't find any technical document matching your search or category filter. Try clearing your filters or search terms.</p>
                         </div>
@@ -468,7 +340,7 @@ const Downloads: React.FC = () => {
                                 style={{ transformOrigin: "bottom center" }}
                             >
                                 <div className="why-icon-box">
-                                    <feat.icon />
+                                    {getIcon(feat.icon)}
                                 </div>
                                 <h4>{feat.title}</h4>
                                 <p>{feat.desc}</p>
@@ -495,7 +367,7 @@ const Downloads: React.FC = () => {
 
                         <div className="cta-banner-buttons">
                             <Link to="/quote" className="btn btn-cta-blue">
-                                Request Technical Information <FaArrowRight size={13} />
+                                Request Technical Information <Icons.FaArrowRight size={13} />
                             </Link>
                             <Link to="/contact" className="btn btn-cta-outline-white">
                                 Contact Our Team

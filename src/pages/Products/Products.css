@@ -104,6 +104,94 @@
     background-color: #ffffff;
 }
 
+.products-tabs-outer-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Left and right fade overlays */
+.products-tabs-outer-wrap::before,
+.products-tabs-outer-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0.5rem;
+    width: 48px;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.products-tabs-outer-wrap::before {
+    left: 0;
+    background: linear-gradient(to right, #ffffff 25%, rgba(255, 255, 255, 0));
+}
+
+.products-tabs-outer-wrap::after {
+    right: 0;
+    background: linear-gradient(to left, #ffffff 25%, rgba(255, 255, 255, 0));
+}
+
+.products-tabs-outer-wrap.has-left-scroll::before {
+    opacity: 1;
+}
+
+.products-tabs-outer-wrap.has-right-scroll::after {
+    opacity: 1;
+}
+
+.products-tab-arrow-btn {
+    position: absolute;
+    top: calc(50% - 4px);
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid var(--prod-border);
+    box-shadow: 0 4px 12px rgba(14, 42, 71, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--prod-text-slate);
+    z-index: 10;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.products-tab-arrow-btn:hover {
+    background: var(--prod-dark-blue);
+    color: #ffffff;
+    border-color: var(--prod-dark-blue);
+    box-shadow: 0 6px 16px rgba(14, 42, 71, 0.15);
+}
+
+.products-tab-arrow-btn.left {
+    left: -18px;
+}
+
+.products-tab-arrow-btn.right {
+    right: -18px;
+}
+
+.products-tab-arrow-btn.hidden-arrow {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%) scale(0.85);
+}
+
+@media (max-width: 768px) {
+    .products-tab-arrow-btn.left {
+        left: -10px;
+    }
+    .products-tab-arrow-btn.right {
+        right: -10px;
+    }
+}
+
 .products-tab-container {
     display: flex;
     gap: 0.5rem;
@@ -1010,3 +1098,621 @@
         margin: 0 auto;
     }
 }
+
+/* ==========================================================================
+   INTERACTIVE TECHNOLOGY VISUAL CARDS
+   ========================================================================== */
+.tech-visual-card {
+    width: 100%;
+    height: 100%;
+    background-color: #0b1528;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(15, 111, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 111, 255, 0.08) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Energy Monitoring Systems Card */
+.energy-monitoring-visual {
+    background: radial-gradient(circle at center, #0e2744 0%, #06101e 100%);
+}
+
+.pulse-wave-container {
+    width: 100%;
+    height: 110px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sine-wave-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.animated-path {
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: drawPath 3.5s linear infinite;
+}
+
+@keyframes drawPath {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.telemetry-hud {
+    position: absolute;
+    bottom: 2.8rem;
+    left: 1.25rem;
+    right: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    z-index: 2;
+}
+
+.hud-metric {
+    background: rgba(13, 27, 49, 0.75);
+    border: 1px solid rgba(15, 111, 255, 0.15);
+    border-radius: 4px;
+    padding: 0.35rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hud-lbl {
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--prod-text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+}
+
+.hud-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.hud-val.text-green { color: var(--prod-highlight-green); }
+.hud-val.text-blue { color: var(--prod-accent-blue); }
+.hud-val.text-cyan { color: #00e5ff; }
+
+.hud-status {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    z-index: 2;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.status-dot.green {
+    background-color: var(--prod-highlight-green);
+    box-shadow: 0 0 8px var(--prod-highlight-green);
+    animation: statusPulse 1.5s infinite;
+}
+
+.status-dot.blue {
+    background-color: var(--prod-accent-blue);
+    box-shadow: 0 0 8px var(--prod-accent-blue);
+    animation: statusPulse 1.5s infinite;
+}
+
+.status-dot.red {
+    background-color: #ef4444;
+    box-shadow: 0 0 8px #ef4444;
+    animation: statusPulse 1.2s infinite;
+}
+
+.status-text {
+    font-size: 0.58rem;
+    font-weight: 800;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+@keyframes statusPulse {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    50% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+/* PCB / Customized Electronic Controllers Card */
+.pcb-visual {
+    background: radial-gradient(circle at center, #0c203a 0%, #050b15 100%);
+}
+
+.pcb-grid {
+    background-image: 
+        linear-gradient(rgba(0, 229, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.06) 1px, transparent 1px);
+}
+
+.pcb-tracks {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+
+.track {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+    height: 2px;
+    width: 60px;
+    animation: pathTravel 2.8s linear infinite;
+}
+
+.track-1 {
+    top: 30%;
+    left: 20%;
+    transform: rotate(45deg);
+    animation-delay: 0s;
+}
+
+.track-2 {
+    bottom: 35%;
+    right: 25%;
+    transform: rotate(-30deg);
+    animation-delay: 0.8s;
+}
+
+.track-3 {
+    top: 50%;
+    left: 45%;
+    width: 80px;
+    animation-delay: 1.4s;
+}
+
+@keyframes pathTravel {
+    0% { transform: translate3d(-100%, 0, 0); opacity: 0; }
+    30% { opacity: 0.8; }
+    70% { opacity: 0.8; }
+    100% { transform: translate3d(150%, 0, 0); opacity: 0; }
+}
+
+.pcb-mcu {
+    width: 58px;
+    height: 58px;
+    background-color: #162438;
+    border: 2px solid #00e5ff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 3;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+}
+
+.mcu-pins::before, .mcu-pins::after {
+    content: '';
+    position: absolute;
+    background: #cbd5e1;
+}
+
+/* Core MCU details */
+.mcu-core {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.62rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+}
+
+.mcu-sub {
+    font-size: 0.45rem;
+    color: var(--prod-highlight-green);
+    margin-top: 0.1rem;
+}
+
+.pcb-leds {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    display: flex;
+    gap: 0.4rem;
+    z-index: 3;
+}
+
+.led {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.led-red { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+.led-green { background: #10b981; box-shadow: 0 0 6px #10b981; }
+.led-blue { background: #3b82f6; box-shadow: 0 0 6px #3b82f6; }
+
+.pulsing {
+    animation: ledPulse 1.2s infinite alternate;
+}
+
+.led-red.pulsing { animation-delay: 0.1s; }
+.led-green.pulsing { animation-delay: 0.3s; }
+.led-blue.pulsing { animation-delay: 0.5s; }
+
+@keyframes ledPulse {
+    from { opacity: 0.3; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1.1); }
+}
+
+/* Embedded Systems Card */
+.embedded-visual {
+    background: radial-gradient(circle at center, #0f1c30 0%, #060d17 100%);
+}
+
+.logic-diagram {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    z-index: 2;
+}
+
+.logic-gate {
+    width: 60px;
+    height: 60px;
+    background: rgba(14, 27, 49, 0.85);
+    border: 1.5px solid rgba(15, 111, 255, 0.4);
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.gate-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.gate-ports-in {
+    position: absolute;
+    left: -6px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.port {
+    width: 6px;
+    height: 6px;
+    background: #475569;
+    border-radius: 50%;
+}
+
+.port.pin-active {
+    background: var(--prod-highlight-green);
+    box-shadow: 0 0 6px var(--prod-highlight-green);
+}
+
+.gate-port-out {
+    position: absolute;
+    right: -6px;
+    top: 27px;
+    width: 6px;
+    height: 6px;
+    background: #475569;
+    border-radius: 50%;
+}
+
+.gate-port-out.pin-active {
+    background: #00e5ff;
+    box-shadow: 0 0 6px #00e5ff;
+}
+
+.logic-flow-arrow {
+    width: 28px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--prod-highlight-green), #00e5ff);
+    position: relative;
+}
+
+.logic-flow-arrow::after {
+    content: '';
+    position: absolute;
+    right: -2px;
+    top: -3px;
+    border-left: 5px solid #00e5ff;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+}
+
+/* Industrial IoT Devices Card */
+.iot-visual {
+    background: radial-gradient(circle at center, #0a1f38 0%, #050f1b 100%);
+}
+
+.iot-antenna-container {
+    width: 100px;
+    height: 90px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.antenna {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.antenna-rod {
+    width: 4px;
+    height: 48px;
+    background: #475569;
+    border-radius: 2px;
+}
+
+.antenna-tip {
+    width: 8px;
+    height: 8px;
+    background: #00e5ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00e5ff;
+}
+
+.wave {
+    position: absolute;
+    border: 1.5px solid rgba(0, 229, 255, 0.4);
+    border-radius: 50%;
+    animation: propagate 2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+    opacity: 0;
+}
+
+.wave-1 { width: 30px; height: 30px; animation-delay: 0s; }
+.wave-2 { width: 55px; height: 55px; animation-delay: 0.6s; }
+.wave-3 { width: 80px; height: 80px; animation-delay: 1.2s; }
+
+@keyframes propagate {
+    0% { transform: scale(0.4); opacity: 0; }
+    50% { opacity: 0.7; }
+    100% { transform: scale(1.3); opacity: 0; }
+}
+
+.iot-network-hud {
+    position: absolute;
+    bottom: 2.8rem;
+    left: 1.25rem;
+    right: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    z-index: 2;
+}
+
+.net-stat {
+    background: rgba(13, 27, 49, 0.75);
+    border: 1px solid rgba(0, 229, 255, 0.15);
+    border-radius: 4px;
+    padding: 0.35rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.net-lbl {
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--prod-text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+}
+
+.net-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.net-val.txt-green { color: var(--prod-highlight-green); }
+
+/* CCTV & Access Control systems visual */
+.security-visual {
+    background: radial-gradient(circle at center, #1b1622 0%, #0d0a11 100%);
+}
+
+.security-grid {
+    background-image: 
+        linear-gradient(rgba(239, 68, 68, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(239, 68, 68, 0.06) 1px, transparent 1px);
+}
+
+.scanner-frame {
+    width: 140px;
+    height: 100px;
+    border: 1.5px solid rgba(239, 68, 68, 0.2);
+    border-radius: 6px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scanner-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ef4444, transparent);
+    animation: scanMove 3s ease-in-out infinite alternate;
+}
+
+@keyframes scanMove {
+    0% { top: 5%; }
+    100% { top: 95%; }
+}
+
+.scanner-aperture {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(239, 68, 68, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.aperture-lens {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #0f172a;
+    border: 1px solid #ef4444;
+}
+
+.rec-indicator {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.rec-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ef4444;
+    animation: statusPulse 1s infinite;
+}
+
+.rec-indicator span {
+    font-size: 0.52rem;
+    font-weight: 800;
+    color: #ef4444;
+    letter-spacing: 0.05em;
+}
+
+.security-status-bar {
+    position: absolute;
+    bottom: 2.8rem;
+    left: 1.25rem;
+    right: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    z-index: 2;
+}
+
+.sec-stat {
+    background: rgba(27, 22, 34, 0.8);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 4px;
+    padding: 0.35rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sec-lbl {
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--prod-text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+}
+
+.sec-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.sec-val.text-green { color: var(--prod-highlight-green); }
+
+/* R&D Solutions Card */
+.rnd-visual {
+    background: radial-gradient(circle at center, #0e1e35 0%, #050b14 100%);
+}
+
+.rnd-graph-container {
+    width: 100%;
+    height: 100px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rnd-graph-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.animated-rnd-path {
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: drawPath 4s ease-in-out infinite;
+}
+
+.rnd-hud {
+    position: absolute;
+    bottom: 2.8rem;
+    left: 1.25rem;
+    right: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    z-index: 2;
+}
+
+.rnd-metric {
+    background: rgba(14, 30, 53, 0.85);
+    border: 1px solid rgba(15, 111, 255, 0.2);
+    border-radius: 4px;
+    padding: 0.35rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rnd-metric .hud-val.text-green { color: var(--prod-highlight-green); }
+

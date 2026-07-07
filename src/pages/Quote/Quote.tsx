@@ -1,11 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import {
-    FaPhoneAlt, FaArrowRight, FaCheckCircle, FaWhatsapp,
-    FaCloudUploadAlt, FaTimes, FaSpinner, FaMapMarkerAlt,
-    FaBuilding, FaUser, FaEnvelope, FaFileAlt, FaInfoCircle
-} from "react-icons/fa";
+import * as Icons from "react-icons/fa";
+import { useContent } from "../../context/ContentContext";
 import "./Quote.css";
 
 interface QuoteFormFields {
@@ -147,12 +144,12 @@ const Quote: React.FC = () => {
         }
         if (!formValues.email.trim()) {
             errors.email = "Email address is required";
-        } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
+        } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formValues.email.trim())) {
             errors.email = "Please enter a valid email address";
         }
         if (!formValues.phone.trim()) {
             errors.phone = "Phone number is required";
-        } else if (!/^\+?[0-9\s-]{7,15}$/.test(formValues.phone.replace(/\s+/g, ""))) {
+        } else if (!/^\+?[0-9]{7,15}$/.test(formValues.phone.replace(/[\s()-]/g, ""))) {
             errors.phone = "Please enter a valid phone number";
         }
         if (!formValues.serviceRequired) {
@@ -169,15 +166,50 @@ const Quote: React.FC = () => {
         return Object.keys(errors).length === 0;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (validateForm()) {
             setIsSubmitting(true);
-            setTimeout(() => {
+            try {
+                let fileData = "";
+                let fileName = "";
+                
+                if (file) {
+                    fileName = file.name;
+                    fileData = await new Promise<string>((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = () => resolve(reader.result as string);
+                        reader.onerror = (error) => reject(error);
+                    });
+                }
+                
+                const payload = {
+                    ...formValues,
+                    fileName,
+                    fileData
+                };
+
+                const res = await fetch("/api/quote", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (res.ok) {
+                    setIsSubmitted(true);
+                } else {
+                    const data = await res.json();
+                    alert(data.message || "Failed to submit quote request. Please try again.");
+                }
+            } catch (err) {
+                console.error("Quote submit error:", err);
+                alert("Network error. Please check your internet connection.");
+            } finally {
                 setIsSubmitting(false);
-                setIsSubmitted(true);
-                console.log("Quote request submitted successfully:", { ...formValues, file });
-            }, 2000);
+            }
         }
     };
 
@@ -219,23 +251,78 @@ const Quote: React.FC = () => {
         }
     };
 
-    const features = [
-        {
-            title: "Free Technical Consultation",
-            desc: "Our senior design engineers review your specifications to propose optimized control schemes."
-        },
-        {
-            title: "Fast Response",
-            desc: "We prioritize B2B commercial requests, delivering customized technical proposals in 24–48 hours."
-        },
-        {
-            title: "Experienced Engineering Team",
-            desc: "Turnkey integration capability led by qualified engineers with deep industrial PLC/SCADA expertise."
-        },
-        {
-            title: "UAE Wide Support",
-            desc: "From testing and assembly to rapid SLA deployment, we cover Dubai, Abu Dhabi, and Northern Emirates."
+    const { content } = useContent();
+
+    // Pre-select first service from CMS list by default if none is pre-filled from URL
+    React.useEffect(() => {
+        const quoteSectionList = content.contact?.quoteSection?.servicesList || [
+            "PLC & SCADA Control Panels",
+            "LV Switchgears & MDBs",
+            "Building Management Systems (BMS)",
+            "Electrical Engineering Services",
+            "Mechanical & MEP Solutions",
+            "Industrial Automation Integration",
+            "Smart Infrastructure & IoT Telemetry",
+            "Annual Maintenance Contract (AMC)",
+            "Other Engineering Support"
+        ];
+        if (quoteSectionList.length > 0 && !formValues.serviceRequired) {
+            setFormValues(prev => ({
+                ...prev,
+                serviceRequired: quoteSectionList[0]
+            }));
         }
+    }, [content, formValues.serviceRequired]);
+
+    // Safe fallbacks for Quote CMS variables
+    const quoteData = content.quote || {
+        hero: {
+            title: "Request a Quote",
+            subtitle: "Tell us about your project and our engineering team will prepare a tailored quotation."
+        },
+        infoCard: {
+            title: "Vertex Controls Advantage",
+            lead: "Partner with a certified electromechanical systems integrator in the UAE.",
+            features: [
+                {
+                    title: "Free Technical Consultation",
+                    desc: "Our senior design engineers review your specifications to propose optimized control schemes."
+                },
+                {
+                    title: "Fast Response",
+                    desc: "We prioritize B2B commercial requests, delivering customized technical proposals in 24–48 hours."
+                },
+                {
+                    title: "Experienced Engineering Team",
+                    desc: "Turnkey integration capability led by qualified engineers with deep industrial PLC/SCADA expertise."
+                },
+                {
+                    title: "UAE Wide Support",
+                    desc: "From testing and assembly to rapid SLA deployment, we cover Dubai, Abu Dhabi, and Northern Emirates."
+                }
+            ],
+            phoneLabel: "Talk to an Engineer directly",
+            phoneUrl: "tel:+971554962866",
+            phoneText: "+971 55 496 2866",
+            whatsappUrl: "https://wa.me/971554962866",
+            whatsappText: "Chat on WhatsApp"
+        }
+    };
+
+    const hero = quoteData.hero || {};
+    const infoCard = quoteData.infoCard || {};
+    const features = infoCard.features || [];
+
+    const servicesList = content.contact?.quoteSection?.servicesList || [
+        "PLC & SCADA Control Panels",
+        "LV Switchgears & MDBs",
+        "Building Management Systems (BMS)",
+        "Electrical Engineering Services",
+        "Mechanical & MEP Solutions",
+        "Industrial Automation Integration",
+        "Smart Infrastructure & IoT Telemetry",
+        "Annual Maintenance Contract (AMC)",
+        "Other Engineering Support"
     ];
 
     return (
@@ -256,16 +343,25 @@ const Quote: React.FC = () => {
                         </motion.div>
 
                         <motion.h1 variants={fadeInUp} className="quote-hero-title">
-                            Request a <span className="highlight">Quote</span>
+                            {(() => {
+                                const parts = (hero.title || "Request a Quote").split(" ");
+                                if (parts.length > 1) {
+                                    const lastWord = parts.pop();
+                                    return (
+                                        <>{parts.join(" ")} <span className="highlight">{lastWord}</span></>
+                                    );
+                                }
+                                return hero.title || "Request a Quote";
+                            })()}
                         </motion.h1>
-
+ 
                         <motion.p variants={fadeInUp} className="quote-hero-subtitle">
-                            Tell us about your project and our engineering team will prepare a tailored quotation.
+                            {hero.subtitle}
                         </motion.p>
                     </motion.div>
                 </div>
             </section>
-
+ 
             {/* Layout Section */}
             <section className="quote-content-section">
                 <div className="container quote-grid-layout">
@@ -278,16 +374,16 @@ const Quote: React.FC = () => {
                         transition={{ duration: 0.6 }}
                     >
                         <div className="info-card">
-                            <h3 className="info-card-title">Vertex Controls Advantage</h3>
+                            <h3 className="info-card-title">{infoCard.title}</h3>
                             <p className="info-card-lead">
-                                Partner with a certified electromechanical systems integrator in the UAE.
+                                {infoCard.lead}
                             </p>
-
+ 
                             <div className="info-features-list">
                                 {features.map((feature, idx) => (
                                     <div key={idx} className="info-feature-item">
                                         <div className="feature-icon-wrapper">
-                                            <FaCheckCircle className="check-icon" />
+                                            <Icons.FaCheckCircle className="check-icon" />
                                         </div>
                                         <div className="feature-text">
                                             <h4>{feature.title}</h4>
@@ -296,19 +392,19 @@ const Quote: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-
+ 
                             <div className="info-card-footer">
-                                <p className="contact-label">Talk to an Engineer directly</p>
-                                <a href="tel:+971554962866" className="phone-link">
-                                    <FaPhoneAlt size={14} /> +971 55 496 2866
+                                <p className="contact-label">{infoCard.phoneLabel}</p>
+                                <a href={infoCard.phoneUrl} className="phone-link">
+                                    <Icons.FaPhoneAlt size={14} /> {infoCard.phoneText}
                                 </a>
                                 <a
-                                    href="https://wa.me/971554962866"
+                                    href={infoCard.whatsappUrl}
                                     target="_blank"
                                     rel="noreferrer"
                                     className="whatsapp-btn-link"
                                 >
-                                    <FaWhatsapp size={18} /> Chat on WhatsApp
+                                    <Icons.FaWhatsapp size={18} /> {infoCard.whatsappText}
                                 </a>
                             </div>
                         </div>
@@ -337,7 +433,7 @@ const Quote: React.FC = () => {
                                                 {/* Company Name */}
                                                 <div className="form-group">
                                                     <label htmlFor="companyName">
-                                                        <FaBuilding className="input-icon" /> Company Name *
+                                                        <Icons.FaBuilding className="input-icon" /> Company Name *
                                                     </label>
                                                     <input
                                                         type="text"
@@ -356,7 +452,7 @@ const Quote: React.FC = () => {
                                                 {/* Contact Person */}
                                                 <div className="form-group">
                                                     <label htmlFor="contactPerson">
-                                                        <FaUser className="input-icon" /> Contact Person *
+                                                        <Icons.FaUser className="input-icon" /> Contact Person *
                                                     </label>
                                                     <input
                                                         type="text"
@@ -377,10 +473,10 @@ const Quote: React.FC = () => {
                                                 {/* Email Address */}
                                                 <div className="form-group">
                                                     <label htmlFor="email">
-                                                        <FaEnvelope className="input-icon" /> Email Address *
+                                                        <Icons.FaEnvelope className="input-icon" /> Email Address *
                                                     </label>
                                                     <input
-                                                        type="email"
+                                                        type="text"
                                                         id="email"
                                                         name="email"
                                                         value={formValues.email}
@@ -396,7 +492,7 @@ const Quote: React.FC = () => {
                                                 {/* Phone Number */}
                                                 <div className="form-group">
                                                     <label htmlFor="phone">
-                                                        <FaPhoneAlt className="input-icon" /> Phone Number *
+                                                        <Icons.FaPhoneAlt className="input-icon" /> Phone Number *
                                                     </label>
                                                     <input
                                                         type="tel"
@@ -417,7 +513,7 @@ const Quote: React.FC = () => {
                                                 {/* Service Required */}
                                                 <div className="form-group">
                                                     <label htmlFor="serviceRequired">
-                                                        <FaInfoCircle className="input-icon" /> Service Required *
+                                                        <Icons.FaInfoCircle className="input-icon" /> Service Required *
                                                     </label>
                                                     <select
                                                         id="serviceRequired"
@@ -427,25 +523,19 @@ const Quote: React.FC = () => {
                                                         className={formErrors.serviceRequired ? "input-error" : ""}
                                                     >
                                                         <option value="" disabled>Select a service</option>
-                                                        <option value="PLC & SCADA Control Panels">PLC & SCADA Control Panels</option>
-                                                        <option value="LV Switchgears & MDBs">LV Switchgears & MDBs</option>
-                                                        <option value="Building Management Systems (BMS)">Building Management Systems (BMS)</option>
-                                                        <option value="Electrical Engineering Services">Electrical Engineering Services</option>
-                                                        <option value="Mechanical & MEP Solutions">Mechanical & MEP Solutions</option>
-                                                        <option value="Industrial Automation Integration">Industrial Automation Integration</option>
-                                                        <option value="Smart Infrastructure & IoT Telemetry">Smart Infrastructure & IoT Telemetry</option>
-                                                        <option value="Annual Maintenance Contract (AMC)">Annual Maintenance Contract (AMC)</option>
-                                                        <option value="Other Engineering Support">Other Engineering Support</option>
+                                                        {servicesList.map((service, sIdx) => (
+                                                            <option key={sIdx} value={service}>{service}</option>
+                                                        ))}
                                                     </select>
                                                     {formErrors.serviceRequired && (
                                                         <span className="error-text">{formErrors.serviceRequired}</span>
                                                     )}
                                                 </div>
-
+ 
                                                 {/* Project Location */}
                                                 <div className="form-group">
                                                     <label htmlFor="projectLocation">
-                                                        <FaMapMarkerAlt className="input-icon" /> Project Location *
+                                                        <Icons.FaMapMarkerAlt className="input-icon" /> Project Location *
                                                     </label>
                                                     <input
                                                         type="text"
@@ -461,7 +551,7 @@ const Quote: React.FC = () => {
                                                     )}
                                                 </div>
                                             </div>
-
+ 
                                             {/* Project Details */}
                                             <div className="form-group">
                                                 <label htmlFor="projectDetails">Project Details *</label>
@@ -478,7 +568,7 @@ const Quote: React.FC = () => {
                                                     <span className="error-text">{formErrors.projectDetails}</span>
                                                 )}
                                             </div>
-
+ 
                                             {/* File Upload */}
                                             <div className="form-group">
                                                 <label>Attachments (Drawings, RFQs, IO Lists)</label>
@@ -497,13 +587,13 @@ const Quote: React.FC = () => {
                                                         accept=".pdf,.dwg,.docx,.jpg,.jpeg,.png"
                                                         style={{ display: "none" }}
                                                     />
-
+ 
                                                     {!file ? (
                                                         <div className="dropzone-placeholder">
-                                                            <FaCloudUploadAlt className="upload-icon" />
+                                                            <Icons.FaCloudUploadAlt className="upload-icon" />
                                                             <p className="upload-text">
                                                                 Drag & drop your files here or <span>browse</span>
-                                                            </p>
+                                                             </p>
                                                             <p className="upload-tip">
                                                                 Accepts PDF, DWG, DOCX, JPG (Max: 15MB)
                                                             </p>
@@ -511,21 +601,21 @@ const Quote: React.FC = () => {
                                                     ) : (
                                                         <div className="dropzone-file-preview" onClick={(e) => e.stopPropagation()}>
                                                             <div className="file-info-container">
-                                                                <FaFileAlt className="file-icon" />
+                                                                <Icons.FaFileAlt className="file-icon" />
                                                                 <div className="file-details">
                                                                     <span className="file-name">{file.name}</span>
                                                                     <span className="file-size">{formatBytes(file.size)}</span>
                                                                 </div>
                                                             </div>
                                                             <button type="button" className="btn-remove-file" onClick={removeFile}>
-                                                                <FaTimes size={14} />
+                                                                <Icons.FaTimes size={14} />
                                                             </button>
                                                         </div>
                                                     )}
                                                 </div>
                                                 {fileError && <span className="error-text file-error">{fileError}</span>}
                                             </div>
-
+ 
                                             {/* Submit Button */}
                                             <button
                                                 type="submit"
@@ -534,11 +624,11 @@ const Quote: React.FC = () => {
                                             >
                                                 {isSubmitting ? (
                                                     <>
-                                                        <FaSpinner className="spinner-icon animate-spin" /> Submitting Request...
+                                                        <Icons.FaSpinner className="spinner-icon animate-spin" /> Submitting Request...
                                                     </>
                                                 ) : (
                                                     <>
-                                                        Submit Quote Request <FaArrowRight size={14} />
+                                                        Submit Quote Request <Icons.FaArrowRight size={14} />
                                                     </>
                                                 )}
                                             </button>
@@ -553,7 +643,7 @@ const Quote: React.FC = () => {
                                         transition={{ duration: 0.4 }}
                                     >
                                         <div className="success-badge-container">
-                                            <FaCheckCircle />
+                                            <Icons.FaCheckCircle />
                                         </div>
                                         <h3 className="success-title">Quote Request Received</h3>
                                         <p className="success-desc">

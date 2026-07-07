@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import {
-    FaArrowRight, FaTools, FaCheckCircle, FaPhoneAlt,
-    FaEnvelope, FaSlidersH, FaShieldAlt, FaClock, FaMapMarkerAlt,
-    FaNetworkWired, FaLightbulb, FaTv, FaBolt, FaLock, FaBuilding
-} from "react-icons/fa";
+import * as Icons from "react-icons/fa";
+import { useContent } from "../../context/ContentContext";
+import { defaultServicesSubpages } from "../../data/subpageDefaults";
 import "./SmartInfrastructure.css";
+
+// Dynamic Icon Loader
+const getIcon = (iconName: string) => {
+    const IconComponent = (Icons as any)[iconName];
+    return IconComponent ? React.createElement(IconComponent) : <Icons.FaQuestionCircle />;
+};
 
 // Animation Variants
 const fadeInUp: any = {
@@ -23,91 +27,26 @@ const staggerContainer: any = {
 };
 
 const SmartInfrastructure: React.FC = () => {
+    const { content } = useContent();
+    const pageData = content.servicesSubpages?.["smart-infrastructure"] || defaultServicesSubpages["smart-infrastructure"];
+
     // SEO Requirements: Dynamic Title & Meta Description update
     useEffect(() => {
-        document.title = "Smart Infrastructure & BMS | Vertex Controls Electromechanical LLC";
-        
-        let metaDescription = document.querySelector('meta[name="description"]');
-        if (!metaDescription) {
-            metaDescription = document.createElement('meta');
-            metaDescription.setAttribute('name', 'description');
-            document.head.appendChild(metaDescription);
+        if (pageData.seo) {
+            document.title = pageData.seo.title;
+            let metaDescription = document.querySelector('meta[name="description"]');
+            if (!metaDescription) {
+                metaDescription = document.createElement('meta');
+                metaDescription.setAttribute('name', 'description');
+                document.head.appendChild(metaDescription);
+            }
+            metaDescription.setAttribute('content', pageData.seo.description);
         }
-        metaDescription.setAttribute(
-            'content',
-            'Vertex Controls integrates Smart Infrastructure, BMS building management systems, smart lighting, security ELV networks, and cabling in UAE.'
-        );
-    }, []);
+    }, [pageData.seo]);
 
-    // 3. Our Solutions Data (6 solutions)
-    const solutionsData = [
-        {
-            icon: FaBuilding,
-            title: "BMS Integration",
-            desc: "Centralized automation of HVAC, air handlers, chiller plants, and environmental sensors under a single operating screen.",
-            features: ["BacNet Protocol Sync", "Modbus Loops Mapping", "AHU Fan Control Logic", "Chiller Flow Automation"]
-        },
-        {
-            icon: FaLightbulb,
-            title: "Smart Lighting Controls",
-            desc: "DALI and KNX protocol configuration to schedule lighting grids, harvest daylight, and save building energy costs.",
-            features: ["KNX Dimming Channels", "DALI Ballast Addressing", "Daylight Harvesting Sensors", "Custom Scene Configurations"]
-        },
-        {
-            icon: FaLock,
-            title: "Access Control Networks",
-            desc: "Fingerprint scanner clusters, magnetic locks, card swipe reader panels, and smart vehicle barrier grids.",
-            features: ["Biometric Integrations", "Database Access Syncs", "Roll-call Alarm Mapping", "IP Controller Stations"]
-        },
-        {
-            icon: FaTv,
-            title: "Video Surveillance (CCTV)",
-            desc: "Plant-wide IP security camera networks, structural network video recorders, and desktop security center views.",
-            features: ["NVR Disk Optimization", "PoE Network Layouts", "Camera Angles Plotting", "Thermal Security Scans"]
-        },
-        {
-            icon: FaNetworkWired,
-            title: "Structured Cabling",
-            desc: "Installation of structural copper and high-speed fiber optic cabling grids, patch panels, and server racks.",
-            features: ["Fiber Splicing Diagnostics", "Cat6A Certified Testing", "Rack Wire Cable Ties", "Patch Panel Labels"]
-        },
-        {
-            icon: FaBolt,
-            title: "Energy Monitoring Systems",
-            desc: "Smart sub-metering installations communicating via Modbus to map building electrical efficiency.",
-            features: ["Sectional Meter Logs", "Real-Time Power Factor", "Load-Shedding Interfaces", "Historical Usage Charts"]
-        }
-    ];
-
-    // 4. Why Choose Vertex Controls Data (5 feature cards)
-    const whyChooseData = [
-        {
-            icon: FaTools,
-            title: "Experience",
-            desc: "Qualified smart lighting integrators and network field designers executing complex commercial structures."
-        },
-        {
-            icon: FaCheckCircle,
-            title: "Quality",
-            desc: "100% factory acceptance testing (FAT) using premium, certified components from elite global automation brands."
-        },
-        {
-            icon: FaShieldAlt,
-            title: "Safety",
-            desc: "Full compliance with local Civil Defense rules, utility guidelines (DEWA/ADDC), and IEC international safety standards."
-        },
-        {
-            icon: FaClock,
-            title: "Technical Support",
-            desc: "SLA response coverage, emergency on-site diagnostics, logic debugging, and prompt component replacement."
-        },
-        {
-            icon: FaSlidersH,
-            title: "Customized Solutions",
-            desc: "Tailored automation logic and panel dimensions built specifically around your facility's requirements."
-        }
-    ];
-
+    const solutionsData = pageData.solutions || [];
+    const whyChooseData = pageData.whyChoose || [];
+    
     return (
         <div className="subpage-wrapper">
             {/* 1. HERO SECTION */}
@@ -132,21 +71,31 @@ const SmartInfrastructure: React.FC = () => {
                         <motion.div variants={fadeInUp} className="hero-badge-wrapper">
                             <div className="hero-badge">
                                 <span className="badge-pulse"></span>
-                                <span className="badge-text">Building Automation</span>
+                                <span className="badge-text">{pageData.hero?.badgeText}</span>
                             </div>
                         </motion.div>
 
                         <motion.h1 variants={fadeInUp} className="page-header-title">
-                            Smart Infrastructure <span className="text-gradient">& BMS</span>
+                            {(() => {
+                                const parts = (pageData.hero?.title || "").split(" ");
+                                if (parts.length > 1) {
+                                    const lastWords = parts.slice(-2).join(" ");
+                                    const firstPart = parts.slice(0, -2).join(" ");
+                                    return (
+                                        <>{firstPart} <span className="text-gradient">{lastWords}</span></>
+                                    );
+                                }
+                                return pageData.hero?.title;
+                            })()}
                         </motion.h1>
 
                         <motion.p variants={fadeInUp} className="page-header-lead">
-                            Advanced building management systems (BMS), smart lighting controls, access instrumentation, and integrated infrastructure controls.
+                            {pageData.hero?.lead}
                         </motion.p>
 
                         <motion.div variants={fadeInUp} className="page-header-buttons">
                             <Link to="/quote" className="btn btn-primary">
-                                Request a Quote <FaArrowRight size={14} />
+                                Request a Quote <Icons.FaArrowRight size={14} />
                             </Link>
                             <Link to="/contact" className="btn btn-secondary">
                                 Contact Us
@@ -166,13 +115,13 @@ const SmartInfrastructure: React.FC = () => {
                         viewport={{ once: true, amount: 0.3 }}
                         variants={staggerContainer}
                     >
-                        <motion.span variants={fadeInUp} className="sub-tag">Facility Automation</motion.span>
-                        <motion.h2 variants={fadeInUp} className="section-title">Centralized Infrastructure Controls</motion.h2>
+                        <motion.span variants={fadeInUp} className="sub-tag">{pageData.overview?.subTag}</motion.span>
+                        <motion.h2 variants={fadeInUp} className="section-title">{pageData.overview?.title}</motion.h2>
                         <p className="overview-lead">
-                            At Vertex Controls, we design and integrate smart infrastructure systems that unify building controls, lighting grids, and security platforms.
+                            {pageData.overview?.lead}
                         </p>
                         <p style={{ color: "var(--gray)", fontSize: "1.05rem", lineHeight: "1.75" }}>
-                            Our team builds centralized BMS solutions that automate HVAC, monitoring sensors, and emergency alarms. We enable commercial facility managers to reduce energy waste and maintain structural health via integrated, interactive control interfaces.
+                            {pageData.overview?.body}
                         </p>
                     </motion.div>
 
@@ -184,7 +133,7 @@ const SmartInfrastructure: React.FC = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <div className="overview-image-frame">
-                            <img src="/Images/Project/lighting_showcase.webp" alt="Smart Infrastructure Building Control Console" />
+                            <img src={pageData.overview?.imageSrc} alt={pageData.overview?.title} />
                             <div className="image-frame-overlay"></div>
                         </div>
                     </motion.div>
@@ -214,7 +163,6 @@ const SmartInfrastructure: React.FC = () => {
                         variants={staggerContainer}
                     >
                         {solutionsData.map((sol, index) => {
-                            const SolIcon = sol.icon;
                             return (
                                 <motion.div
                                     key={index}
@@ -222,7 +170,7 @@ const SmartInfrastructure: React.FC = () => {
                                     variants={fadeInUp}
                                 >
                                     <div className="solution-card-icon">
-                                        <SolIcon />
+                                        {getIcon(sol.icon)}
                                     </div>
                                     <h3>{sol.title}</h3>
                                     <p>{sol.desc}</p>
@@ -264,7 +212,6 @@ const SmartInfrastructure: React.FC = () => {
                         variants={staggerContainer}
                     >
                         {whyChooseData.map((why, index) => {
-                            const WhyIcon = why.icon;
                             return (
                                 <motion.div
                                     key={index}
@@ -272,7 +219,7 @@ const SmartInfrastructure: React.FC = () => {
                                     variants={fadeInUp}
                                 >
                                     <div className="why-icon-box">
-                                        <WhyIcon />
+                                        {getIcon(why.icon)}
                                     </div>
                                     <h3>{why.title}</h3>
                                     <p>{why.desc}</p>
@@ -296,14 +243,12 @@ const SmartInfrastructure: React.FC = () => {
                         <span className="sub-tag" style={{ color: "var(--primary)", display: "inline-block", marginBottom: "1rem" }}>
                             Get In Touch
                         </span>
-                        <h2>Ready to Discuss Your Project?</h2>
-                        <p>
-                            Whether you need automated HVAC BMS controls, custom KNX smart lighting designs, integrated video surveillance networks, or certified structured cabling, Vertex Controls delivers expert systems engineered for uptime.
-                        </p>
+                        <h2>{pageData.cta?.title}</h2>
+                        <p>{pageData.cta?.desc}</p>
                         
                         <div className="cta-buttons">
                             <Link to="/quote" className="btn btn-primary">
-                                Request a Quote <FaArrowRight size={14} />
+                                Request a Quote <Icons.FaArrowRight size={14} />
                             </Link>
                             <Link to="/contact" className="btn btn-secondary">
                                 Contact Us
@@ -312,16 +257,16 @@ const SmartInfrastructure: React.FC = () => {
 
                         <div className="cta-contacts">
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaMapMarkerAlt /></span>
-                                <span>Dubai, UAE</span>
+                                <span className="cta-contact-icon"><Icons.FaMapMarkerAlt /></span>
+                                <span>{pageData.cta?.location}</span>
                             </div>
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaPhoneAlt /></span>
-                                <a href="tel:+971554962866">+971 55 496 2866</a>
+                                <span className="cta-contact-icon"><Icons.FaPhoneAlt /></span>
+                                <a href={`tel:${(pageData.cta?.phone || "").replace(/\s+/g, "")}`}>{pageData.cta?.phone}</a>
                             </div>
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaEnvelope /></span>
-                                <a href="mailto:Sales@vertex-controls.com">Sales@vertex-controls.com</a>
+                                <span className="cta-contact-icon"><Icons.FaEnvelope /></span>
+                                <a href={`mailto:${pageData.cta?.email}`}>{pageData.cta?.email}</a>
                             </div>
                         </div>
                     </motion.div>

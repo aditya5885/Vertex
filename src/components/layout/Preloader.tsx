@@ -16,7 +16,7 @@ export const Preloader: React.FC<{ onComplete?: () => void }> = ({ onComplete })
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Smooth counter simulation
+        // Snappy, high-performance counter simulation
         const interval = setInterval(() => {
             setProgress((prev) => {
                 if (prev >= 100) {
@@ -24,13 +24,13 @@ export const Preloader: React.FC<{ onComplete?: () => void }> = ({ onComplete })
                     setTimeout(() => {
                         setIsLoading(false);
                         if (onComplete) onComplete();
-                    }, 500);
+                    }, 200);
                     return 100;
                 }
-                const increment = Math.floor(Math.random() * 8) + 3;
+                const increment = Math.floor(Math.random() * 12) + 8;
                 return Math.min(prev + increment, 100);
             });
-        }, 60);
+        }, 35);
 
         return () => clearInterval(interval);
     }, [onComplete]);

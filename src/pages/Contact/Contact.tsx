@@ -1,11 +1,8 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import {
-    FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaClock,
-    FaArrowRight, FaGlobe, FaBuilding, FaCheckCircle,
-    FaShieldAlt, FaHeadset, FaTools, FaLightbulb
-} from "react-icons/fa";
+import * as Icons from "react-icons/fa";
+import { useContent } from "../../context/ContentContext";
 import "./Contact.css";
 
 interface FormFields {
@@ -16,6 +13,12 @@ interface FormFields {
     service: string;
     message: string;
 }
+
+// Helper to resolve font-awesome icons dynamically by string name
+const getIcon = (iconName: string) => {
+    const IconComponent = (Icons as any)[iconName];
+    return IconComponent ? React.createElement(IconComponent) : <Icons.FaQuestionCircle />;
+};
 
 const Contact: React.FC = () => {
     // Form Inputs & Validation States
@@ -72,13 +75,13 @@ const Contact: React.FC = () => {
 
         if (!formValues.email.trim()) {
             errors.email = "Email is required";
-        } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
+        } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formValues.email.trim())) {
             errors.email = "Please enter a valid email address";
         }
 
         if (!formValues.phone.trim()) {
             errors.phone = "Phone number is required";
-        } else if (!/^\+?[0-9\s-]{7,15}$/.test(formValues.phone.replace(/\s+/g, ""))) {
+        } else if (!/^\+?[0-9]{7,15}$/.test(formValues.phone.replace(/[\s()-]/g, ""))) {
             errors.phone = "Please enter a valid phone number";
         }
 
@@ -103,16 +106,32 @@ const Contact: React.FC = () => {
         }
     };
 
-    const handleFormSubmit = (e: React.FormEvent) => {
+    const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (validateForm()) {
             setIsSubmitting(true);
-            setTimeout(() => {
+            try {
+                const res = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formValues)
+                });
+                
+                if (res.ok) {
+                    setIsSubmitted(true);
+                } else {
+                    const data = await res.json();
+                    alert(data.message || "Something went wrong. Please try again later.");
+                }
+            } catch (err) {
+                console.error("Form submission error:", err);
+                alert("Network error. Please check your internet connection.");
+            } finally {
                 setIsSubmitting(false);
-                setIsSubmitted(true);
-                console.log("Form payload verified and sent:", formValues);
-            }, 1500);
+            }
         }
     };
 
@@ -147,59 +166,80 @@ const Contact: React.FC = () => {
         }
     };
 
-    const servicesList = [
-        "New Engineering Projects",
-        "Annual Maintenance Contracts (AMC)",
-        "Automation & Control Solutions",
-        "PLC & SCADA Systems",
-        "Electrical Engineering Services",
-        "MEP Solutions",
-        "Control Panel Design & Manufacturing",
-        "Smart Infrastructure Solutions",
-        "AI & IoT Integration",
-        "ELV & Security Systems",
-        "Energy Management Solutions",
-        "Technical Consultation & Upgrades"
-    ];
+    const { content } = useContent();
 
-    const bentoItems = [
-        {
-            icon: FaClock,
-            title: "Rapid Response",
-            description: "Immediate critical support. We ensure 24/7 technical hotline access and rapid response teams deployed across Dubai and the Northern Emirates.",
-            colSpan: "bento-cols-4"
-        },
-        {
-            icon: FaTools,
-            title: "Engineering Expertise",
-            description: "Our engineers specialize in high-end PLC programming, complex MCC panels, SCADA dashboards, mechanical systems, and telemetry optimization designed to withstand harsh industrial environments.",
-            colSpan: "bento-cols-8"
-        },
-        {
-            icon: FaBuilding,
-            title: "Customized Solutions",
-            description: "No generic templates. We conduct detailed site assessments to construct bespoke electromechanical schematics tailored to the precise specifications of your facility.",
-            colSpan: "bento-cols-6"
-        },
-        {
-            icon: FaHeadset,
-            title: "Reliable Support",
-            description: "Strict SLA compliance. From testing and commissioning to preventive maintenance cycles, we guarantee active support to keep your operations running at peak performance.",
-            colSpan: "bento-cols-6"
-        },
-        {
-            icon: FaShieldAlt,
-            title: "Industry Experience",
-            description: "Integrated partner with key industrial and infrastructure hubs across the GCC. We deliver ISO-compliant, certified electromechanical systems engineered to highest safety standards.",
-            colSpan: "bento-cols-8"
-        },
-        {
-            icon: FaLightbulb,
-            title: "Innovation",
-            description: "Pioneering smart engineering. We embed intelligent IoT gateways and predictive maintenance systems that monitor electrical grids and prevent downtime.",
-            colSpan: "bento-cols-4"
+    // Pre-select first service from CMS dynamic list by default
+    React.useEffect(() => {
+        const services = content?.contact?.quoteSection?.servicesList || [];
+        if (services.length > 0 && !formValues.service) {
+            setFormValues(prev => ({
+                ...prev,
+                service: services[0]
+            }));
         }
-    ];
+    }, [content, formValues.service]);
+
+    // Safe fallbacks for Contact Us CMS variables
+    const contactData = content.contact || {
+        hero: {
+            pulseBadge: "Electromechanical & Automation UAE",
+            title: "Contact Us",
+            subtitle: "Let's Connect",
+            lead: "Whether you're planning a new engineering project, upgrading existing systems, or seeking expert technical support, the team at Vertex Controls Electromechanical LLC is ready to assist.",
+            phoneUrl: "tel:+971554962866",
+            phoneText: "Call Us"
+        },
+        infoCard: {
+            title: "Contact Information",
+            companyName: "Vertex Controls Electromechanical LLC",
+            address: "Office No-5, L1/6A, 1st Floor, Reef Mall, Al Murqabat, Deira",
+            country: "Dubai, United Arab Emirates",
+            phone: "+971 55 496 2866",
+            email: "Sales@vertex-controls.com",
+            website: "www.vertex-controls.com"
+        },
+        hoursCard: {
+            title: "Business Hours",
+            weekDaysTitle: "Monday – Saturday",
+            weekDaysHours: "8:00 AM – 6:00 PM",
+            sundayTitle: "Sunday",
+            sundayHours: "Closed",
+            disclaimer: "*Priority SLA emergency support remains active 24/7 for clients under Annual Maintenance Contracts (AMC)."
+        },
+        mapCard: {
+            title: "Google Map",
+            embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.0330010638054!2d55.32087537489523!3d25.269475277664476!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5da8878c837f%3A0xa5adb301b301eeaa!2sVertex%20controls%20Electromechanical%20llc!5e0!3m2!1sen!2sin!4v1782545529440!5m2!1sen!2sin"
+        },
+        quoteSection: {
+            title: "Request a Quote",
+            lead: "Looking for a trusted, certified engineering partner in the UAE?",
+            servicesList: []
+        },
+        bentoHeader: {
+            subTag: "The Vertex Advantage",
+            title: "Engineered for Reliability",
+            desc: "Vertex Controls LLC brings automated precision, technical transparency, and top-tier industrial safety standards to MEP, energy, and SCADA engineering."
+        },
+        bentoItems: [],
+        finalCta: {
+            title: "We're Here to Help",
+            desc: "At Vertex Controls Electromechanical LLC, we are committed to delivering innovative engineering solutions.",
+            tagline: "Engineering Intelligence. // Automated Excellence.",
+            phoneUrl: "tel:+971554962866",
+            phoneText: "Call Now"
+        }
+    };
+
+    const hero = contactData.hero || {};
+    const infoCard = contactData.infoCard || {};
+    const hoursCard = contactData.hoursCard || {};
+    const mapCard = contactData.mapCard || {};
+    const quoteSection = contactData.quoteSection || {};
+    const bentoHeader = contactData.bentoHeader || {};
+    const bentoItems = contactData.bentoItems || [];
+    const finalCta = contactData.finalCta || {};
+
+    const servicesList = quoteSection.servicesList || [];
 
     return (
         <div className="contact-page-wrapper">
@@ -234,25 +274,34 @@ const Contact: React.FC = () => {
                         <motion.div variants={fadeInUp} className="hero-badge-wrapper">
                             <div className="hero-badge">
                                 <span className="badge-pulse"></span>
-                                <span className="badge-text">Electromechanical & Automation UAE</span>
+                                <span className="badge-text">{hero.pulseBadge}</span>
                             </div>
                         </motion.div>
-
+ 
                         <motion.h1 variants={fadeInUp} className="page-header-title">
-                            Contact <span className="text-gradient">Us</span>
+                            {(() => {
+                                const parts = (hero.title || "Contact Us").split(" ");
+                                if (parts.length > 1) {
+                                    const lastWord = parts.pop();
+                                    return (
+                                        <>{parts.join(" ")} <span className="text-gradient">{lastWord}</span></>
+                                    );
+                                }
+                                return hero.title || "Contact Us";
+                            })()}
                         </motion.h1>
-                        <motion.div variants={fadeInUp} className="let-connect">Let's Connect</motion.div>
-
+                        <motion.div variants={fadeInUp} className="let-connect">{hero.subtitle}</motion.div>
+ 
                         <motion.p variants={fadeInUp} className="page-header-lead">
-                            Whether you're planning a new engineering project, upgrading existing systems, or seeking expert technical support, the team at Vertex Controls Electromechanical LLC is ready to assist. Contact us today to discuss your requirements, request a quotation, or learn more about our engineering solutions.
+                            {hero.lead}
                         </motion.p>
-
+ 
                         <motion.div variants={fadeInUp} className="page-header-buttons">
                             <Link to="/quote" className="btn btn-primary">
-                                Request a Quote <FaArrowRight size={13} />
+                                Request a Quote <Icons.FaArrowRight size={13} />
                             </Link>
-                            <a href="tel:+971554962866" className="btn btn-secondary">
-                                <FaPhoneAlt size={12} /> Call Us
+                            <a href={hero.phoneUrl || "tel:+971554962866"} className="btn btn-secondary">
+                                <Icons.FaPhoneAlt size={12} /> {hero.phoneText || "Call Us"}
                             </a>
                         </motion.div>
                     </motion.div>
@@ -288,30 +337,30 @@ const Contact: React.FC = () => {
 
                             <div className="spotlight-card-content">
                                 <div className="card-icon-box">
-                                    <FaBuilding />
+                                    <Icons.FaBuilding />
                                 </div>
-                                <h3 className="card-title">Contact Information</h3>
+                                <h3 className="card-title">{infoCard.title}</h3>
                                 <div className="card-content-block">
-                                    <h4>Vertex Controls Electromechanical LLC</h4>
-                                    <p>Office No-5, L1/6A, 1st Floor, Reef Mall, Al Murqabat, Deira</p>
-                                    <p style={{ color: "var(--primary)" }}>Dubai, United Arab Emirates</p>
-
+                                    <h4>{infoCard.companyName}</h4>
+                                    <p>{infoCard.address}</p>
+                                    <p style={{ color: "var(--primary)" }}>{infoCard.country}</p>
+ 
                                     <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                                        <a href="tel:+971554962866" className="card-text-link">
-                                            <FaPhoneAlt size={12} /> +971 55 496 2866
+                                        <a href={`tel:${(infoCard.phone || "").replace(/\s+/g, "")}`} className="card-text-link">
+                                            <Icons.FaPhoneAlt size={12} /> {infoCard.phone}
                                         </a>
-                                        <a href="mailto:Sales@vertex-controls.com" className="card-text-link">
-                                            <FaEnvelope size={12} /> Sales@vertex-controls.com
+                                        <a href={`mailto:${infoCard.email}`} className="card-text-link">
+                                            <Icons.FaEnvelope size={12} /> {infoCard.email}
                                         </a>
-                                        <a href="https://www.vertex-controls.com" target="_blank" rel="noopener noreferrer" className="card-text-link">
-                                            <FaGlobe size={12} /> www.vertex-controls.com
+                                        <a href={`https://${infoCard.website}`} target="_blank" rel="noopener noreferrer" className="card-text-link">
+                                            <Icons.FaGlobe size={12} /> {infoCard.website}
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </motion.div>
-
+ 
                     {/* Card 2: Business Hours */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -331,27 +380,27 @@ const Contact: React.FC = () => {
                                 <span></span>
                                 <span></span>
                             </div>
-
+ 
                             <div className="spotlight-card-content">
                                 <div className="card-icon-box">
-                                    <FaClock />
+                                    <Icons.FaClock />
                                 </div>
-                                <h3 className="card-title">Business Hours</h3>
+                                <h3 className="card-title">{hoursCard.title}</h3>
                                 <div className="card-content-block">
-                                    <h4>Monday – Saturday</h4>
-                                    <p style={{ fontSize: "1.1rem", color: "var(--primary)", fontWeight: 600 }}>8:00 AM – 6:00 PM</p>
-
-                                    <h4 style={{ color: "var(--gray)", marginTop: "1rem" }}>Sunday</h4>
-                                    <p style={{ color: "#ff4a4a", fontWeight: 600 }}>Closed</p>
-
+                                    <h4>{hoursCard.weekDaysTitle}</h4>
+                                    <p style={{ fontSize: "1.1rem", color: "var(--primary)", fontWeight: 600 }}>{hoursCard.weekDaysHours}</p>
+ 
+                                    <h4 style={{ color: "var(--gray)", marginTop: "1rem" }}>{hoursCard.sundayTitle}</h4>
+                                    <p style={{ color: "#ff4a4a", fontWeight: 600 }}>{hoursCard.sundayHours}</p>
+ 
                                     <p style={{ fontSize: "0.85rem", color: "var(--gray)", fontStyle: "italic", marginTop: "auto" }}>
-                                        *Priority SLA emergency support remains active 24/7 for clients under Annual Maintenance Contracts (AMC).
+                                        {hoursCard.disclaimer}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </motion.div>
-
+ 
                     {/* Card 3: Dubai Map Radar Schematic */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -371,17 +420,17 @@ const Contact: React.FC = () => {
                                 <span></span>
                                 <span></span>
                             </div>
-
+ 
                             <div className="spotlight-card-content">
                                 <div className="card-icon-box">
-                                    <FaMapMarkerAlt />
+                                    <Icons.FaMapMarkerAlt />
                                 </div>
-                                <h3 className="card-title">Google Map</h3>
-
+                                <h3 className="card-title">{mapCard.title}</h3>
+ 
                                 {/* Google Maps Embed */}
                                 <div className="map-wrapper">
                                     <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.0330010638054!2d55.32087537489523!3d25.269475277664476!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5da8878c837f%3A0xa5adb301b301eeaa!2sVertex%20controls%20Electromechanical%20llc!5e0!3m2!1sen!2sin!4v1782545529440!5m2!1sen!2sin"
+                                        src={mapCard.embedUrl}
                                         allowFullScreen
                                         loading="lazy"
                                         title="Vertex Controls Location"
@@ -390,16 +439,16 @@ const Contact: React.FC = () => {
                             </div>
                         </div>
                     </motion.div>
-
+ 
                 </div>
             </section>
-
+ 
             {/* ==========================================
                SECTION 3 — REQUEST A QUOTE (FORM)
                ========================================== */}
             <section className="quote-section container" ref={formSectionRef}>
                 <div className="quote-grid">
-
+ 
                     {/* Left Details */}
                     <motion.div
                         className="quote-info-col"
@@ -408,15 +457,15 @@ const Contact: React.FC = () => {
                         viewport={{ once: true, amount: 0.05 }}
                         transition={{ duration: 0.65 }}
                     >
-                        <h2>Request a Quote</h2>
+                        <h2>{quoteSection.title}</h2>
                         <p className="quote-info-text">
-                            Looking for a trusted, certified engineering partner in the UAE? Get in touch with us to receive custom blueprints, SLAs, or competitive commercial tenders for:
+                            {quoteSection.lead}
                         </p>
-
+ 
                         <ul className="quote-list">
                             {servicesList.map((service, index) => (
                                 <li className="quote-list-item" key={index}>
-                                    <span className="quote-list-icon"><FaCheckCircle size={13} /></span>
+                                    <span className="quote-list-icon"><Icons.FaCheckCircle size={13} /></span>
                                     <span>{service}</span>
                                 </li>
                             ))}
@@ -514,13 +563,9 @@ const Contact: React.FC = () => {
                                                     style={{ borderColor: formErrors.service ? "#ef4444" : undefined }}
                                                 >
                                                     <option value="" disabled></option>
-                                                    <option value="Electrical Engineering">Electrical Engineering</option>
-                                                    <option value="PLC & SCADA Automation">PLC & SCADA Automation</option>
-                                                    <option value="Control Panel Design (MCC/VFD)">Control Panel Design (MCC/VFD)</option>
-                                                    <option value="Annual Maintenance Contracts (AMC)">Annual Maintenance Contracts (AMC)</option>
-                                                    <option value="Mechanical & MEP Solutions">Mechanical & MEP Solutions</option>
-                                                    <option value="Smart Infrastructure & IoT">Smart Infrastructure & IoT</option>
-                                                    <option value="Other Engineering Consultation">Other Engineering Consultation</option>
+                                                    {servicesList.map((service, sIdx) => (
+                                                        <option key={sIdx} value={service}>{service}</option>
+                                                    ))}
                                                 </select>
                                             </div>
                                             <label htmlFor="service">Requested Engineering Service</label>
@@ -528,7 +573,7 @@ const Contact: React.FC = () => {
                                                 <span className="form-error-msg">{formErrors.service}</span>
                                             )}
                                         </div>
-
+ 
                                         {/* Message Field */}
                                         <div className={`form-input-group ${formValues.message ? "has-value" : ""}`}>
                                             <textarea
@@ -543,7 +588,7 @@ const Contact: React.FC = () => {
                                                 <span className="form-error-msg">{formErrors.message}</span>
                                             )}
                                         </div>
-
+ 
                                         {/* Submit Button */}
                                         <button
                                             type="submit"
@@ -552,7 +597,7 @@ const Contact: React.FC = () => {
                                         >
                                             {isSubmitting ? "Processing..." : "Submit Technical Request"}
                                         </button>
-
+ 
                                     </form>
                                 </motion.div>
                             ) : (
@@ -564,7 +609,7 @@ const Contact: React.FC = () => {
                                     transition={{ duration: 0.4 }}
                                 >
                                     <div className="success-icon-container">
-                                        <FaCheckCircle />
+                                        <Icons.FaCheckCircle />
                                     </div>
                                     <h3 style={{ color: "var(--white)", fontSize: "1.75rem", marginBottom: "0.75rem", fontWeight: 700 }}>Request Received</h3>
                                     <p style={{ color: "var(--gray)", fontSize: "0.98rem", lineHeight: 1.6, marginBottom: "2.5rem" }}>
@@ -579,17 +624,17 @@ const Contact: React.FC = () => {
                     </motion.div>
                 </div>
             </section>
-
+ 
             {/* ==========================================
                SECTION 4 — WHY CONTACT US (BENTO GRID)
                ========================================== */}
             <section className="bento-section container" ref={bentoSectionRef}>
                 <div className="bento-section-header">
-                    <span className="sub-tag">The Vertex Advantage</span>
-                    <h2>Engineered for Reliability</h2>
-                    <p>Vertex Controls LLC brings automated precision, technical transparency, and top-tier industrial safety standards to MEP, energy, and SCADA engineering.</p>
+                    <span className="sub-tag">{bentoHeader.subTag}</span>
+                    <h2>{bentoHeader.title}</h2>
+                    <p>{bentoHeader.desc}</p>
                 </div>
-
+ 
                 <div className="bento-grid">
                     {bentoItems.map((item, idx) => (
                         <motion.div
@@ -604,7 +649,7 @@ const Contact: React.FC = () => {
                         >
                             <div className="bento-card-content">
                                 <div className="bento-icon-box">
-                                    <item.icon />
+                                    {getIcon(item.icon)}
                                 </div>
                                 <h3>{item.title}</h3>
                                 <p>{item.description}</p>
@@ -613,7 +658,7 @@ const Contact: React.FC = () => {
                     ))}
                 </div>
             </section>
-
+ 
             {/* ==========================================
                SECTION 5 — FINAL CTA
                ========================================== */}
@@ -623,23 +668,23 @@ const Contact: React.FC = () => {
                     <div className="energy-ring ring-2"></div>
                     <div className="energy-ring ring-3"></div>
                 </div>
-
+ 
                 <div className="final-cta-content container">
-                    <h2>We're Here to Help</h2>
+                    <h2>{finalCta.title}</h2>
                     <p className="final-cta-text">
-                        At Vertex Controls Electromechanical LLC, we are committed to delivering innovative engineering solutions, reliable technical expertise, and exceptional customer service. Whether your project is large or small, our team is ready to help you achieve efficient, intelligent, and sustainable results.
+                        {finalCta.desc}
                     </p>
-
+ 
                     <div className="final-cta-tagline">
-                        Engineering Intelligence. // Automated Excellence.
+                        {finalCta.tagline}
                     </div>
-
+ 
                     <div className="final-cta-buttons">
                         <button onClick={scrollToForm} className="btn btn-primary">
-                            Get a Quote <FaArrowRight size={13} />
+                            Get a Quote <Icons.FaArrowRight size={13} />
                         </button>
-                        <a href="tel:+971554962866" className="btn btn-secondary">
-                            <FaPhoneAlt size={12} /> Call Now
+                        <a href={finalCta.phoneUrl || "tel:+971554962866"} className="btn btn-secondary">
+                            <Icons.FaPhoneAlt size={12} /> {finalCta.phoneText || "Call Now"}
                         </a>
                     </div>
                 </div>

@@ -403,28 +403,31 @@
     gap: 1.85rem;
 }
 
-/* Floating Label Inputs */
+/* Floating Label Inputs replaced with clean, static labels */
 .form-input-group {
-    position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    position: relative;
 }
 
 .form-input-group input,
 .form-input-group textarea,
-.form-input-group select {
+.select-wrapper select {
+    order: 2;
     width: 100%;
-    background: var(--dark-surface);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--dark-surface) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-radius: 8px;
-    padding: 1rem 1.25rem;
-    color: var(--white);
+    padding: 0.9rem 1.25rem;
+    color: var(--white) !important;
     font-family: inherit;
     font-size: 0.95rem;
     transition: var(--transition);
     outline: none;
 }
 
-.form-input-group select {
+.select-wrapper select {
     appearance: none;
     -webkit-appearance: none;
     cursor: pointer;
@@ -432,6 +435,7 @@
 
 /* Custom Dropdown Indicator */
 .select-wrapper {
+    order: 2;
     position: relative;
     width: 100%;
 }
@@ -449,49 +453,59 @@
 
 .form-input-group input:focus,
 .form-input-group textarea:focus,
-.form-input-group select:focus {
-    border-color: var(--primary);
-    background: rgba(7, 19, 32, 0.85);
+.select-wrapper select:focus {
+    border-color: var(--primary) !important;
+    background: rgba(7, 19, 32, 0.85) !important;
     box-shadow: 0 0 12px rgba(0, 194, 255, 0.25);
 }
 
-/* Float logic */
+/* Static Label styling rendered on top */
 .form-input-group label {
-    position: absolute;
-    left: 1.25rem;
-    top: 1rem;
-    color: var(--gray);
-    pointer-events: none;
-    transition: var(--transition);
-    transform-origin: 0 0;
-    font-size: 0.95rem;
-}
-
-.form-input-group.has-value label,
-.form-input-group input:focus ~ label,
-.form-input-group textarea:focus ~ label,
-.form-input-group select:focus ~ label {
-    transform: translateY(-1.9rem) scale(0.85);
-    color: var(--primary);
+    order: 1;
+    display: block;
+    margin-bottom: 0.55rem;
+    color: var(--primary) !important;
     font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    pointer-events: auto;
+    position: static !important;
+    transform: none !important;
+    transition: none !important;
 }
 
 .form-input-group textarea {
-    min-height: 100px;
+    min-height: 110px;
     resize: vertical;
 }
 
 /* Clean Validations error */
 .form-error-msg {
+    order: 3;
     color: #ef4444;
     font-size: 0.8rem;
-    margin-top: 0.35rem;
-    position: absolute;
-    bottom: -1.25rem;
-    left: 0.25rem;
+    margin-top: 0.4rem;
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    position: static !important;
+}
+
+/* Chrome/Safari Auto-fill styling fix to prevent white/yellow backgrounds */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ffffff !important;
+    -webkit-box-shadow: 0 0 0px 1000px #0a1728 inset !important;
+    border: 1px solid rgba(0, 229, 255, 0.2) !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .btn-form-submit {

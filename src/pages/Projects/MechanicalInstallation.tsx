@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import {
-    FaArrowRight, FaTools, FaCheckCircle, FaPhoneAlt,
-    FaEnvelope, FaDraftingCompass, FaBolt, FaCogs, FaServer,
-    FaIndustry, FaMapMarkerAlt, FaMicrochip, FaChartLine
-} from "react-icons/fa";
+import * as Icons from "react-icons/fa";
+import { useContent } from "../../context/ContentContext";
+import { defaultProjectsSubpages } from "../../data/subpageDefaults";
 import "./ProjectSubpageShared.css";
+
+// Dynamic Icon Loader
+const getIcon = (iconName: string) => {
+    const IconComponent = (Icons as any)[iconName];
+    return IconComponent ? React.createElement(IconComponent) : <Icons.FaQuestionCircle />;
+};
 
 // Animation Variants
 const fadeInUp: any = {
@@ -23,93 +27,27 @@ const staggerContainer: any = {
 };
 
 const MechanicalInstallation: React.FC = () => {
+    const { content } = useContent();
+    const pageData = content.projectsSubpages?.["mechanical-installation"] || defaultProjectsSubpages["mechanical-installation"];
+
     // SEO Requirements: Dynamic Title & Meta Description update
     useEffect(() => {
-        document.title = "Mechanical Installation & Rehabilitation Projects | Vertex Controls Electromechanical LLC";
-        
-        let metaDescription = document.querySelector('meta[name="description"]');
-        if (!metaDescription) {
-            metaDescription = document.createElement('meta');
-            metaDescription.setAttribute('name', 'description');
-            document.head.appendChild(metaDescription);
+        if (pageData.seo) {
+            document.title = pageData.seo.title;
+            let metaDescription = document.querySelector('meta[name="description"]');
+            if (!metaDescription) {
+                metaDescription = document.createElement('meta');
+                metaDescription.setAttribute('name', 'description');
+                document.head.appendChild(metaDescription);
+            }
+            metaDescription.setAttribute('content', pageData.seo.description);
         }
-        metaDescription.setAttribute(
-            'content',
-            'Case study showcasing industrial pump installations, heavy motor overhauling, precision laser shaft alignment, and mechanical rehabilitation in Dubai, UAE.'
-        );
-    }, []);
+    }, [pageData.seo]);
 
-    // Services Delivered
-    const servicesDelivered = [
-        {
-            icon: FaDraftingCompass,
-            title: "Rehabilitation Survey",
-            desc: "Conducting vibration audits, dial indicator checks, and analyzing thermal patterns on faulty pump components."
-        },
-        {
-            icon: FaBolt,
-            title: "Pump Installation",
-            desc: "Rigging and setting up heavy split-case industrial water pumps on reinforced concrete foundations."
-        },
-        {
-            icon: FaCogs,
-            title: "Laser Shaft Alignment",
-            desc: "Executing precision dual-laser alignments on couplings to reduce radial friction and minimize bearing strain."
-        },
-        {
-            icon: FaServer,
-            title: "Mechanical Overhauling",
-            desc: "Replacing worn impellers, carbon mechanical seals, sleeves, and lubricating high-speed bearing housings."
-        },
-        {
-            icon: FaTools,
-            title: "Motor Commissioning",
-            desc: "On-site electrical terminations, soft-starter parameter setup, rotation checks, and current load balance validation."
-        },
-        {
-            icon: FaCheckCircle,
-            title: "Performance Testing",
-            desc: "Conducting dynamic load trials, pressure tests (hydro-tests), noise index validation, and official handovers."
-        }
-    ];
-
-    // Project Highlights
-    const projectHighlights = [
-        {
-            icon: FaIndustry,
-            title: "Industry",
-            value: "District Cooling / Heavy Electromechanical Infrastructure"
-        },
-        {
-            icon: FaMapMarkerAlt,
-            title: "Location",
-            value: "Downtown Dubai, Dubai, UAE"
-        },
-        {
-            icon: FaMicrochip,
-            title: "Technologies Used",
-            value: "Laser Alignment Kit, dynamic vibration loggers, mechanical seals, split-case cooling pumps"
-        },
-        {
-            icon: FaChartLine,
-            title: "Key Benefits",
-            value: "80% reduction in shaft vibrations, 15% reduction in motor energy draw, and elimination of leaks."
-        },
-        {
-            icon: FaCheckCircle,
-            title: "Project Outcome",
-            value: "Fully approved by district cooling authority, finished within shutdown window, and backed by AMC."
-        }
-    ];
-
-    // Gallery Images
-    const galleryImages = [
-        { src: "/Images/Project/mcc_showcase.webp", caption: "Low-Voltage MCC & VFD Cabinets" },
-        { src: "/Images/Project/scada_showcase.webp", caption: "SCADA Control Interface Console" },
-        { src: "/Images/Project/lighting_showcase.webp", caption: "Smart Facility Control Center" },
-        { src: "/Images/booth_exib.webp", caption: "Electromechanical Commissioning Site" }
-    ];
-
+    const servicesDelivered = pageData.servicesDelivered || [];
+    const projectHighlights = pageData.highlights || [];
+    const galleryImages = pageData.gallery || [];
+    
     return (
         <div className="subpage-wrapper">
             {/* 1. HERO BANNER */}
@@ -135,21 +73,31 @@ const MechanicalInstallation: React.FC = () => {
                         <motion.div variants={fadeInUp} className="hero-badge-wrapper">
                             <div className="hero-badge">
                                 <span className="badge-pulse"></span>
-                                <span className="badge-text">Case Study Showcase</span>
+                                <span className="badge-text">{pageData.hero?.badgeText}</span>
                             </div>
                         </motion.div>
 
                         <motion.h1 variants={fadeInUp} className="page-header-title">
-                            Mechanical Installation & <span className="text-gradient">Rehabilitation</span>
+                            {(() => {
+                                const parts = (pageData.hero?.title || "").split(" ");
+                                if (parts.length > 1) {
+                                    const lastWords = parts.slice(-2).join(" ");
+                                    const firstPart = parts.slice(0, -2).join(" ");
+                                    return (
+                                        <>{firstPart} <span className="text-gradient">{lastWords}</span></>
+                                    );
+                                }
+                                return pageData.hero?.title;
+                            })()}
                         </motion.h1>
 
                         <motion.p variants={fadeInUp} className="page-header-lead">
-                            Delivering industrial pump installations, heavy motor overhauling, precision laser shaft alignment, and mechanical system rehabilitations in the UAE.
+                            {pageData.hero?.lead}
                         </motion.p>
 
                         <motion.div variants={fadeInUp} className="page-header-buttons">
                             <Link to="/quote" className="btn btn-primary">
-                                Request a Quote <FaArrowRight size={14} />
+                                Request a Quote <Icons.FaArrowRight size={14} />
                             </Link>
                         </motion.div>
                     </motion.div>
@@ -166,11 +114,9 @@ const MechanicalInstallation: React.FC = () => {
                         viewport={{ once: true, amount: 0.2 }}
                         variants={fadeInUp}
                     >
-                        <span className="sub-tag">Case Study Scoping</span>
-                        <h2 className="section-title text-gradient">Project Overview & Objectives</h2>
-                        <p className="overview-summary">
-                            Vertex Controls executed a full mechanical rehabilitation and pump setup overhaul for a district cooling facility in Dubai, UAE.
-                        </p>
+                        <span className="sub-tag">{pageData.overview?.subTag}</span>
+                        <h2 className="section-title text-gradient">{pageData.overview?.title}</h2>
+                        <p className="overview-summary">{pageData.overview?.lead}</p>
                     </motion.div>
 
                     <div className="overview-split-layout">
@@ -183,16 +129,16 @@ const MechanicalInstallation: React.FC = () => {
                             transition={{ duration: 0.7 }}
                         >
                             <div className="overview-terminal-frame">
-                                <img src="/Images/booth_exib.webp" alt="Vertex Control Panel Modernization Layout" />
+                                <img src={pageData.overview?.imageSrc} alt={pageData.overview?.title} />
                                 <div className="terminal-screen-filter"></div>
                                 
                                 {/* Floating Status Badges */}
                                 <div className="telemetry-badge badge-top-left">
                                     <span className="pulse-green-dot"></span>
-                                    <span>STATUS: ONLINE</span>
+                                    <span>{pageData.overview?.statusText}</span>
                                 </div>
                                 <div className="telemetry-badge badge-bottom-right">
-                                    <span>LOCATION: DUBAI, UAE</span>
+                                    <span>{pageData.overview?.locationText}</span>
                                 </div>
                             </div>
                         </motion.div>
@@ -208,45 +154,26 @@ const MechanicalInstallation: React.FC = () => {
                             <div className="details-card-block">
                                 <h3>Project Objectives</h3>
                                 <ul className="objectives-list-modern">
-                                    <li>
-                                        <div className="objective-icon-wrap">
-                                            <FaCheckCircle />
-                                        </div>
-                                        <div>
-                                            <strong>Vibration-Free Operations</strong>
-                                            <p>Deploy precise laser shaft alignments to eliminate bearing friction and mechanical vibrations.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="objective-icon-wrap">
-                                            <FaCheckCircle />
-                                        </div>
-                                        <div>
-                                            <strong>Thermal Safety</strong>
-                                            <p>Rehabilitate cooling jackets and mechanical seals to prevent motor over-temperature faults.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="objective-icon-wrap">
-                                            <FaCheckCircle />
-                                        </div>
-                                        <div>
-                                            <strong>Extended System Uptime</strong>
-                                            <p>Overhaul pump impellers and motor coils to extend the mechanical lifetime of heavy rotating machinery.</p>
-                                        </div>
-                                    </li>
+                                    {(pageData.overview?.objectives || []).map((obj, i) => (
+                                        <li key={i}>
+                                            <div className="objective-icon-wrap">
+                                                {getIcon(obj.icon)}
+                                            </div>
+                                            <div>
+                                                <strong>{obj.title}</strong>
+                                                <p>{obj.desc}</p>
+                                            </div>
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
 
                             <div className="scope-tags-block">
                                 <h3>Deliverable Scope</h3>
                                 <div className="scope-tags-deck">
-                                    <span className="scope-tag-item">Electrical Schematics</span>
-                                    <span className="scope-tag-item">Control Panels Assembly</span>
-                                    <span className="scope-tag-item">Automation Programming</span>
-                                    <span className="scope-tag-item">Central Monitoring System</span>
-                                    <span className="scope-tag-item">Factory Validation Testing</span>
-                                    <span className="scope-tag-item">On-Site Setup & Handover</span>
+                                    {(pageData.overview?.scopeTags || []).map((tag, i) => (
+                                        <span key={i} className="scope-tag-item">{tag}</span>
+                                    ))}
                                 </div>
                             </div>
                         </motion.div>
@@ -283,7 +210,7 @@ const MechanicalInstallation: React.FC = () => {
                                 variants={fadeInUp}
                             >
                                 <div className="project-service-icon">
-                                    <service.icon />
+                                    {getIcon(service.icon)}
                                 </div>
                                 <h3>{service.title}</h3>
                                 <p>{service.desc}</p>
@@ -322,7 +249,7 @@ const MechanicalInstallation: React.FC = () => {
                                 variants={fadeInUp}
                             >
                                 <div className="highlight-card-icon">
-                                    <highlight.icon />
+                                    {getIcon(highlight.icon)}
                                 </div>
                                 <h3>{highlight.title}</h3>
                                 <p>{highlight.value}</p>
@@ -384,13 +311,11 @@ const MechanicalInstallation: React.FC = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <h2>Need a Heavy Mechanical Rehabilitation for Your Machinery?</h2>
-                        <p>
-                            Contact Vertex Controls today. Our expert electromechanical and mechanical engineers in Dubai will design, inspect, align, and over-haul your systems.
-                        </p>
+                        <p>{pageData.cta?.desc}</p>
                         
                         <div className="cta-buttons">
                             <Link to="/quote" className="btn btn-primary">
-                                Request a Quote <FaArrowRight size={14} />
+                                Request a Quote <Icons.FaArrowRight size={14} />
                             </Link>
                             <Link to="/contact" className="btn btn-secondary">
                                 Contact Our Team
@@ -399,12 +324,12 @@ const MechanicalInstallation: React.FC = () => {
 
                         <div className="cta-contacts">
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaPhoneAlt /></span>
-                                <a href="tel:+971554962866">+971 55 496 2866</a>
+                                <span className="cta-contact-icon"><Icons.FaPhoneAlt /></span>
+                                <a href={`tel:${(pageData.cta?.phone || "").replace(/\s+/g, "")}`}>{pageData.cta?.phone}</a>
                             </div>
                             <div className="cta-contact-item">
-                                <span className="cta-contact-icon"><FaEnvelope /></span>
-                                <a href="mailto:Sales@vertex-controls.com">Sales@vertex-controls.com</a>
+                                <span className="cta-contact-icon"><Icons.FaEnvelope /></span>
+                                <a href={`mailto:${pageData.cta?.email}`}>{pageData.cta?.email}</a>
                             </div>
                         </div>
                     </motion.div>

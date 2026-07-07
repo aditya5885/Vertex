@@ -1,6 +1,7 @@
 // React import omitted for new JSX transform
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useContent } from "../../context/ContentContext";
 import {
     FaBolt, FaCogs, FaMicrochip, FaServer, FaIndustry,
     FaCheckCircle, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope,
@@ -28,6 +29,9 @@ const staggerContainer: any = {
 };
 
 const HeroSection = () => {
+    const { content } = useContent();
+    const hero = content.home.hero;
+
     return (
         <section className="hero-section">
             <div className="hero-bg-grid"></div>
@@ -44,15 +48,15 @@ const HeroSection = () => {
                 >
                     <motion.div variants={fadeInUp} className="hero-badge">
                         <span className="badge-pulse"></span>
-                        <span className="badge-text">Electromechanical & Automation Engineering in UAE</span>
+                        <span className="badge-text">{hero.badge}</span>
                     </motion.div>
 
                     <motion.h1 variants={fadeInUp} className="hero-title">
-                        Engineering Reliable <span className="text-gradient">Control & Automation</span> Solutions
+                        {hero.title} <span className="text-gradient">{hero.highlightText}</span>
                     </motion.h1>
 
                     <motion.p variants={fadeInUp} className="hero-subtext">
-                        End-to-end Design, Supply, Installation, Testing, Commissioning, and Maintenance of mission-critical Electrical, Automation, and SCADA control panels across the United Arab Emirates.
+                        {hero.lead}
                     </motion.p>
 
                     <motion.div variants={fadeInUp} className="hero-buttons">
@@ -86,6 +90,9 @@ const HeroSection = () => {
 };
 
 const StatsSection = () => {
+    const { content } = useContent();
+    const stats = content.home.stats;
+
     return (
         <section className="stats-section">
             <motion.div
@@ -95,12 +102,7 @@ const StatsSection = () => {
                 viewport={{ once: true, amount: 0.5 }}
                 variants={staggerContainer}
             >
-                {[
-                    { num: "500+", label: "Projects Completed" },
-                    { num: "150+", label: "Clients Served" },
-                    { num: "100%", label: "UAE Coverage" },
-                    { num: "15+ Yrs", label: "Engineering Expertise" }
-                ].map((stat, i) => (
+                {stats.map((stat, i) => (
                     <motion.div key={i} className="stat-card" variants={fadeInUp}>
                         <h3>{stat.num}</h3>
                         <p>{stat.label}</p>
@@ -112,6 +114,9 @@ const StatsSection = () => {
 };
 
 const WhoWeAreSection = () => {
+    const { content } = useContent();
+    const aboutShort = content.home.aboutShort;
+
     return (
         <section className="who-we-are-section section-padding">
             <div className="container split-layout align-center">
@@ -122,13 +127,13 @@ const WhoWeAreSection = () => {
                     viewport={{ once: true, amount: 0.3 }}
                     variants={staggerContainer}
                 >
-                    <motion.span variants={fadeInUp} className="sub-tag">Pioneering Industrial Engineering</motion.span>
-                    <motion.h2 variants={fadeInUp} className="section-title">Who We Are</motion.h2>
+                    <motion.span variants={fadeInUp} className="sub-tag">{aboutShort.subTag}</motion.span>
+                    <motion.h2 variants={fadeInUp} className="section-title">{aboutShort.title}</motion.h2>
                     <motion.p variants={fadeInUp} className="who-lead-p">
-                        Vertex Controls is a premier electromechanical and industrial automation engineering firm based in Dubai, UAE. We specialize in delivering mission-critical control solutions that drive operational reliability and efficiency.
+                        {aboutShort.lead}
                     </motion.p>
                     <motion.p variants={fadeInUp} className="who-sub-p">
-                        From complex PLC/SCADA control panel integration to predictive maintenance, IoT telemetry, and turnkey MEP services, our intelligent engineering approach ensures safety, precision, and peak performance.
+                        {aboutShort.body}
                     </motion.p>
 
                     {/* Interactive Highlights Grid */}
@@ -194,16 +199,23 @@ const WhoWeAreSection = () => {
 };
 
 const CoreServicesSection = () => {
-    const services = [
-        { icon: FaBolt, title: "Electrical Engineering", desc: "Advanced power systems, switchgears, and robust distribution solutions." },
-        { icon: FaCogs, title: "Mechanical Engineering", desc: "HVAC, piping, and industrial machinery optimization." },
-        { icon: FaIndustry, title: "Industrial Automation", desc: "End-to-end automation for manufacturing and process industries." },
-        { icon: FaMicrochip, title: "PLC & SCADA Systems", desc: "Intelligent control logic and real-time visualization dashboards." },
-        { icon: FaNetworkWired, title: "IoT Solutions", desc: "Smart sensors and cloud-connected infrastructure monitoring." },
-        { icon: FaServer, title: "Control Panels", desc: "Custom design and assembly of VFD, MCC, and PLC panels." },
-        { icon: FaChartLine, title: "Predictive Maintenance", desc: "AI-driven analytics to prevent downtime and extend asset life." },
-        { icon: FaBuilding, title: "MEP Services", desc: "Comprehensive Mechanical, Electrical, and Plumbing integration." }
-    ];
+    const { content } = useContent();
+
+    const iconMap: Record<string, any> = {
+        "Automation & Control Systems": FaServer,
+        "Industrial Automation & SCADA": FaIndustry,
+        "Electrical Engineering": FaBolt,
+        "Mechanical & MEP Services": FaCogs,
+        "Smart Infrastructure & BMS": FaBuilding,
+        "AI & Industrial IoT": FaNetworkWired,
+        "Energy Management": FaChartLine,
+        "Maintenance & Operation": FaCogs
+    };
+
+    const services = content.services.list.map(s => ({
+        ...s,
+        icon: iconMap[s.title] || FaCogs
+    }));
 
     return (
         <section className="services-section section-padding dark-bg relative-3d-section">
@@ -226,7 +238,7 @@ const CoreServicesSection = () => {
                     className="services-grid"
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, amount: 0.1 }}
+                    viewport={{ once: true, amount: 0.15 }}
                     variants={staggerContainer}
                 >
                     {services.map((srv, i) => (
@@ -246,14 +258,8 @@ const CoreServicesSection = () => {
 };
 
 const WhyChooseUsSection = () => {
-    const reasons = [
-        "Experienced Engineering Team",
-        "End-to-End Project Delivery",
-        "Innovative Technology Solutions",
-        "Quality & Safety Focused",
-        "Rapid Technical Support",
-        "Cost-Effective Solutions"
-    ];
+    const { content } = useContent();
+    const reasons = content.home.whyChoose || [];
 
     return (
         <section className="why-us-section section-padding">
@@ -293,14 +299,8 @@ const WhyChooseUsSection = () => {
 };
 
 const FeaturedSolutionsSection = () => {
-    const solutions = [
-        { title: "MCC Panels", cat: "Power Distribution", spec: "IEC 61439 Certified", image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp" },
-        { title: "PLC Control Panels", cat: "Automation", spec: "Real-time Logic", image: "/Images/Products/0a2f66b6-afd9-48b8-a972-f34cfae38112.webp" },
-        { title: "SCADA Systems", cat: "Telemetry & Software", spec: "HMI Dashboards", image: "/Images/Products/3b41b48b-793d-4b06-b872-8a701ecd05d0.webp" },
-        { title: "Energy Monitoring", cat: "Smart Grid", spec: "AI Power Analytics", image: "/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.webp" },
-        { title: "Smart Lighting", cat: "ELV Integration", spec: "DALI Protocols", image: "/Images/Products/61b16c79-0f71-4ee6-87c5-396b8123796c.webp" },
-        { title: "Industrial IoT", cat: "Cloud Gateways", spec: "Telemetry Sensors", image: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp" }
-    ];
+    const { content } = useContent();
+    const solutions = content.home.solutions || [];
 
     return (
         <section className="solutions-section section-padding dark-bg relative-3d-section">
@@ -345,36 +345,8 @@ const FeaturedSolutionsSection = () => {
 
 
 const ProjectHighlightsSection = () => {
-    const projects = [
-        {
-            title: "Pump Station Automation",
-            cat: "Infrastructure",
-            location: "Dubai Water Authority",
-            desc: "Mission-critical SCADA telemetry & automated pump sequencing for municipal water management.",
-            image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp"
-        },
-        {
-            title: "Electrical Power Distribution",
-            cat: "Power Systems",
-            location: "Industrial City, Sharjah",
-            desc: "Turnkey MV/LV switchgear assembly, power factor correction, and smart distribution panels.",
-            image: "/Images/Products/0a2f66b6-afd9-48b8-a972-f34cfae38112.webp"
-        },
-        {
-            title: "Smart Lighting Automation",
-            cat: "ELV Systems",
-            location: "Commercial Complex, Abu Dhabi",
-            desc: "DALI intelligent lighting integration with daylight harvesting and centralized scheduling.",
-            image: "/Images/Project/57045811-01db-4a79-8406-f8398676e32e.webp"
-        },
-        {
-            title: "Industrial Energy Telemetry",
-            cat: "IoT Solutions",
-            location: "Logistics Hub, Dubai",
-            desc: "Cloud IoT sensors and AI predictive analytics dashboard for automated power optimization.",
-            image: "/Images/Project/639f0a0f-0c98-486e-9e26-484e33c05784.webp"
-        }
-    ];
+    const { content } = useContent();
+    const projects = content.home.projectHighlights || [];
 
     return (
         <section className="projects-section section-padding">
@@ -430,13 +402,8 @@ const ProjectHighlightsSection = () => {
 };
 
 const ProcessTimelineSection = () => {
-    const steps = [
-        { title: "Site Assessment", desc: "Detailed inspection & requirements gathering." },
-        { title: "Engineering Design", desc: "Custom CAD blueprints & logic programming." },
-        { title: "Installation", desc: "Expert on-site execution & integration." },
-        { title: "Testing", desc: "Rigorous commissioning & safety checks." },
-        { title: "Maintenance", desc: "24/7 support & predictive monitoring." }
-    ];
+    const { content } = useContent();
+    const steps = content.home.process || [];
 
     return (
         <section className="process-section section-padding dark-bg">
@@ -475,6 +442,9 @@ const ProcessTimelineSection = () => {
 };
 
 const CTAContactSection = () => {
+    const { content } = useContent();
+    const contactPreview = content.home.contactPreview;
+
     return (
         <section className="cta-contact-section">
             <div className="cta-block relative-3d-section">
@@ -510,13 +480,13 @@ const CTAContactSection = () => {
                     >
                         <h3>Get in Touch</h3>
                         <ul>
-                            <li><FaMapMarkerAlt className="c-icon" /> <span>Office No-5, L1/6A, 1st Floor<br />Reef Mall, Al Murqabat, Deira<br />Dubai, UAE</span></li>
-                            <li><FaPhoneAlt className="c-icon" /> +971 55 496 2866</li>
-                            <li><FaEnvelope className="c-icon" /> Sales@vertex-controls.com</li>
+                            <li><FaMapMarkerAlt className="c-icon" /> <span style={{ whiteSpace: "pre-line" }}>{contactPreview?.address}</span></li>
+                            <li><FaPhoneAlt className="c-icon" /> {contactPreview?.phone}</li>
+                            <li><FaEnvelope className="c-icon" /> {contactPreview?.email}</li>
                         </ul>
                         <div className="map-wrapper">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.0330010638054!2d55.32087537489523!3d25.269475277664476!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5da8878c837f%3A0xa5adb301b301eeaa!2sVertex%20controls%20Electromechanical%20llc!5e0!3m2!1sen!2sin!4v1782545529440!5m2!1sen!2sin"
+                                src={contactPreview?.mapEmbedUrl}
                                 allowFullScreen
                                 loading="lazy"
                                 title="Vertex Controls Location"
