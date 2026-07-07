@@ -181,8 +181,10 @@ const CompanyOverview = () => {
                         <div className="who-glass-badge wgb-bottom">
                             <FaCertificate className="wgb-icon" />
                             <div>
-                                <strong style={{ whiteSpace: "pre-line" }}>{overview?.badgeText.split("\n")[0]}</strong>
-                                <span>{overview?.badgeText.split("\n")[1]}</span>
+                                <strong style={{ whiteSpace: "pre-line" }}>{overview?.badgeText?.split("\n")[0] || ""}</strong>
+                                {overview?.badgeText?.split("\n")[1] && (
+                                    <span>{overview.badgeText.split("\n")[1]}</span>
+                                )}
                             </div>
                         </div>
                     </div>

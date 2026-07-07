@@ -56,7 +56,7 @@ const IndustrialAutomationProjects: React.FC = () => {
         },
         {
             title: "SCADA Modernization Project",
-            image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp",
+            image: "/Images/Products/control_panels.png",
             industry: "Utilities",
             location: "Jebel Ali Industrial Area, Dubai",
             scope: "Software Architecture & Server Setup",

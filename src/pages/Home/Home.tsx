@@ -1,4 +1,4 @@
-// React import omitted for new JSX transform
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useContent } from "../../context/ContentContext";
@@ -441,6 +441,127 @@ const ProcessTimelineSection = () => {
     );
 };
 
+const QuickContactForm = () => {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!name.trim() || !email.trim() || !message.trim()) {
+            setErrorMessage("All fields are required.");
+            return;
+        }
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email.trim())) {
+            setErrorMessage("Please enter a valid email address.");
+            return;
+        }
+
+        setIsSubmitting(true);
+        setErrorMessage("");
+
+        try {
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    message,
+                    phone: "", 
+                    service: "General Quick Inquiry",
+                }),
+            });
+
+            if (response.ok) {
+                setIsSuccess(true);
+                setName("");
+                setEmail("");
+                setMessage("");
+            } else {
+                const data = await response.json();
+                setErrorMessage(data.message || "Failed to submit. Please try again.");
+            }
+        } catch (error) {
+            setErrorMessage("Network error. Please try again later.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    if (isSuccess) {
+        return (
+            <motion.div 
+                className="quick-form-success"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4 }}
+                style={{ textAlign: "center", padding: "1rem 0" }}
+            >
+                <div style={{ fontSize: "3rem", color: "var(--accent-emerald)", marginBottom: "1rem" }}>✓</div>
+                <h3 style={{ color: "var(--white)", marginBottom: "0.5rem" }}>Message Sent!</h3>
+                <p style={{ color: "var(--gray)", fontSize: "0.95rem" }}>
+                    Thank you. We will get back to you shortly.
+                </p>
+                <button 
+                    onClick={() => setIsSuccess(false)}
+                    className="btn btn-secondary"
+                    style={{ marginTop: "1.5rem", padding: "0.6rem 1.5rem", fontSize: "0.9rem" }}
+                >
+                    Send Another Message
+                </button>
+            </motion.div>
+        );
+    }
+
+    return (
+        <form onSubmit={handleSubmit} className="quick-form" noValidate>
+            <div className="form-group">
+                <input 
+                    type="text" 
+                    placeholder="Your Name" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required 
+                />
+            </div>
+            <div className="form-group">
+                <input 
+                    type="email" 
+                    placeholder="Your Email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required 
+                />
+            </div>
+            <div className="form-group">
+                <textarea 
+                    placeholder="How can we help you?" 
+                    rows={4} 
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    required
+                ></textarea>
+            </div>
+            {errorMessage && (
+                <div style={{ color: "#ef4444", fontSize: "0.88rem", marginBottom: "1rem", fontWeight: 600 }}>
+                    {errorMessage}
+                </div>
+            )}
+            <button type="submit" className="btn-submit" disabled={isSubmitting}>
+                {isSubmitting ? "Sending..." : "Send Message"}
+            </button>
+        </form>
+    );
+};
+
 const CTAContactSection = () => {
     const { content } = useContent();
     const contactPreview = content.home.contactPreview;
@@ -500,18 +621,7 @@ const CTAContactSection = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                     >
-                        <form className="quick-form">
-                            <div className="form-group">
-                                <input type="text" placeholder="Your Name" required />
-                            </div>
-                            <div className="form-group">
-                                <input type="email" placeholder="Your Email" required />
-                            </div>
-                            <div className="form-group">
-                                <textarea placeholder="How can we help you?" rows={4} required></textarea>
-                            </div>
-                            <button type="submit" className="btn-submit">Send Message</button>
-                        </form>
+                        <QuickContactForm />
                     </motion.div>
                 </div>
             </div>

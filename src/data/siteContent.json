@@ -158,7 +158,7 @@
         "title": "MCC Panels",
         "cat": "Power Distribution",
         "spec": "IEC 61439 Certified",
-        "image": "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp"
+        "image": "/Images/Products/control_panels.png"
       },
       {
         "title": "PLC Control Panels",
@@ -219,7 +219,7 @@
         "cat": "Infrastructure",
         "location": "Dubai Water Authority",
         "desc": "Mission-critical SCADA telemetry & automated pump sequencing for municipal water management.",
-        "image": "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp"
+        "image": "/Images/Products/control_panels.png"
       },
       {
         "title": "Electrical Power Distribution",
@@ -664,7 +664,7 @@
         "name": "Control Panels",
         "category": "Control Panels",
         "desc": "Custom low voltage (LV) panels, switchgears, SMDBs, and main distribution boards built for heavy infrastructure applications.",
-        "image": "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp",
+        "image": "/Images/Products/control_panels.png",
         "features": [
           "Type-tested components and assemblies",
           "ASTA certified copper busbar designs",

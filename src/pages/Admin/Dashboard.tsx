@@ -920,7 +920,7 @@ const Dashboard: React.FC = () => {
                                     <h3>Featured Solutions Grid (6 Cards)</h3>
                                     <button 
                                         type="button"
-                                        onClick={() => addListItem("home", "solutions", { title: "New Solution", cat: "Category Name", spec: "Specification details", image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp" })} 
+                                        onClick={() => addListItem("home", "solutions", { title: "New Solution", cat: "Category Name", spec: "Specification details", image: "/Images/Products/control_panels.png" })} 
                                         className="btn btn-secondary add-item-btn"
                                     >
                                         <FaPlus /> Add Solution
@@ -1024,7 +1024,7 @@ const Dashboard: React.FC = () => {
                                     <h3>Project Highlights Showcase</h3>
                                     <button 
                                         type="button"
-                                        onClick={() => addListItem("home", "projectHighlights", { title: "New Highlight Project", cat: "Category Name", location: "Dubai, UAE", desc: "Short explanation of delivery.", image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp" })} 
+                                        onClick={() => addListItem("home", "projectHighlights", { title: "New Highlight Project", cat: "Category Name", location: "Dubai, UAE", desc: "Short explanation of delivery.", image: "/Images/Products/control_panels.png" })} 
                                         className="btn btn-secondary add-item-btn"
                                     >
                                         <FaPlus /> Add Highlight
@@ -2049,7 +2049,7 @@ const Dashboard: React.FC = () => {
                                     <h3>Products Catalog (Grid Items)</h3>
                                     <button 
                                         type="button"
-                                        onClick={() => addListItem("products", "productList", { name: "New Product", category: draft.products?.categories?.[0] || "All", desc: "Short explanation of product.", image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp", features: ["Key Feature 1"] })} 
+                                        onClick={() => addListItem("products", "productList", { name: "New Product", category: draft.products?.categories?.[0] || "All", desc: "Short explanation of product.", image: "/Images/Products/control_panels.png", features: ["Key Feature 1"] })} 
                                         className="btn btn-secondary add-item-btn"
                                     >
                                         <FaPlus /> Add Catalog Product

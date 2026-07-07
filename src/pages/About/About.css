@@ -126,6 +126,85 @@
     min-width: 20px;
 }
 
+/* Image frame and glass badges ported from Home.css */
+.who-image-frame {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 229, 255, 0.15);
+    border: 1px solid var(--glass-border);
+    transition: var(--transition);
+}
+
+.who-image-frame:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 229, 255, 0.25);
+}
+
+.who-we-are-img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.who-image-frame:hover .who-we-are-img {
+    transform: scale(1.04);
+}
+
+.who-glass-badge {
+    position: absolute;
+    z-index: 10;
+    background: rgba(10, 23, 40, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-md);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.wgb-top {
+    top: 1.25rem;
+    left: 1.25rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.wgb-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-emerald);
+    box-shadow: 0 0 10px var(--accent-emerald);
+}
+
+.wgb-bottom {
+    bottom: 1.25rem;
+    right: 1.25rem;
+}
+
+.wgb-icon {
+    color: var(--primary);
+    font-size: 1.3rem;
+}
+
+.wgb-bottom strong {
+    display: block;
+    color: var(--white);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.wgb-bottom span {
+    color: var(--gray);
+    font-size: 0.76rem;
+}
+
 /* 3. VISION & MISSION */
 .vision-mission-section {
     background: rgba(10, 23, 40, 0.6);
@@ -410,6 +489,10 @@
     .stats-counter-grid { grid-template-columns: repeat(2, 1fr); }
     .overview-highlights-list { grid-template-columns: 1fr; }
     .page-header-buttons { flex-direction: column; gap: 1rem; }
+    .who-glass-badge {
+        padding: 0.5rem 0.85rem;
+        font-size: 0.78rem;
+    }
 }
 
 @media (max-width: 480px) {

@@ -335,7 +335,7 @@ export const defaultContent: SiteContent = {
       "Cost-Effective Solutions"
     ],
     solutions: [
-      { title: "MCC Panels", cat: "Power Distribution", spec: "IEC 61439 Certified", image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp" },
+      { title: "MCC Panels", cat: "Power Distribution", spec: "IEC 61439 Certified", image: "/Images/Products/control_panels.png" },
       { title: "PLC Control Panels", cat: "Automation", spec: "Real-time Logic", image: "/Images/Products/0a2f66b6-afd9-48b8-a972-f34cfae38112.webp" },
       { title: "SCADA Systems", cat: "Telemetry & Software", spec: "HMI Dashboards", image: "/Images/Products/3b41b48b-793d-4b06-b872-8a701ecd05d0.webp" },
       { title: "Energy Monitoring", cat: "Smart Grid", spec: "AI Power Analytics", image: "/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.webp" },
@@ -355,7 +355,7 @@ export const defaultContent: SiteContent = {
         cat: "Infrastructure",
         location: "Dubai Water Authority",
         desc: "Mission-critical SCADA telemetry & automated pump sequencing for municipal water management.",
-        image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp"
+        image: "/Images/Products/control_panels.png"
       },
       {
         title: "Electrical Power Distribution",
@@ -671,7 +671,7 @@ export const defaultContent: SiteContent = {
         name: "Control Panels",
         category: "Control Panels",
         desc: "Custom low voltage (LV) panels, switchgears, SMDBs, and main distribution boards built for heavy infrastructure applications.",
-        image: "/Images/Products/08d07495-ea3a-4a50-8291-b81c2c99f4a9.webp",
+        image: "/Images/Products/control_panels.png",
         features: [
           "Type-tested components and assemblies",
           "ASTA certified copper busbar designs",
@@ -704,7 +704,7 @@ export const defaultContent: SiteContent = {
         name: "Energy Monitoring Systems",
         category: "Energy Management",
         desc: "Power monitoring systems, automatic power quality analysis tools, and smart energy meter gateways.",
-        image: "/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.webp",
+        image: "/Images/Products/energy_monitoring.png",
         features: [
           "Capacitor bank automatic stage switching",
           "Active harmonic filter integrations",
@@ -726,7 +726,7 @@ export const defaultContent: SiteContent = {
         name: "CCTV & Access Control Systems",
         category: "Security Systems",
         desc: "IP-CCTV surveillance cabinets, door controllers, and biometric panels for plant security integrations.",
-        image: "/Images/Project/57045811-01db-4a79-8406-f8398676e32e.webp",
+        image: "/Images/Products/access_control.png",
         features: [
           "High-definition IP NVR setups",
           "Biometric, RFID and license plate scanning",
@@ -737,7 +737,7 @@ export const defaultContent: SiteContent = {
         name: "Industrial IoT Devices",
         category: "Industrial IoT",
         desc: "Smart cellular gateway modems, cloud transmitter units, and battery-powered field telemetry hardware.",
-        image: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp",
+        image: "/Images/Products/industrial_iot.png",
         features: [
           "LTE/4G cellular fallback arrays",
           "Ultra-low power sleep states",
@@ -759,7 +759,7 @@ export const defaultContent: SiteContent = {
         name: "Embedded Systems",
         category: "Embedded Systems",
         desc: "Microcontroller based custom logic controller boards for specialized machinery automation tasks.",
-        image: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp",
+        image: "/Images/Products/embedded_systems.png",
         features: [
           "Bespoke firmware logic development",
           "Galvanically isolated I/O interfaces",
@@ -770,7 +770,7 @@ export const defaultContent: SiteContent = {
         name: "Customized Electronic Controllers",
         category: "R&D Solutions",
         desc: "Custom electronic logic and PCB solutions designed for specialized electromechanical process controls.",
-        image: "/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.webp",
+        image: "/Images/Products/electronic_controller.png",
         features: [
           "Custom schematic and multi-layer PCB design",
           "Prototyping and environmental stress tests",
@@ -781,7 +781,7 @@ export const defaultContent: SiteContent = {
         name: "Research & Development Solutions",
         category: "R&D Solutions",
         desc: "Custom automated simulator rigs, validation testing panels, and control testing beds.",
-        image: "/Images/Products/0a2f66b6-afd9-48b8-a972-f34cfae38112.webp",
+        image: "/Images/Products/rd_solutions.png",
         features: [
           "Hardware-in-the-loop (HIL) simulators",
           "Custom testing instrumentation mounts",
