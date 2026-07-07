@@ -697,7 +697,7 @@
         "name": "Energy Monitoring Systems",
         "category": "Energy Management",
         "desc": "Power monitoring systems, automatic power quality analysis tools, and smart energy meter gateways.",
-        "image": "/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.webp",
+        "image": "/Images/Products/energy_monitoring.png",
         "features": [
           "Capacitor bank automatic stage switching",
           "Active harmonic filter integrations",
@@ -719,7 +719,7 @@
         "name": "CCTV & Access Control Systems",
         "category": "Security Systems",
         "desc": "IP-CCTV surveillance cabinets, door controllers, and biometric panels for plant security integrations.",
-        "image": "/Images/Project/57045811-01db-4a79-8406-f8398676e32e.webp",
+        "image": "/Images/Products/access_control.png",
         "features": [
           "High-definition IP NVR setups",
           "Biometric, RFID and license plate scanning",
@@ -730,7 +730,7 @@
         "name": "Industrial IoT Devices",
         "category": "Industrial IoT",
         "desc": "Smart cellular gateway modems, cloud transmitter units, and battery-powered field telemetry hardware.",
-        "image": "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp",
+        "image": "/Images/Products/industrial_iot.png",
         "features": [
           "LTE/4G cellular fallback arrays",
           "Ultra-low power sleep states",
@@ -752,7 +752,7 @@
         "name": "Embedded Systems",
         "category": "Embedded Systems",
         "desc": "Microcontroller based custom logic controller boards for specialized machinery automation tasks.",
-        "image": "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp",
+        "image": "/Images/Products/embedded_systems.png",
         "features": [
           "Bespoke firmware logic development",
           "Galvanically isolated I/O interfaces",
@@ -763,7 +763,7 @@
         "name": "Customized Electronic Controllers",
         "category": "R&D Solutions",
         "desc": "Custom electronic logic and PCB solutions designed for specialized electromechanical process controls.",
-        "image": "/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.webp",
+        "image": "/Images/Products/electronic_controller.png",
         "features": [
           "Custom schematic and multi-layer PCB design",
           "Prototyping and environmental stress tests",
@@ -774,7 +774,7 @@
         "name": "Research & Development Solutions",
         "category": "R&D Solutions",
         "desc": "Custom automated simulator rigs, validation testing panels, and control testing beds.",
-        "image": "/Images/Products/0a2f66b6-afd9-48b8-a972-f34cfae38112.webp",
+        "image": "/Images/Products/rd_solutions.png",
         "features": [
           "Hardware-in-the-loop (HIL) simulators",
           "Custom testing instrumentation mounts",
