@@ -91,7 +91,7 @@ const Projects: React.FC = () => {
             title: "AI & IoT Solutions",
             desc: "Deploying Edge IIoT telemetry transmitters, vibration diagnostic sensors, and cloud analytical software systems.",
             scope: "MQTT Gateway Integrations, Machine Vibration Profiling, Cloud Database Setup",
-            image: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp"
+            image: "/Images/Products/ai_industrial_iot.webp"
         },
         {
             icon: FaChartLine,

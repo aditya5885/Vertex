@@ -361,7 +361,7 @@ const defaultContent = {
       { title: "SCADA Systems", cat: "Telemetry & Software", spec: "HMI Dashboards", image: "/Images/Products/3b41b48b-793d-4b06-b872-8a701ecd05d0.webp" },
       { title: "Energy Monitoring", cat: "Smart Grid", spec: "AI Power Analytics", image: "/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.webp" },
       { title: "Smart Lighting", cat: "ELV Integration", spec: "DALI Protocols", image: "/Images/Products/61b16c79-0f71-4ee6-87c5-396b8123796c.webp" },
-      { title: "Industrial IoT", cat: "Cloud Gateways", spec: "Telemetry Sensors", image: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp" }
+      { title: "Industrial IoT", cat: "Cloud Gateways", spec: "Telemetry Sensors", image: "/Images/Products/ai_industrial_iot.webp" }
     ],
     process: [
       { title: "Site Assessment", desc: "Detailed inspection & requirements gathering." },
@@ -586,7 +586,7 @@ const defaultContent = {
         title: "AI & IoT Solutions",
         desc: "Deploying Edge IIoT telemetry transmitters, vibration diagnostic sensors, and cloud analytical software systems.",
         scope: "MQTT Gateway Integrations, Machine Vibration Profiling, Cloud Database Setup",
-        image: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp"
+        image: "/Images/Products/ai_industrial_iot.webp"
       },
       {
         title: "Energy Management",
@@ -992,7 +992,7 @@ const defaultContent = {
         desc: "Learn more about Vertex Controls, our expertise, industries served, capabilities and engineering solutions.",
         size: "4.8 MB",
         updatedDate: "May 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "Industrial Automation Brochure",
@@ -1000,7 +1000,7 @@ const defaultContent = {
         desc: "Detailed overview of automation solutions, PLC logic programming, and custom SCADA interfaces.",
         size: "3.2 MB",
         updatedDate: "Jun 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "Type-Tested Control Panel Catalogue",
@@ -1008,7 +1008,7 @@ const defaultContent = {
         desc: "Technical specification sheets and dimensions for MDB, SMDB, capacitor bank, and control panels.",
         size: "12.5 MB",
         updatedDate: "Apr 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "PLC & SCADA Systems Solutions Guide",
@@ -1016,7 +1016,7 @@ const defaultContent = {
         desc: "Detailed systems engineering guide explaining telemetry integrations, network protocols, and SCADA control layouts.",
         size: "6.7 MB",
         updatedDate: "Jun 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "Electrical & MEP Services Brochure",
@@ -1024,7 +1024,7 @@ const defaultContent = {
         desc: "Our engineering capabilities for electrical installations, switchgear modifications, testing, and commissioning.",
         size: "2.9 MB",
         updatedDate: "May 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "AI-Driven Predictive Maintenance Overview",
@@ -1032,7 +1032,7 @@ const defaultContent = {
         desc: "Introduction to smart industrial IoT telemetry sensors and cloud diagnostics to prevent machine downtime.",
         size: "1.8 MB",
         updatedDate: "Jun 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "Energy Management Solutions Datasheet",
@@ -1040,7 +1040,7 @@ const defaultContent = {
         desc: "Detailed specifications and data sheets for automatic capacitor banks, power factor controllers, and active filters.",
         size: "2.4 MB",
         updatedDate: "Mar 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "Industrial IoT Telemetry Solutions Datasheet",
@@ -1048,7 +1048,7 @@ const defaultContent = {
         desc: "Product specs for telemetry gateway units, wireless RTU nodes, cloud databases, and industrial sensors.",
         size: "3.5 MB",
         updatedDate: "Feb 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "Annual Maintenance Contracts (AMC) Services Catalogue",
@@ -1056,7 +1056,7 @@ const defaultContent = {
         desc: "Comprehensive catalogue of preventative service plans, SLA frameworks, and 24/7 technical on-call services.",
         size: "4.1 MB",
         updatedDate: "May 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "Smart Infrastructure & BMS Solutions Guide",
@@ -1064,7 +1064,7 @@ const defaultContent = {
         desc: "Technical implementation guide for central SCADA, DALI lighting controllers, and integrated building automation systems.",
         size: "5.3 MB",
         updatedDate: "Apr 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "Vertex Controls Official Trade License",
@@ -1072,7 +1072,7 @@ const defaultContent = {
         desc: "Official business license copy certified by the Dubai Department of Economy and Tourism (DET).",
         size: "1.2 MB",
         updatedDate: "Jan 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       },
       {
         title: "VAT Registration Certificate",
@@ -1080,7 +1080,7 @@ const defaultContent = {
         desc: "Official VAT tax registration certificate issued by the Federal Tax Authority (FTA) of the United Arab Emirates.",
         size: "0.85 MB",
         updatedDate: "Jan 2026",
-        downloadUrl: ""
+        downloadUrl: "/downloads/vertex_document.pdf"
       }
     ],
     whyFeatures: [
@@ -1535,6 +1535,11 @@ const server = http.createServer((req, res) => {
                 const { filename, fileData } = JSON.parse(body);
                 if (!filename || !fileData) {
                     return sendJSON(res, 400, { message: "Filename and fileData are required." });
+                }
+
+                // If running on Vercel, return base64 URL directly to avoid ephemeral file 404s
+                if (IS_VERCEL) {
+                    return sendJSON(res, 200, { url: fileData });
                 }
 
                 // Extract base64 payload

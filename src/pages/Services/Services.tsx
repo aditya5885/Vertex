@@ -72,7 +72,7 @@ const Services: React.FC = () => {
         },
         {
             icon: FaBrain,
-            image: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp",
+            image: "/Images/Products/ai_industrial_iot.webp",
             title: "AI & IoT Solutions",
             desc: "Integrating edge telemetry devices, cloud data gateways, predictive asset diagnostics, and AI monitoring for proactive operations.",
             link: "/services/ai-iot"

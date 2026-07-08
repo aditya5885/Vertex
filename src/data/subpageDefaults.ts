@@ -370,7 +370,7 @@ export const defaultServicesSubpages: Record<string, ServiceSubpageData> = {
             title: "Industrial Plumbing & Manifolds",
             lead: "At Vertex Controls, we design robust mechanical fluid loops and HVAC ductwork built to endure extreme UAE climatic demands.",
             body: "Our welders and fitters fabricate carbon/stainless steel chiller pipes, configure variable-speed pump skids, and mount central ventilation plants. We deliver high-efficiency, insulated HVAC flow lines that conform to regional green building codes.",
-            imageSrc: "/Images/Project/lighting_showcase.webp"
+            imageSrc: "/Images/Project/industrial_plumbing.webp"
         },
         solutions: [
             {
@@ -550,7 +550,7 @@ export const defaultServicesSubpages: Record<string, ServiceSubpageData> = {
             title: "Data-Driven Industrial Intelligence",
             lead: "At Vertex Controls, we deploy advanced AI-driven Industrial IoT (IIoT) platforms that unlock real-time insight from your machinery.",
             body: "Our engineers install edge telemetry gateways and cloud databases that track vibration, temperature, and current loads. We apply intelligent diagnostic algorithms to predict mechanical failures, minimize downtime, and extend equipment lifespans.",
-            imageSrc: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp"
+            imageSrc: "/Images/Products/ai_industrial_iot.webp"
         },
         solutions: [
             {
@@ -1189,7 +1189,7 @@ export const defaultProjectsSubpages: Record<string, ProjectSubpageData> = {
             subTag: "Project Scoping",
             title: "IoT Gateway Installation",
             lead: "Vertex Controls deployed a secure cloud-connected telemetry system linking remote sensors for a logistics facility in Dubai.",
-            imageSrc: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp",
+            imageSrc: "/Images/Products/ai_industrial_iot.webp",
             statusText: "STATUS: COMPLETED",
             locationText: "LOCATION: DUBAI, UAE",
             objectives: [
@@ -1215,7 +1215,7 @@ export const defaultProjectsSubpages: Record<string, ProjectSubpageData> = {
             { icon: "FaCheckCircle", title: "Project Outcome", value: "Fully operational, approved by quality compliance auditors, and active." }
         ],
         gallery: [
-            { src: "/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp", caption: "Edge Industrial IoT Gateway Panel Installed" },
+            { src: "/Images/Products/ai_industrial_iot.webp", caption: "Edge Industrial IoT Gateway Panel Installed" },
             { src: "/Images/Project/mcc_showcase.webp", caption: "Wireless Temperature Sensor Mounted in Warehouse" },
             { src: "/Images/Project/scada_showcase.webp", caption: "Cloud Database Telemetry Graphic Dashboard" },
             { src: "/Images/booth_exib.webp", caption: "Field Wireless Signal Path Validation Test" }
@@ -1293,7 +1293,7 @@ export const defaultProjectsSubpages: Record<string, ProjectSubpageData> = {
             subTag: "Project Scoping",
             title: "HVAC & Mechanical Piping",
             lead: "Vertex Controls completed a heavy mechanical piping and pump manifolds installation project for a commercial facility in Dubai.",
-            imageSrc: "/Images/Project/lighting_showcase.webp",
+            imageSrc: "/Images/Project/industrial_plumbing.webp",
             statusText: "STATUS: COMPLETED",
             locationText: "LOCATION: DUBAI, UAE",
             objectives: [
@@ -1319,7 +1319,7 @@ export const defaultProjectsSubpages: Record<string, ProjectSubpageData> = {
             { icon: "FaCheckCircle", title: "Project Outcome", value: "Hydrostatic tests approved on first run, completed within outage window, active." }
         ],
         gallery: [
-            { src: "/Images/Project/lighting_showcase.webp", caption: "Fabricated booster Pump Manifold Skid" },
+            { src: "/Images/Project/industrial_plumbing.webp", caption: "Fabricated booster Pump Manifold Skid" },
             { src: "/Images/Project/mcc_showcase.webp", caption: "HVAC Chilled Water Steel Piping lines" },
             { src: "/Images/Project/scada_showcase.webp", caption: "AHU Motorized Valve controls Array" },
             { src: "/Images/booth_exib.webp", caption: "System Hydrostatic Pressure Testing run" }

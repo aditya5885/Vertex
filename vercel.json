@@ -23,6 +23,10 @@
       "dest": "/assets/$1"
     },
     {
+      "src": "/Images/uploads/(.*)",
+      "dest": "server.js"
+    },
+    {
       "src": "/Images/(.*)",
       "dest": "/Images/$1"
     },

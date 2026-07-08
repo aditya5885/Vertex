@@ -10,7 +10,10 @@ const imagesToOptimize = [
   { src: 'public/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.png', dest: 'public/Images/Products/59aaf0c2-686f-423e-bda7-744a9f720398.webp' },
   { src: 'public/Images/Products/61b16c79-0f71-4ee6-87c5-396b8123796c.png', dest: 'public/Images/Products/61b16c79-0f71-4ee6-87c5-396b8123796c.webp' },
   { src: 'public/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.png', dest: 'public/Images/Products/6426e120-3100-4f18-a55f-3ea2fb96390d.webp' },
+  { src: 'public/Images/Products/ai_industrial_iot.png', dest: 'public/Images/Products/ai_industrial_iot.webp' },
+  { src: 'public/Images/Products/maintenance_service.png', dest: 'public/Images/Products/maintenance_service.webp' },
   { src: 'public/Images/Project/57045811-01db-4a79-8406-f8398676e32e.png', dest: 'public/Images/Project/57045811-01db-4a79-8406-f8398676e32e.webp' },
+  { src: 'public/Images/Project/industrial_plumbing.png', dest: 'public/Images/Project/industrial_plumbing.webp' },
   { src: 'public/Images/Project/639f0a0f-0c98-486e-9e26-484e33c05784.png', dest: 'public/Images/Project/639f0a0f-0c98-486e-9e26-484e33c05784.webp' },
   // Generated showcase images from artifact folder
   { src: '/Users/mac/.gemini/antigravity-ide/brain/2d4e047f-df7f-4df3-a5ee-9bd6eecad893/scada_showcase_1782828791181.png', dest: 'public/Images/Project/scada_showcase.webp' },
