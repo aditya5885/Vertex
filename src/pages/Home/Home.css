@@ -1320,6 +1320,16 @@
         gap: 3rem;
     }
 
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .who-pillars-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
     .solutions-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1339,10 +1349,6 @@
 }
 
 @media (max-width: 768px) {
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
     .solutions-grid {
         grid-template-columns: 1fr;
     }
@@ -1376,5 +1382,16 @@
     .who-glass-badge {
         padding: 0.5rem 0.85rem;
         font-size: 0.78rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .who-glass-badge {
+        display: none; /* Hide cluttering overlay badges on tiny mobile devices */
     }
 }

@@ -12,6 +12,7 @@ const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+    const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(null);
     const location = useLocation();
 
     useEffect(() => {
@@ -26,6 +27,7 @@ const Navbar = () => {
     useEffect(() => {
         setMobileMenuOpen(false);
         setActiveDropdown(null);
+        setExpandedMobileMenu(null);
     }, [location]);
 
     // Prevent scrolling when mobile menu is open
@@ -154,18 +156,56 @@ const Navbar = () => {
                                     transition={{ delay: i * 0.08 }}
                                     className="mobile-nav-item"
                                 >
-                                    <div className="mobile-link-header">
+                                    <div className="mobile-link-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <Link to={link.path}>{link.name}</Link>
+                                        {link.submenus && (
+                                            <button 
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setExpandedMobileMenu(expandedMobileMenu === link.name ? null : link.name);
+                                                }}
+                                                style={{ 
+                                                    background: 'none', 
+                                                    border: 'none', 
+                                                    color: 'var(--primary)', 
+                                                    padding: '0.6rem', 
+                                                    cursor: 'pointer', 
+                                                    display: 'flex', 
+                                                    alignItems: 'center',
+                                                    outline: 'none'
+                                                }}
+                                            >
+                                                <FaChevronDown 
+                                                    style={{ 
+                                                        transform: expandedMobileMenu === link.name ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                        transition: 'transform 0.3s ease',
+                                                        filter: 'drop-shadow(0 0 4px rgba(0, 229, 255, 0.4))'
+                                                    }} 
+                                                    size={12} 
+                                                />
+                                            </button>
+                                        )}
                                     </div>
 
                                     {link.submenus && (
-                                        <ul className="mobile-submenu">
-                                            {link.submenus.map((sub, idx) => (
-                                                <li key={idx}>
-                                                    <Link to={sub.path}>└ {sub.name}</Link>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        <AnimatePresence>
+                                            {expandedMobileMenu === link.name && (
+                                                <motion.ul 
+                                                    className="mobile-submenu"
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.25, ease: 'easeInOut' }}
+                                                    style={{ overflow: 'hidden' }}
+                                                >
+                                                    {link.submenus.map((sub, idx) => (
+                                                        <li key={idx}>
+                                                            <Link to={sub.path}>└ {sub.name}</Link>
+                                                        </li>
+                                                    ))}
+                                                </motion.ul>
+                                            )}
+                                        </AnimatePresence>
                                     )}
                                 </motion.li>
                             ))}
