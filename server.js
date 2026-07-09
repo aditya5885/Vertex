@@ -1681,8 +1681,15 @@ const server = http.createServer((req, res) => {
 
                         const timestamp = Math.round(new Date().getTime() / 1000);
                         const folder = "vertex_uploads";
-                        // Sort parameters alphabetically: folder, timestamp, unique_filename, use_filename
-                        const stringToSign = `folder=${folder}&timestamp=${timestamp}&unique_filename=true&use_filename=true${CLOUDINARY_API_SECRET}`;
+
+                        // Generate clean unique filename
+                        const cleanBase = path.basename(filename, ext).replace(/[^a-zA-Z0-9.\-_]/g, "_");
+                        const uniqueSuffix = Math.round(Math.random() * 1e5);
+                        const uniqueBase = `${cleanBase}_${uniqueSuffix}`;
+                        const publicId = resourceType === "raw" ? `${uniqueBase}${ext}` : uniqueBase;
+
+                        // Sort parameters alphabetically: folder, public_id, timestamp
+                        const stringToSign = `folder=${folder}&public_id=${publicId}&timestamp=${timestamp}${CLOUDINARY_API_SECRET}`;
                         const signature = crypto.createHash("sha1").update(stringToSign).digest("hex");
 
                         const formData = new URLSearchParams();
@@ -1691,8 +1698,7 @@ const server = http.createServer((req, res) => {
                         formData.append("api_key", CLOUDINARY_API_KEY);
                         formData.append("signature", signature);
                         formData.append("folder", folder);
-                        formData.append("use_filename", "true");
-                        formData.append("unique_filename", "true");
+                        formData.append("public_id", publicId);
 
                         const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`, {
                             method: "POST",
