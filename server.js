@@ -1692,18 +1692,20 @@ const server = http.createServer((req, res) => {
                         const stringToSign = `folder=${folder}&public_id=${publicId}&timestamp=${timestamp}${CLOUDINARY_API_SECRET}`;
                         const signature = crypto.createHash("sha1").update(stringToSign).digest("hex");
 
-                        const formData = new URLSearchParams();
-                        formData.append("file", fileData); // Base64 URL
-                        formData.append("timestamp", timestamp.toString());
-                        formData.append("api_key", CLOUDINARY_API_KEY);
-                        formData.append("signature", signature);
-                        formData.append("folder", folder);
-                        formData.append("public_id", publicId);
-
                         const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`, {
-                            method: "POST",
-                            body: formData
-                        });
+                             method: "POST",
+                             headers: {
+                                 "Content-Type": "application/json"
+                             },
+                             body: JSON.stringify({
+                                 file: fileData,
+                                 timestamp: timestamp.toString(),
+                                 api_key: CLOUDINARY_API_KEY,
+                                 signature: signature,
+                                 folder: folder,
+                                 public_id: publicId
+                             })
+                         });
 
                         if (!cloudRes.ok) {
                             const errBody = await cloudRes.text();
