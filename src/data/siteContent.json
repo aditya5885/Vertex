@@ -149,9 +149,7 @@
       "Innovative Technology Solutions",
       "Quality & Safety Focused",
       "Rapid Technical Support",
-      "Cost-Effective Solutions",
-      "New Item Value",
-      "New Item Value nhgv"
+      "Cost-Effective Solutions"
     ],
     "solutions": [
       {
@@ -962,7 +960,7 @@
         "icon": "FaWrench",
         "title": "Operation & Maintenance Manuals",
         "desc": "Installation guides, user manuals, maintenance instructions and operational documentation.",
-        "targetFilter: "Manuals"
+        "targetFilter": "Manuals"
       },
       {
         "index": "06",
@@ -979,7 +977,7 @@
         "desc": "Learn more about Vertex Controls, our expertise, industries served, capabilities and engineering solutions.",
         "size": "4.8 MB",
         "updatedDate": "May 2026",
-        "downloadUrl": "/downloads/vertex_document.pdf"
+        "downloadUrl": "https://res.cloudinary.com/w33ywdkz/image/upload/v1783598681/vertex_uploads/j6hri8ehi7asirkgbhw0.pdf"
       },
       {
         "title": "Industrial Automation Brochure",

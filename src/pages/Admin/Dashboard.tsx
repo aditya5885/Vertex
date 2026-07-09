@@ -514,6 +514,97 @@ const Dashboard: React.FC = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const uploadImage = async (file: File): Promise<string | null> => {
+        const reader = new FileReader();
+        return new Promise((resolve) => {
+            reader.readAsDataURL(file);
+            reader.onloadend = async () => {
+                const base64Data = reader.result as string;
+                try {
+                    const token = sessionStorage.getItem("adminToken") || "";
+                    const res = await fetch("/api/upload", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            filename: file.name,
+                            fileData: base64Data
+                        })
+                    });
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        resolve(data.url);
+                    } else {
+                        alert("Upload failed. Make sure your server is running.");
+                        resolve(null);
+                    }
+                } catch (err) {
+                    console.error("Upload error:", err);
+                    alert("Network error. Upload failed.");
+                    resolve(null);
+                }
+            };
+        });
+    };
+
+    const MediaInputField: React.FC<{
+        label: string;
+        value: string;
+        onChange: (val: string) => void;
+        accept?: string;
+        hint?: string;
+        colSpan?: number;
+    }> = ({ label, value, onChange, accept = "image/*", hint, colSpan = 2 }) => {
+        const [localUploading, setLocalUploading] = useState(false);
+        const inputRef = React.useRef<HTMLInputElement>(null);
+
+        const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            setLocalUploading(true);
+            const url = await uploadImage(file);
+            if (url) {
+                onChange(url);
+            }
+            setLocalUploading(false);
+        };
+
+        return (
+            <div className={`form-group${colSpan === 2 ? " col-span-2" : ""}`}>
+                <label>{label}</label>
+                <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", width: "100%" }}>
+                    <input 
+                        type="text" 
+                        value={value} 
+                        onChange={(e) => onChange(e.target.value)} 
+                        style={{ flex: 1 }}
+                    />
+                    <input 
+                        type="file" 
+                        ref={inputRef} 
+                        style={{ display: "none" }} 
+                        accept={accept} 
+                        onChange={onFileChange} 
+                    />
+                    <button 
+                        type="button" 
+                        className="btn btn-secondary" 
+                        onClick={() => inputRef.current?.click()}
+                        disabled={localUploading}
+                        style={{ padding: "0.85rem 1.5rem", whiteSpace: "nowrap", height: "46px", display: "flex", alignItems: "center", gap: "0.5rem" }}
+                    >
+                        <FaUpload /> {localUploading ? "Uploading..." : "Upload File"}
+                    </button>
+                </div>
+                {hint && <p className="hint-p" style={{ marginTop: "0.25rem" }}>{hint}</p>}
+            </div>
+        );
+    };
+
     return (
         <div className="admin-dashboard-container">
             {/* LEFT SIDEBAR PANEL */}
@@ -662,17 +753,12 @@ const Dashboard: React.FC = () => {
                             <div className="dashboard-card">
                                 <h3>Global Header Configuration</h3>
                                 <div className="form-grid">
-                                    <div className="form-group col-span-2">
-                                        <label>Website Logo Path / URL</label>
-                                        <input 
-                                            type="text" 
-                                            value={draft.navbar.logoUrl} 
-                                            onChange={(e) => updateField("navbar.logoUrl", e.target.value)} 
-                                        />
-                                        <p className="hint-p" style={{ marginTop: "0.25rem" }}>
-                                            Recommended: Use `/Vertex_logo.png` or upload a new image inside the <strong>Media Uploader</strong> tab and paste the link here.
-                                        </p>
-                                    </div>
+                                    <MediaInputField
+                                        label="Website Logo Path / URL"
+                                        value={draft.navbar.logoUrl}
+                                        onChange={(val) => updateField("navbar.logoUrl", val)}
+                                        hint="Recommended: Use /Vertex_logo.png or upload a new image directly."
+                                    />
                                 </div>
                             </div>
 
@@ -1020,14 +1106,12 @@ const Dashboard: React.FC = () => {
                                                         onChange={(e) => updateListItem("home", "solutions", idx, "spec", e.target.value)} 
                                                     />
                                                 </div>
-                                                <div className="form-group">
-                                                    <label>Image Cover Path</label>
-                                                    <input 
-                                                        type="text" 
-                                                        value={sol.image} 
-                                                        onChange={(e) => updateListItem("home", "solutions", idx, "image", e.target.value)} 
-                                                    />
-                                                </div>
+                                                 <MediaInputField
+                                                     label="Image Cover Path"
+                                                     value={sol.image}
+                                                     onChange={(val) => updateListItem("home", "solutions", idx, "image", val)}
+                                                     colSpan={1}
+                                                 />
                                             </div>
                                         </div>
                                     ))}
@@ -1124,14 +1208,12 @@ const Dashboard: React.FC = () => {
                                                         onChange={(e) => updateListItem("home", "projectHighlights", idx, "location", e.target.value)} 
                                                     />
                                                 </div>
-                                                <div className="form-group">
-                                                    <label>Cover Image URL</label>
-                                                    <input 
-                                                        type="text" 
-                                                        value={proj.image} 
-                                                        onChange={(e) => updateListItem("home", "projectHighlights", idx, "image", e.target.value)} 
-                                                    />
-                                                </div>
+                                                 <MediaInputField
+                                                     label="Cover Image URL"
+                                                     value={proj.image}
+                                                     onChange={(val) => updateListItem("home", "projectHighlights", idx, "image", val)}
+                                                     colSpan={1}
+                                                 />
                                                 <div className="form-group col-span-2">
                                                     <label>Highlight Description</label>
                                                     <textarea 
@@ -1278,14 +1360,12 @@ const Dashboard: React.FC = () => {
                                             onChange={(e) => updateField("about.overview.body", e.target.value)} 
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label>Overview Image URL</label>
-                                        <input 
-                                            type="text" 
-                                            value={draft.about.overview?.image} 
-                                            onChange={(e) => updateField("about.overview.image", e.target.value)} 
-                                        />
-                                    </div>
+                                     <MediaInputField
+                                         label="Overview Image URL"
+                                         value={draft.about.overview?.image || ""}
+                                         onChange={(val) => updateField("about.overview.image", val)}
+                                         colSpan={1}
+                                     />
                                     <div className="form-group">
                                         <label>Glass Floating Badge Text (newline separated: line 1 strong, line 2 normal)</label>
                                         <textarea 
@@ -1777,14 +1857,12 @@ const Dashboard: React.FC = () => {
                                                         onChange={(e) => updateListItem("projects", "categories", idx, "scope", e.target.value)} 
                                                     />
                                                 </div>
-                                                <div className="form-group">
-                                                    <label>Card WebP Image Path</label>
-                                                    <input 
-                                                        type="text" 
-                                                        value={cat.image} 
-                                                        onChange={(e) => updateListItem("projects", "categories", idx, "image", e.target.value)} 
-                                                    />
-                                                </div>
+                                                 <MediaInputField
+                                                     label="Card WebP Image Path"
+                                                     value={cat.image}
+                                                     onChange={(val) => updateListItem("projects", "categories", idx, "image", val)}
+                                                     colSpan={1}
+                                                 />
                                             </div>
                                         </div>
                                     ))}
@@ -2145,14 +2223,12 @@ const Dashboard: React.FC = () => {
                                                         ))}
                                                     </select>
                                                 </div>
-                                                <div className="form-group">
-                                                    <label>Image Cover Path / URL</label>
-                                                    <input 
-                                                        type="text" 
-                                                        value={prod.image} 
-                                                        onChange={(e) => updateListItem("products", "productList", idx, "image", e.target.value)} 
-                                                    />
-                                                </div>
+                                                 <MediaInputField
+                                                     label="Image Cover Path / URL"
+                                                     value={prod.image}
+                                                     onChange={(val) => updateListItem("products", "productList", idx, "image", val)}
+                                                     colSpan={1}
+                                                 />
                                                 <div className="form-group col-span-2">
                                                     <label>Product Description</label>
                                                     <textarea 
@@ -2221,14 +2297,12 @@ const Dashboard: React.FC = () => {
                                                 onChange={(e) => updateField("products.featuredProduct.title", e.target.value)} 
                                             />
                                         </div>
-                                        <div className="form-group col-span-2">
-                                            <label>Featured Image Cover URL</label>
-                                            <input 
-                                                type="text" 
-                                                value={draft.products.featuredProduct.image || ""} 
-                                                onChange={(e) => updateField("products.featuredProduct.image", e.target.value)} 
-                                            />
-                                        </div>
+                                         <MediaInputField
+                                             label="Featured Image Cover URL"
+                                             value={draft.products.featuredProduct.image || ""}
+                                             onChange={(val) => updateField("products.featuredProduct.image", val)}
+                                             colSpan={2}
+                                         />
                                         <div className="form-group col-span-2">
                                             <label>Product Overview Text</label>
                                             <textarea 
@@ -2705,15 +2779,13 @@ const Dashboard: React.FC = () => {
                                                         onChange={(e) => updateListItem("downloads", "documents", idx, "updatedDate", e.target.value)} 
                                                     />
                                                 </div>
-                                                <div className="form-group">
-                                                    <label>Direct PDF File Link (Upload in Media tab first)</label>
-                                                    <input 
-                                                        type="text" 
-                                                        value={doc.downloadUrl || ""} 
-                                                        placeholder="e.g. /Images/uploads/178254-file.pdf (Leave blank to simulate alert)"
-                                                        onChange={(e) => updateListItem("downloads", "documents", idx, "downloadUrl", e.target.value)} 
-                                                    />
-                                                </div>
+                                                 <MediaInputField
+                                                     label="Direct PDF/Document File Link"
+                                                     value={doc.downloadUrl || ""}
+                                                     onChange={(val) => updateListItem("downloads", "documents", idx, "downloadUrl", val)}
+                                                     accept="application/pdf,image/*,application/zip"
+                                                     colSpan={1}
+                                                 />
                                                 <div className="form-group col-span-2">
                                                     <label>Short Description of Document</label>
                                                     <textarea 
@@ -3460,14 +3532,12 @@ const Dashboard: React.FC = () => {
                                                 onChange={(e) => updateSubField("overview.body", e.target.value)} 
                                             />
                                         </div>
-                                        <div className="form-group col-span-2">
-                                            <label>Overview Showcase Image URL</label>
-                                            <input 
-                                                type="text" 
-                                                value={subData.overview?.imageSrc || ""} 
-                                                onChange={(e) => updateSubField("overview.imageSrc", e.target.value)} 
-                                            />
-                                        </div>
+                                         <MediaInputField
+                                             label="Overview Showcase Image URL"
+                                             value={subData.overview?.imageSrc || ""}
+                                             onChange={(val) => updateSubField("overview.imageSrc", val)}
+                                             colSpan={2}
+                                         />
                                     </div>
                                 </div>
 
@@ -3847,14 +3917,12 @@ const Dashboard: React.FC = () => {
                                                 onChange={(e) => updateProjField("overview.locationText", e.target.value)} 
                                             />
                                         </div>
-                                        <div className="form-group col-span-2">
-                                            <label>Showcase Terminal Image URL</label>
-                                            <input 
-                                                type="text" 
-                                                value={projData.overview?.imageSrc || ""} 
-                                                onChange={(e) => updateProjField("overview.imageSrc", e.target.value)} 
-                                            />
-                                        </div>
+                                         <MediaInputField
+                                             label="Showcase Terminal Image URL"
+                                             value={projData.overview?.imageSrc || ""}
+                                             onChange={(val) => updateProjField("overview.imageSrc", val)}
+                                             colSpan={2}
+                                         />
                                         <div className="form-group col-span-2">
                                             <label>Deliverable Scope Tags (Comma separated, e.g. Cable pull, FAT testing)</label>
                                             <input 

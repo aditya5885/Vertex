@@ -183,6 +183,7 @@
 /* Sidebar Styling */
 .admin-sidebar {
     width: 280px;
+    flex-shrink: 0;
     background: #090e18;
     border-right: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
@@ -630,7 +631,7 @@
 }
 
 /* Responsive constraints */
-@media (max-width: 992px) {
+@media (max-width: 768px) {
     .admin-sidebar {
         width: 80px;
         padding: 2rem 0.5rem;
