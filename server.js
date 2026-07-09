@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import nodemailer from "nodemailer";
+import crypto from "crypto";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,6 +34,17 @@ if (fs.existsSync(envPath)) {
 
 const PORT = process.env.PORT || 5001;
 const IS_VERCEL = !!process.env.VERCEL;
+
+// Cloudinary Dynamic Configuration
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
+const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
+const isCloudinaryConfigured = !!(CLOUDINARY_CLOUD_NAME && CLOUDINARY_API_KEY && CLOUDINARY_API_SECRET);
+
+// Vercel KV Dynamic Configuration
+const KV_REST_API_URL = process.env.KV_REST_API_URL;
+const KV_REST_API_TOKEN = process.env.KV_REST_API_TOKEN;
+const isKvConfigured = !!(KV_REST_API_URL && KV_REST_API_TOKEN);
 
 // Define base paths
 const BUNDLED_CONTENT_PATH = path.join(__dirname, "src", "data", "siteContent.json");
@@ -1273,6 +1285,150 @@ if (IS_VERCEL) {
     }
 }
 
+// Helper to load content data (from KV if configured, otherwise fallback to local filesystem)
+async function loadContentData() {
+    if (isKvConfigured) {
+        try {
+            const kvRes = await fetch(`${KV_REST_API_URL}/get/siteContent`, {
+                headers: { Authorization: `Bearer ${KV_REST_API_TOKEN}` }
+            });
+            if (kvRes.ok) {
+                const kvData = await kvRes.json();
+                if (kvData.result) {
+                    return JSON.parse(kvData.result);
+                }
+            }
+        } catch (err) {
+            console.error("[KV Loader] Error reading siteContent from Vercel KV:", err);
+        }
+    }
+    try {
+        if (fs.existsSync(CONTENT_FILE_PATH)) {
+            const fileData = fs.readFileSync(CONTENT_FILE_PATH, "utf8");
+            return JSON.parse(fileData);
+        }
+    } catch (err) {
+        console.error("[File Loader] Error reading content from file:", err);
+    }
+    return defaultContent;
+}
+
+// Helper to save content data
+async function saveContentData(contentObj) {
+    if (isKvConfigured) {
+        try {
+            const kvRes = await fetch(KV_REST_API_URL, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${KV_REST_API_TOKEN}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(["set", "siteContent", JSON.stringify(contentObj)])
+            });
+            if (!kvRes.ok) {
+                console.error("[KV Writer] Failed to save siteContent to Vercel KV:", await kvRes.text());
+            }
+        } catch (err) {
+            console.error("[KV Writer] Error writing siteContent to Vercel KV:", err);
+        }
+    }
+    try {
+        fs.writeFileSync(CONTENT_FILE_PATH, JSON.stringify(contentObj, null, 2), "utf8");
+    } catch (err) {
+        console.error("[File Writer] Error writing content to file:", err);
+    }
+}
+
+// Helper to load submissions
+async function loadSubmissionsData() {
+    if (isKvConfigured) {
+        try {
+            const kvRes = await fetch(`${KV_REST_API_URL}/get/submissions`, {
+                headers: { Authorization: `Bearer ${KV_REST_API_TOKEN}` }
+            });
+            if (kvRes.ok) {
+                const kvData = await kvRes.json();
+                if (kvData.result) {
+                    return JSON.parse(kvData.result);
+                }
+            }
+        } catch (err) {
+            console.error("[KV Loader] Error reading submissions from Vercel KV:", err);
+        }
+    }
+    try {
+        if (fs.existsSync(SUBMISSIONS_FILE_PATH)) {
+            const fileData = fs.readFileSync(SUBMISSIONS_FILE_PATH, "utf8");
+            return JSON.parse(fileData);
+        }
+    } catch (err) {
+        console.error("[File Loader] Error reading submissions from file:", err);
+    }
+    return [];
+}
+
+// Helper to save submissions
+async function saveSubmissionsData(submissionsArray) {
+    if (isKvConfigured) {
+        try {
+            const kvRes = await fetch(KV_REST_API_URL, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${KV_REST_API_TOKEN}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(["set", "submissions", JSON.stringify(submissionsArray)])
+            });
+            if (!kvRes.ok) {
+                console.error("[KV Writer] Failed to save submissions to Vercel KV:", await kvRes.text());
+            }
+        } catch (err) {
+            console.error("[KV Writer] Error writing submissions to Vercel KV:", err);
+        }
+    }
+    try {
+        fs.writeFileSync(SUBMISSIONS_FILE_PATH, JSON.stringify(submissionsArray, null, 2), "utf8");
+    } catch (err) {
+        console.error("[File Writer] Error writing submissions to file:", err);
+    }
+}
+
+// Asynchronously initialize Vercel KV with content if empty
+if (isKvConfigured) {
+    (async () => {
+        try {
+            const kvRes = await fetch(`${KV_REST_API_URL}/get/siteContent`, {
+                headers: { Authorization: `Bearer ${KV_REST_API_TOKEN}` }
+            });
+            if (kvRes.ok) {
+                const kvData = await kvRes.json();
+                if (!kvData.result) {
+                    let initialContent = defaultContent;
+                    try {
+                        const contentToLoad = fs.existsSync(BUNDLED_CONTENT_PATH) ? BUNDLED_CONTENT_PATH : CONTENT_FILE_PATH;
+                        if (fs.existsSync(contentToLoad)) {
+                            initialContent = JSON.parse(fs.readFileSync(contentToLoad, "utf8"));
+                        }
+                    } catch (readErr) {
+                        console.error("[KV Init] Failed to read fallback siteContent:", readErr);
+                    }
+                    await fetch(KV_REST_API_URL, {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${KV_REST_API_TOKEN}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(["set", "siteContent", JSON.stringify(initialContent)])
+                    });
+                    console.log("[KV Init] Successfully initialized Vercel KV with site content database.");
+                }
+            }
+        } catch (err) {
+            console.error("[KV Init] Error during Vercel KV initialization check:", err);
+        }
+    })();
+}
+
 // Function to handle JSON response
 const sendJSON = (res, statusCode, data) => {
     res.writeHead(statusCode, { "Content-Type": "application/json" });
@@ -1312,12 +1468,11 @@ const server = http.createServer((req, res) => {
 
     // API ENDPOINT: GET /api/content
     if (url.pathname === "/api/content" && req.method === "GET") {
-        fs.readFile(CONTENT_FILE_PATH, "utf8", (err, data) => {
-            if (err) {
-                return sendJSON(res, 500, { message: "Error reading site content database." });
-            }
-            res.writeHead(200, { "Content-Type": "application/json" });
-            res.end(data);
+        loadContentData().then(contentData => {
+            sendJSON(res, 200, contentData);
+        }).catch(err => {
+            console.error("GET /api/content error:", err);
+            sendJSON(res, 500, { message: "Error reading site content database." });
         });
         return;
     }
@@ -1326,7 +1481,7 @@ const server = http.createServer((req, res) => {
     if (url.pathname === "/api/content" && req.method === "POST") {
         let body = "";
         req.on("data", chunk => { body += chunk; });
-        req.on("end", () => {
+        req.on("end", async () => {
             const authHeader = req.headers["authorization"] || "";
             const token = authHeader.replace("Bearer ", "").trim();
 
@@ -1336,12 +1491,8 @@ const server = http.createServer((req, res) => {
 
             try {
                 const parsedContent = JSON.parse(body);
-                fs.writeFile(CONTENT_FILE_PATH, JSON.stringify(parsedContent, null, 2), "utf8", (err) => {
-                    if (err) {
-                        return sendJSON(res, 500, { message: "Failed to persist content modifications to disk." });
-                    }
-                    sendJSON(res, 200, { message: "Site content updated successfully!" });
-                });
+                await saveContentData(parsedContent);
+                sendJSON(res, 200, { message: "Site content updated successfully!" });
             } catch (err) {
                 sendJSON(res, 400, { message: "Malformed JSON payload structure." });
             }
@@ -1387,17 +1538,9 @@ const server = http.createServer((req, res) => {
                     message
                 };
 
-                let submissions = [];
-                if (fs.existsSync(SUBMISSIONS_FILE_PATH)) {
-                    try {
-                        const fileContent = fs.readFileSync(SUBMISSIONS_FILE_PATH, "utf8");
-                        submissions = JSON.parse(fileContent);
-                    } catch (e) {
-                        submissions = [];
-                    }
-                }
+                const submissions = await loadSubmissionsData();
                 submissions.unshift(submission);
-                fs.writeFileSync(SUBMISSIONS_FILE_PATH, JSON.stringify(submissions, null, 2), "utf8");
+                await saveSubmissionsData(submissions);
 
                 const fields = [
                     { label: "Name", value: name },
@@ -1457,17 +1600,9 @@ const server = http.createServer((req, res) => {
                     fileName: fileName || null
                 };
 
-                let submissions = [];
-                if (fs.existsSync(SUBMISSIONS_FILE_PATH)) {
-                    try {
-                        const fileContent = fs.readFileSync(SUBMISSIONS_FILE_PATH, "utf8");
-                        submissions = JSON.parse(fileContent);
-                    } catch (e) {
-                        submissions = [];
-                    }
-                }
+                const submissions = await loadSubmissionsData();
                 submissions.unshift(submission);
-                fs.writeFileSync(SUBMISSIONS_FILE_PATH, JSON.stringify(submissions, null, 2), "utf8");
+                await saveSubmissionsData(submissions);
 
                 const fields = [
                     { label: "Company Name", value: companyName },
@@ -1523,7 +1658,7 @@ const server = http.createServer((req, res) => {
     if (url.pathname === "/api/upload" && req.method === "POST") {
         let body = "";
         req.on("data", chunk => { body += chunk; });
-        req.on("end", () => {
+        req.on("end", async () => {
             const authHeader = req.headers["authorization"] || "";
             const token = authHeader.replace("Bearer ", "").trim();
 
@@ -1537,12 +1672,47 @@ const server = http.createServer((req, res) => {
                     return sendJSON(res, 400, { message: "Filename and fileData are required." });
                 }
 
-                // If running on Vercel, return base64 URL directly to avoid ephemeral file 404s
+                // 1. Cloudinary upload if configured
+                if (isCloudinaryConfigured) {
+                    try {
+                        const timestamp = Math.round(new Date().getTime() / 1000);
+                        const folder = "vertex_uploads";
+                        // Sort parameters alphabetically: folder, timestamp
+                        const stringToSign = `folder=${folder}&timestamp=${timestamp}${CLOUDINARY_API_SECRET}`;
+                        const signature = crypto.createHash("sha1").update(stringToSign).digest("hex");
+
+                        const formData = new URLSearchParams();
+                        formData.append("file", fileData); // Base64 URL
+                        formData.append("timestamp", timestamp.toString());
+                        formData.append("api_key", CLOUDINARY_API_KEY);
+                        formData.append("signature", signature);
+                        formData.append("folder", folder);
+
+                        const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                            method: "POST",
+                            body: formData
+                        });
+
+                        if (!cloudRes.ok) {
+                            const errBody = await cloudRes.text();
+                            console.error("[Cloudinary API Error]", errBody);
+                            return sendJSON(res, 500, { message: `Cloudinary upload failed: ${errBody}` });
+                        }
+
+                        const cloudData = await cloudRes.json();
+                        return sendJSON(res, 200, { url: cloudData.secure_url });
+                    } catch (cloudErr) {
+                        console.error("[Cloudinary catch error]", cloudErr);
+                        return sendJSON(res, 500, { message: `Cloudinary upload exception: ${cloudErr.message}` });
+                    }
+                }
+
+                // 2. Vercel fallback (base64)
                 if (IS_VERCEL) {
                     return sendJSON(res, 200, { url: fileData });
                 }
 
-                // Extract base64 payload
+                // 3. Local filesystem write
                 const base64Data = fileData.split(";base64,").pop();
                 const buffer = Buffer.from(base64Data, "base64");
 

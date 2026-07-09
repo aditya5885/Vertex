@@ -32,6 +32,41 @@ const Dashboard: React.FC = () => {
     const [copied, setCopied] = useState(false);
     const [uploadedFilesList, setUploadedFilesList] = useState<string[]>([]);
 
+    // JSON Backup / Restore Helpers
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+    const handleExportJson = () => {
+        if (!draft) return;
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(draft, null, 2));
+        const downloadAnchor = document.createElement("a");
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "siteContent.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    };
+
+    const handleImportJson = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const importedData = JSON.parse(event.target?.result as string);
+                if (importedData && typeof importedData === "object" && importedData.navbar && importedData.footer) {
+                    setDraft(importedData);
+                    alert("JSON data loaded successfully! Review your changes and click 'Save All Changes' to persist.");
+                } else {
+                    alert("Invalid siteContent.json file structure.");
+                }
+            } catch (err) {
+                alert("Failed to parse JSON file.");
+            }
+        };
+        reader.readAsText(file);
+    };
+
     // Redirect to login if not authenticated
     useEffect(() => {
         if (!loading && !isLoggedIn) {
@@ -582,12 +617,37 @@ const Dashboard: React.FC = () => {
                         <span className="live-badge">● LIVE DEV DATABASE</span>
                     </div>
                     
-                    <div className="header-actions">
+                    <div className="header-actions" style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
                         {saveStatus !== "idle" && (
                             <div className={`status-toast ${saveStatus}`}>
                                 <span>{statusText}</span>
                             </div>
                         )}
+                        <button 
+                            type="button"
+                            onClick={handleExportJson} 
+                            className="btn btn-secondary" 
+                            style={{ display: "flex", alignItems: "center", gap: "0.4rem", padding: "0.6rem 1.2rem", fontSize: "0.85rem", height: "42px" }}
+                            title="Export siteContent.json database file for backup"
+                        >
+                            <FaDownload /> <span>Export JSON</span>
+                        </button>
+                        <button 
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()} 
+                            className="btn btn-secondary" 
+                            style={{ display: "flex", alignItems: "center", gap: "0.4rem", padding: "0.6rem 1.2rem", fontSize: "0.85rem", height: "42px" }}
+                            title="Import siteContent.json file to restore/overwrite configuration"
+                        >
+                            <FaUpload /> <span>Import JSON</span>
+                        </button>
+                        <input 
+                            type="file" 
+                            ref={fileInputRef} 
+                            style={{ display: "none" }} 
+                            accept=".json" 
+                            onChange={handleImportJson} 
+                        />
                         <button onClick={handleSaveAll} className="btn btn-primary save-all-btn" disabled={saveStatus === "saving"}>
                             <FaSave /> <span>{saveStatus === "saving" ? "Saving..." : "Save All Changes"}</span>
                         </button>
