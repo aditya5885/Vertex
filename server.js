@@ -1675,6 +1675,10 @@ const server = http.createServer((req, res) => {
                 // 1. Cloudinary upload if configured
                 if (isCloudinaryConfigured) {
                     try {
+                        const ext = path.extname(filename).toLowerCase();
+                        const rawExtensions = [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".zip", ".txt", ".csv"];
+                        const resourceType = rawExtensions.includes(ext) ? "raw" : "image";
+
                         const timestamp = Math.round(new Date().getTime() / 1000);
                         const folder = "vertex_uploads";
                         // Sort parameters alphabetically: folder, timestamp
@@ -1688,7 +1692,7 @@ const server = http.createServer((req, res) => {
                         formData.append("signature", signature);
                         formData.append("folder", folder);
 
-                        const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
+                        const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`, {
                             method: "POST",
                             body: formData
                         });
