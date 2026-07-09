@@ -1688,7 +1688,7 @@ const server = http.createServer((req, res) => {
                         formData.append("signature", signature);
                         formData.append("folder", folder);
 
-                        const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                        const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
                             method: "POST",
                             body: formData
                         });
